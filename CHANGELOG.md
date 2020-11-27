@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## [Autonio Smartdex v1.1.1] ()
-- 
+## [Autonio Smartdex v1.1.1] (https://gitlab.com/autonio/smartdex-front-end/-/commit/feea0173bf9f8195ebe032029122ee57fd449f1b)
+- update README.md
+- Add CHANGELOG
 
 ## [Autonio Smartdex v1.1](https://gitlab.com/autonio/smartdex-front-end/-/commit/17a2cdd985409e0ff23e4e352da3c962ffab2613)
 
