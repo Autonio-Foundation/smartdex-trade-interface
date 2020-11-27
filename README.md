@@ -1,26 +1,16 @@
-# 0x-launch-kit-frontend
+# Autonio Smartdex Frontend
 
-[![CircleCI](https://circleci.com/gh/0xProject/0x-launch-kit-frontend.svg?style=svg)](https://circleci.com/gh/0xProject/0x-launch-kit-frontend)
-[![dependencies Status](https://david-dm.org/0xproject/0x-launch-kit-frontend/status.svg)](https://david-dm.org/0xproject/0x-launch-kit-frontend)
-[![devDependencies Status](https://david-dm.org/0xproject/0x-launch-kit-frontend/dev-status.svg)](https://david-dm.org/0xproject/0x-launch-kit-frontend?type=dev)
-[![Coverage Status](https://coveralls.io/repos/github/0xProject/0x-launch-kit-frontend/badge.svg?branch=feature%2Fcoveralls)](https://coveralls.io/github/0xProject/0x-launch-kit-frontend?branch=feature%2Fcoveralls)
+This repository is forked from [0x-launch-kit-frontend](https://github.com/0xProject/0x-launch-kit-frontend)
 
-This is an example implementation of a dApp that interacts with a [0x relayer](https://github.com/0xProject/standard-relayer-api). To use it, you need to have the URL of an existing relayer, or you can start one locally for use during development.
-
-This repo ships with both an ERC-20 token trading interface and an ERC-721 marketplace interface.
-
-|                              ERC-20                              |                              ERC-721                              |
-| :--------------------------------------------------------------: | :---------------------------------------------------------------: |
-| ![](https://s3.eu-west-2.amazonaws.com/0x-wiki-images/erc20.png) | ![](https://s3.eu-west-2.amazonaws.com/0x-wiki-images/erc721.png) |
+This is a frontend of Autonio Smartdex built in React.js, deployed on matic network.
 
 ## Usage
 
 Clone this repository and install its dependencies:
 
 ```
-git clone git@github.com:0xProject/0x-launch-kit-frontend.git
-cd 0x-launch-kit-frontend
-yarn
+git clone https://gitlab.com/autonio/smartdex-front-end
+
 ```
 
 ### Using an existing relayer
@@ -33,10 +23,10 @@ REACT_APP_RELAYER_URL='https://RELAYER_URL/api/v2' yarn start
 
 A browser tab will open in the `http://localhost:3001` address. You'll need to connect MetaMask to the network used by the relayer.
 
-You can optionally pass in any relayer endpoint that complies with the [0x Standard Relayer API](https://github.com/0xProject/standard-relayer-api). For example, if you want to mirror Kovan liquidity from [Radar Relay](https://radarrelay.com/):
+You can optionally pass in any relayer endpoint that complies with the [0x Standard Relayer API](https://github.com/0xProject/standard-relayer-api). For example, you can use the [Autonio Smartdex Backend's](https://gitlab.com/autonio/smartdex-backend) [Production URL](http://3.16.219.40:3000/v2)
 
 ```
-REACT_APP_RELAYER_URL='https://api.kovan.radarrelay.com/0x/v2' REACT_APP_NETWORK_ID=42 yarn start
+REACT_APP_RELAYER_URL='http://3.16.219.40:3000/v2' REACT_APP_NETWORK_ID=137 yarn start
 ```
 
 These commands start the app in development mode. You can run `yarn build` to build the assets. The results will be in the `build` directory. Remember to set the environment variable with the relayer URL when running the `build` command:
@@ -69,7 +59,7 @@ services:
             - ganache
 ```
 
-and then run `docker-compose up`. This will create two containers: one has a ganache with the 0x contracts deployed and some test tokens, and the other one has an instance of the [launch kit](https://github.com/0xProject/0x-launch-kit) implementation of a relayer that connects to that ganache.
+and then run `docker-compose up`. This will create two containers: one has a ganache with the smartdex contracts deployed and some test tokens, and the other one has an instance of the [launch kit](https://github.com/0xProject/0x-launch-kit) implementation of a relayer that connects to that ganache.
 
 After starting those containers, you can run `yarn start` in another terminal. A browser tab will open in the `http://localhost:3001` address. You'll need to connect MetaMask to `localhost:8545`.
 
@@ -86,3 +76,7 @@ Check `.env.example` for the full list.
 ### Using custom themes
 
 If you want to add your own theme for the app, please read the [THEMES.md](THEMES.md) file
+
+## Production URL
+
+http://dex.smartdex.app
