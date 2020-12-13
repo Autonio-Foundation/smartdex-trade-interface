@@ -262,6 +262,7 @@ class BuySell extends React.Component<Props, State> {
                                     <BigInputNumberStyled
                                         decimals={0}
                                         min={new BigNumber(0)}
+                                        valueFixedDecimals={7}
                                         onChange={this.updatePrice}
                                         value={price}
                                         placeholder={'0.00'}
