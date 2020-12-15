@@ -51,7 +51,7 @@ export const createBuySellLimitSteps = (
 
     // wrap the necessary ether if it is one of the traded tokens
     if (isWeth(baseToken.symbol) || isWeth(quoteToken.symbol)) {
-        const wrapEthStep = getWrapEthStepIfNeeded(amount, price, side, wethTokenBalance);
+        const wrapEthStep = getWrapEthStepIfNeeded(amount.plus(0.1), price, side, wethTokenBalance);
         if (wrapEthStep) {
             buySellLimitFlow.push(wrapEthStep);
         }
@@ -261,7 +261,7 @@ export const getWrapEthStepIfNeeded = (
         return {
             kind: StepKind.WrapEth,
             currentWethBalance: wethBalance,
-            newWethBalance: wethAmountNeeded.plus(0.1),
+            newWethBalance: wethAmountNeeded,
             context: 'order',
         };
     } else {
