@@ -242,7 +242,7 @@ export const getWrapEthStepIfNeeded = (
         return null;
     }
 
-    const wethAmountNeeded = BigNumber.sum(amount.multipliedBy(price), BigNumber(0.1));
+    const wethAmountNeeded = BigNumber.sum(amount.multipliedBy(price), new BigNumber(0.1));
     console.log(wethAmountNeeded);
     
     // If we have enough WETH, we don't need to wrap
