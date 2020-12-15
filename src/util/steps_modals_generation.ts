@@ -242,10 +242,7 @@ export const getWrapEthStepIfNeeded = (
         return null;
     }
 
-    var needed = amount.multipliedBy(price);
-    console.log(needed);
-    const wethAmountNeeded = needed.plus(new BigNumber("0.1"));
-    console.log(wethAmountNeeded);
+    const wethAmountNeeded = amount.multipliedBy(price);
 
     // If we have enough WETH, we don't need to wrap
     if (wethTokenBalance.balance.isGreaterThan(wethAmountNeeded)) {
@@ -264,7 +261,7 @@ export const getWrapEthStepIfNeeded = (
         return {
             kind: StepKind.WrapEth,
             currentWethBalance: wethBalance,
-            newWethBalance: wethAmountNeeded,
+            newWethBalance: wethAmountNeeded.plus(0.1),
             context: 'order',
         };
     } else {
