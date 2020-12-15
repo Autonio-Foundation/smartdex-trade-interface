@@ -241,8 +241,7 @@ export const getWrapEthStepIfNeeded = (
         return null;
     }
 
-    var needed = amount.multipliedBy(price);
-    const wethAmountNeeded = needed.add(0.0001);
+    const wethAmountNeeded = amount.multipliedBy(price);
     
     // If we have enough WETH, we don't need to wrap
     if (wethTokenBalance.balance.isGreaterThan(wethAmountNeeded)) {
