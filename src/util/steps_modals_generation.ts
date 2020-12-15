@@ -1,5 +1,6 @@
 import { BigNumber, SignedOrder } from '0x.js';
 
+
 import { isWeth, isZrx } from './known_tokens';
 import {
     Collectible,
@@ -241,7 +242,8 @@ export const getWrapEthStepIfNeeded = (
         return null;
     }
 
-    const wethAmountNeeded = amount.multipliedBy(price);
+    const wethAmountNeeded = BigNumber.sum(amount.multipliedBy(price), BigNumber(0.1));
+    console.log(wethAmountNeeded);
     
     // If we have enough WETH, we don't need to wrap
     if (wethTokenBalance.balance.isGreaterThan(wethAmountNeeded)) {
