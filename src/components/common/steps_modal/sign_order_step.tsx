@@ -9,7 +9,7 @@ import { SignatureFailedException } from '../../../exceptions/signature_failed_e
 import { createSignedOrder, submitLimitOrder, matchOrderbook, submitMarketOrder, getOrderbookAndUserOrders } from '../../../store/actions';
 import { getEstimatedTxTimeMs, getStepsModalCurrentStep } from '../../../store/selectors';
 import { tokenSymbolToDisplayString } from '../../../util/tokens';
-import { OrderSide, StepBuySellLimitOrder, StoreState } from '../../../util/types';
+import { OrderSide, StepBuySellLimitOrder, StoreState, Token } from '../../../util/types';
 import { addMarketBuySellNotification } from '../../../store/ui/actions';
 
 import { getWeb3Wrapper } from '../../../services/web3_wrapper';
