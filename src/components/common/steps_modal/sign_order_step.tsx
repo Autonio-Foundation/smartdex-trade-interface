@@ -79,7 +79,8 @@ class SignOrderStep extends React.Component<Props, State> {
         const { step, onSubmitMarketOrder } = this.props;
         const { amount, price, side, token } = step;
         try {
-            const filledAmount = this.props.matchOrderbook(amount, price, side);
+            let filledAmount = new BigNumber(0);
+            filledAmount = this.props.matchOrderbook(amount, price, side);
             console.log(filledAmount);
             if (filledAmount.eq(amount)) {
                 const web3Wrapper = await getWeb3Wrapper();
