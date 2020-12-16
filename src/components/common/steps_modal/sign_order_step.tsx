@@ -27,7 +27,7 @@ interface StateProps {
 interface DispatchProps {
     onSubmitMarketOrder: (amount: BigNumber, side: OrderSide) => Promise<{ txHash: string; amountInReturn: BigNumber }>;
     createSignedOrder: (amount: BigNumber, price: BigNumber, side: OrderSide) => Promise<SignedOrder>;
-    matchOrderbook: (amount: BigNumber, price: BigNumber, side: OrderSide) => Promise<{ filledAmount: BigNumber }>;
+    matchOrderbook: (amount: BigNumber, price: BigNumber, side: OrderSide) => { filledAmount: BigNumber };
     submitLimitOrder: (signedOrder: SignedOrder, amount: BigNumber, side: OrderSide) => Promise<any>;
     refreshOrders: () => any;
     notifyBuySellMarket: (id: string, amount: BigNumber, token: Token, side: OrderSide, tx: Promise<any>) => any;
