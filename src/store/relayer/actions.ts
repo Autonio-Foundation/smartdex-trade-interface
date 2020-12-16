@@ -134,10 +134,14 @@ export const submitCollectibleOrder: ThunkCreator = (signedOrder: SignedOrder) =
 };
 
 export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount: BigNumber, side: OrderSide) => {
-    return async (dispatch, getState) => {
+    return async (dispatch, getState, { getContractWrappers }) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
+        const ethAccount = getEthAccount(state);
+        const quoteToken = getQuoteToken(state) as Token;
         try {
+            const contractWrappers = await getContractWrappers();
+    
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
 
             // tslint:disable-next-line:no-floating-promises
