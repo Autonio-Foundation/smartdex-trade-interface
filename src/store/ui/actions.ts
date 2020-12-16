@@ -268,11 +268,10 @@ const getLockTokenStep = (token: Token): StepToggleTokenLock => {
 };
 
 export const matchOrderbook: ThunkCreator = (amount: BigNumber, price: BigNumber, side: OrderSide) => {
-    return async (dispatch, getState) => {
+    return (dispatch, getState) => {
         const state = getState();
         const isBuy = side === OrderSide.Buy;
         const allOrders = isBuy ? selectors.getOpenSellOrders(state) : selectors.getOpenBuyOrders(state);
-        console.log(allOrders);
         try {
             const { filledAmount } = matchLimitOrders(
                 {
