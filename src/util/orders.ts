@@ -152,6 +152,8 @@ export const matchLimitOrders = (
 ): { filledAmount: BigNumber; } => {
     const { amount, price, orders } = params;
 
+    console.log(amount, price, orders);
+
     // sort orders from best to worse
     const sortedOrders = orders.sort((a, b) => {
         if (side === OrderSide.Buy) {
