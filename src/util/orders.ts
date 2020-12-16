@@ -168,10 +168,10 @@ export const matchLimitOrders = (
     let filledAmount = new BigNumber(0);
     for (let i = 0; i < sortedOrders.length && filledAmount.isLessThan(amount); i++) {
         const order = sortedOrders[i];
-        if (side === OrderSide.Buy && order.price.comparedTo(price)) {
+        if (side === OrderSide.Buy && order.price.isGreaterThan(price)) {
             break;
         }
-        if (side === OrderSide.Sell && price.comparedTo(order.price)) {
+        if (side === OrderSide.Sell && price.isLessThan(order.price)) {
             break;
         }
 
