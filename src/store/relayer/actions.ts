@@ -14,7 +14,7 @@ import {
 import { getRelayer } from '../../services/relayer';
 import { isWeth } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
-import { buildLimitOrder, buildMarketOrders, sumTakerAssetFillableOrders } from '../../util/orders';
+import { buildLimitOrder, buildMarketOrders, matchLimitOrders, sumTakerAssetFillableOrders } from '../../util/orders';
 import { getTransactionOptions } from '../../util/transactions';
 import { NotificationKind, OrderSide, RelayerState, ThunkCreator, Token, UIOrder, Web3State } from '../../util/types';
 import { updateTokenBalances } from '../blockchain/actions';
@@ -134,15 +134,38 @@ export const submitCollectibleOrder: ThunkCreator = (signedOrder: SignedOrder) =
 };
 
 export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount: BigNumber, side: OrderSide) => {
-    return async (dispatch, getState, { getContractWrappers }) => {
+    return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
-        const ethAccount = getEthAccount(state);
-        const quoteToken = getQuoteToken(state) as Token;
         try {
-            const contractWrappers = await getContractWrappers();
-    
+            const state = getState();
+            console.log(signedOrder);
+
+            const isBuy = side === OrderSide.Buy;
+            const allOrders = isBuy ? getOpenSellOrders(state) : getOpenBuyOrders(state);
+            const { filledAmount } = matchLimitOrders(
+                {
+                    amount,
+                    price: signedOrder.price,
+                    orders: allOrders,
+                },
+                side,
+            );
+
+
+            if (filledAmount.eq(amount)) {
+                console.log(filledAmount, "Market");
+                // submitMarketOrder(amount, side);
+            }
+            else if (filledAmount.isGreaterThan(new BigNumber(0))) {
+                // submitMarketOrder(filledAmount, side);
+                amount = amount.minus(filledAmount);
+                signedOrder.amount = amount;
+                console.log(amount, "New Limit Value");
+            }
+
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
+            console.log(submitResult);
 
             // tslint:disable-next-line:no-floating-promises
             dispatch(getOrderbookAndUserOrders());

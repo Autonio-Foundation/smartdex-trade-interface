@@ -40,6 +40,12 @@ interface BuildMarketOrderParams {
     orders: UIOrder[];
 }
 
+interface MatchLimitOrderParams {
+    amount: BigNumber;
+    price: BigNumber;
+    orders: UIOrder[];
+}
+
 export const buildDutchAuctionCollectibleOrder = async (params: DutchAuctionOrderParams) => {
     const {
         account,
@@ -138,6 +144,47 @@ export const getOrderWithTakerAndFeeConfigFromRelayer = async (orderConfigReques
         ...orderResult,
         salt: new BigNumber(Date.now()),
     };
+};
+
+export const matchLimitOrders = (
+    params: MatchLimitOrderParams,
+    side: OrderSide,
+): { filledAmount: BigNumber; } => {
+    const { amount, price, orders } = params;
+
+    // sort orders from best to worse
+    const sortedOrders = orders.sort((a, b) => {
+        if (side === OrderSide.Buy) {
+            return a.price.comparedTo(b.price);
+        } else {
+            return b.price.comparedTo(a.price);
+        }
+    });
+
+    const amounts: BigNumber[] = [];
+    let filledAmount = new BigNumber(0);
+    for (let i = 0; i < sortedOrders.length && filledAmount.isLessThan(amount); i++) {
+        const order = sortedOrders[i];
+        if (side === OrderSide.Buy && order.price.comparedTo(price)) {
+            break;
+        }
+        if (side === OrderSide.Sell && price.comparedTo(order.price)) {
+            break;
+        }
+
+        let available = order.size;
+        if (order.filled) {
+            available = order.size.minus(order.filled);
+        }
+        if (filledAmount.plus(available).isGreaterThan(amount)) {
+            filledAmount = amount;
+        } else {
+            amounts.push(available);
+            filledAmount = filledAmount.plus(available);
+        }
+    }
+
+    return { filledAmount };
 };
 
 export const buildMarketOrders = (
