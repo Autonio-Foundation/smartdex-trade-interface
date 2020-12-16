@@ -272,15 +272,19 @@ export const matchOrderbook: ThunkCreator = (amount: BigNumber, price: BigNumber
         const state = getState();
         const isBuy = side === OrderSide.Buy;
         const allOrders = isBuy ? selectors.getOpenSellOrders(state) : selectors.getOpenBuyOrders(state);
-        const { filledAmount } = matchLimitOrders(
-            {
-                amount,
-                price,
-                orders: allOrders,
-            },
-            side,
-        );
-        return filledAmount;
+        try {
+            const { filledAmount } = matchLimitOrders(
+                {
+                    amount,
+                    price,
+                    orders: allOrders,
+                },
+                side,
+            );
+            return filledAmount;    
+        } catch (error) {
+            throw new SignedOrderException(error.message);
+        }
     }
 }
 

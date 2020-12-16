@@ -27,7 +27,7 @@ interface StateProps {
 interface DispatchProps {
     onSubmitMarketOrder: (amount: BigNumber, side: OrderSide) => Promise<{ txHash: string; amountInReturn: BigNumber }>;
     createSignedOrder: (amount: BigNumber, price: BigNumber, side: OrderSide) => Promise<SignedOrder>;
-    matchOrderBook: (amount: BigNumber, price: BigNumber, side: OrderSide) => Promise<BigNumber>;
+    matchOrderbook: (amount: BigNumber, price: BigNumber, side: OrderSide) => Promise<BigNumber>;
     submitLimitOrder: (signedOrder: SignedOrder, amount: BigNumber, side: OrderSide) => Promise<any>;
     refreshOrders: () => any;
     notifyBuySellMarket: (id: string, amount: BigNumber, token: Token, side: OrderSide, tx: Promise<any>) => any;
@@ -79,7 +79,7 @@ class SignOrderStep extends React.Component<Props, State> {
         const { step, onSubmitMarketOrder } = this.props;
         const { amount, price, side, token } = step;
         try {
-            const filledAmount = await this.props.matchOrderbook(amount,price, side);
+            const filledAmount = await this.props.matchOrderbook(amount, price, side);
             if (filledAmount.eq(amount)) {
                 const web3Wrapper = await getWeb3Wrapper();
                 const { txHash, amountInReturn } = await onSubmitMarketOrder(amount, side);
@@ -153,7 +153,7 @@ const SignOrderStepContainer = connect(
                 dispatch(submitLimitOrder(signedOrder, amount, side)),
             createSignedOrder: (amount: BigNumber, price: BigNumber, side: OrderSide) =>
                 dispatch(createSignedOrder(amount, price, side)),
-            matchOrderBook: (amount: BigNumber, price: BigNumber, side: OrderSide) =>
+            matchOrderbook: (amount: BigNumber, price: BigNumber, side: OrderSide) =>
                 dispatch(matchOrderbook(amount, price, side)),
         };
     },
