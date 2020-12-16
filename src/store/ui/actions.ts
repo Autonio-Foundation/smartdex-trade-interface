@@ -267,7 +267,7 @@ const getLockTokenStep = (token: Token): StepToggleTokenLock => {
     };
 };
 
-export const matchOrderbook: ThunkCreator = (amount: BigNumber, price: BigNumber, side: OrderSide) => {
+export const matchOrderbook: ThunkCreator<Promise<{ filledAmount: BigNumber }>> = (amount: BigNumber, price: BigNumber, side: OrderSide) => {
     return (dispatch, getState) => {
         const state = getState();
         const isBuy = side === OrderSide.Buy;
@@ -281,7 +281,7 @@ export const matchOrderbook: ThunkCreator = (amount: BigNumber, price: BigNumber
                 },
                 side,
             );
-            return filledAmount;    
+            return { filledAmount };    
         } catch (error) {
             throw new SignedOrderException(error.message);
         }
