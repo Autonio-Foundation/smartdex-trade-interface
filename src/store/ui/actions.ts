@@ -6,7 +6,7 @@ import { InsufficientOrdersAmountException } from '../../exceptions/insufficient
 import { InsufficientTokenBalanceException } from '../../exceptions/insufficient_token_balance_exception';
 import { SignedOrderException } from '../../exceptions/signed_order_exception';
 import { isWeth } from '../../util/known_tokens';
-import { buildLimitOrder, buildMarketOrders, isDutchAuction } from '../../util/orders';
+import { buildLimitOrder, buildMarketOrders, matchLimitOrders, isDutchAuction } from '../../util/orders';
 import {
     createBasicBuyCollectibleSteps,
     createBuySellLimitSteps,
@@ -267,6 +267,23 @@ const getLockTokenStep = (token: Token): StepToggleTokenLock => {
     };
 };
 
+export const matchOrderbook: ThunkCreator = (amount: BigNumber, price: BigNumber, side: OrderSide) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const isBuy = side === OrderSide.Buy;
+        const allOrders = isBuy ? selectors.getOpenSellOrders(state) : selectors.getOpenBuyOrders(state);
+        const { filledAmount } = matchLimitOrders(
+            {
+                amount,
+                price,
+                orders: allOrders,
+            },
+            side,
+        );
+        return filledAmount;
+    }
+}
+
 export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNumber, side: OrderSide) => {
     return async (dispatch, getState, { getContractWrappers, getWeb3Wrapper }) => {
         const state = getState();
@@ -288,8 +305,6 @@ export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNum
                 },
                 side,
             );
-
-            console.log(order);
 
             const provider = new MetamaskSubprovider(web3Wrapper.getProvider());
             return signatureUtils.ecSignOrderAsync(provider, order, ethAccount);
