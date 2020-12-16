@@ -152,7 +152,7 @@ export const matchLimitOrders = (
 ): { filledAmount: BigNumber; } => {
     const { amount, price, orders } = params;
 
-    console.log(amount, price, orders);
+    console.log(amount, price);
 
     // sort orders from best to worse
     const sortedOrders = orders.sort((a, b) => {
@@ -163,7 +163,8 @@ export const matchLimitOrders = (
         }
     });
 
-    const amounts: BigNumber[] = [];
+    console.log(sortedOrders);
+
     let filledAmount = new BigNumber(0);
     for (let i = 0; i < sortedOrders.length && filledAmount.isLessThan(amount); i++) {
         const order = sortedOrders[i];
@@ -174,14 +175,15 @@ export const matchLimitOrders = (
             break;
         }
 
+
         let available = order.size;
         if (order.filled) {
             available = order.size.minus(order.filled);
         }
+        console.log(i, available);
         if (filledAmount.plus(available).isGreaterThan(amount)) {
             filledAmount = amount;
         } else {
-            amounts.push(available);
             filledAmount = filledAmount.plus(available);
         }
     }
