@@ -35,6 +35,7 @@ interface DispatchProps {
 
 interface State {
     errorMsg: string;
+    filledAmount: BigNumber,
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
