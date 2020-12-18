@@ -260,7 +260,6 @@ export const createOHLVCDataset = (
         return b.price.comparedTo(a.price);
     });
 
-    console.log(amount);
     const amountDecimal = tokenAmountInUnitsToBigNumber(amount, quoteTokenDecimal).toString();
 
     const requestBody = JSON.stringify({

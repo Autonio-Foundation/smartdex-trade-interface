@@ -195,16 +195,6 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             const isEthBalanceEnough = ethBalance.isGreaterThan(ethAmountRequired);
             const isMarketBuyForwarder = isBuy && isWeth(quoteToken.symbol) && isEthBalanceEnough;
 
-            createOHLVCDataset(
-                {
-                    buyOrders: openBuyOrders,
-                    sellOrders: openSellOrders,
-                    amount
-                },
-                side,
-                quoteToken.decimals
-            );
-
             let txHash;
             if (isMarketBuyForwarder) {
                 txHash = await contractWrappers.forwarder.marketBuyOrdersWithEthAsync(
@@ -242,6 +232,17 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             dispatch(getOrderbookAndUserOrders());
             // tslint:disable-next-line:no-floating-promises
             dispatch(updateTokenBalances());
+
+            createOHLVCDataset(
+                {
+                    buyOrders: openBuyOrders,
+                    sellOrders: openSellOrders,
+                    amount
+                },
+                side,
+                quoteToken.decimals
+            );
+
             dispatch(
                 addNotifications([
                     {
