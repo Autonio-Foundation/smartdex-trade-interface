@@ -259,14 +259,20 @@ export const createOHLVCDataset = (
         return b.price.comparedTo(a.price);
     });
 
+    console.log(amount.toString());
+
+    const requestBody = JSON.stringify({
+        bid: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
+        ask: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,
+        bid_vol: side === OrderSide.Buy ? parseFloat(amount.toString()) : 0,
+        ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amount.toString())
+    });
+
+    console.log(requestBody);
+
     fetch(RELAYER_URL + '/market', {
         method: 'post',
-        body: JSON.stringify({
-            bid: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
-            ask: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,
-            bid_vol: side === OrderSide.Buy ? parseFloat(amount.toString()) : 0,
-            ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amount.toString())
-        })
+        body: requestBody
     })
 }
 
