@@ -262,8 +262,8 @@ export const createOHLVCDataset = (
     fetch(RELAYER_URL + '/market', {
         method: 'post',
         body: JSON.stringify({
-            bid: sortedBuyOrders[0].price,
-            ask: sortedSellOrders[0].price,
+            bid: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
+            ask: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,
             bid_vol: side === OrderSide.Buy ? parseFloat(amount.toString()) : 0,
             ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amount.toString())
         })
