@@ -271,6 +271,10 @@ export const createOHLVCDataset = (
 
     fetch(RELAYER_URL + '/market', {
         method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         body: requestBody
     })
 }
