@@ -170,8 +170,6 @@ export const matchLimitOrders = (
         }
     });
 
-    console.log(sortedOrders);
-
     let filledAmount = new BigNumber(0);
     for (let i = 0; i < sortedOrders.length && filledAmount.isLessThan(amount); i++) {
         const order = sortedOrders[i];
