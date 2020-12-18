@@ -178,7 +178,7 @@ export const matchLimitOrders = (
         if (side === OrderSide.Buy && order.price.isGreaterThan(price)) {
             break;
         }
-        if (side === OrderSide.Sell && price.isLessThan(order.price)) {
+        if (side === OrderSide.Sell && order.price.isLessThan(price)) {
             break;
         }
 
