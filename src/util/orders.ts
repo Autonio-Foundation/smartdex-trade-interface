@@ -261,7 +261,7 @@ export const createOHLVCDataset = (
     });
 
     console.log(amount);
-    const amountDecimal = tokenAmountInUnitsToBigNumber(amount, quoteTokenDecimal);
+    const amountDecimal = tokenAmountInUnitsToBigNumber(amount, quoteTokenDecimal).toString();
 
     const requestBody = JSON.stringify({
         bid: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
