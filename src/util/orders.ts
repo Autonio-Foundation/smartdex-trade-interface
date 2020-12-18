@@ -259,7 +259,7 @@ export const createOHLVCDataset = (
         return b.price.comparedTo(a.price);
     });
 
-    console.log(amount.toString());
+    console.log(amount);
 
     const requestBody = JSON.stringify({
         bid: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
