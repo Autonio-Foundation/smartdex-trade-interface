@@ -3,6 +3,7 @@ import { OrderConfigRequest } from '@0x/connect';
 
 import { ZERO_ADDRESS } from '../common/constants';
 import { getRelayer } from '../services/relayer';
+import { RELAYER_URL } from '../common/constants';
 
 import { getKnownTokens } from './known_tokens';
 import * as orderHelper from './orders';
@@ -44,6 +45,12 @@ interface MatchLimitOrderParams {
     amount: BigNumber;
     price: BigNumber;
     orders: UIOrder[];
+}
+
+interface CreateOHLVCDatasetParams {
+    buyOrders: UIOrder[];
+    sellOrders: UIOrder[];
+    amount: BigNumber;
 }
 
 export const buildDutchAuctionCollectibleOrder = async (params: DutchAuctionOrderParams) => {
@@ -238,6 +245,30 @@ export const buildMarketOrders = (
     const roundedAmounts = amounts.map(a => a.integerValue(BigNumber.ROUND_CEIL));
     return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled };
 };
+
+export const createOHLVCDataset = (
+    params: CreateOHLVCDatasetParams,
+    side: OrderSide,
+) => {
+    const { amount, buyOrders, sellOrders } = params;
+
+    const sortedBuyOrders = buyOrders.sort((a, b) => {
+        return a.price.comparedTo(b.price);
+    });
+    const sortedSellOrders = sellOrders.sort((a, b) => {
+        return b.price.comparedTo(a.price);
+    });
+
+    fetch(RELAYER_URL + '/market', {
+        method: 'post',
+        body: JSON.stringify({
+            bid: sortedBuyOrders[0].price,
+            ask: sortedSellOrders[0].price,
+            bid_vol: side === OrderSide.Buy ? parseFloat(amount.toString()) : 0,
+            ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amount.toString())
+        })
+    })
+}
 
 export const sumTakerAssetFillableOrders = (
     side: OrderSide,

@@ -14,7 +14,7 @@ import {
 import { getRelayer } from '../../services/relayer';
 import { isWeth } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
-import { buildLimitOrder, buildMarketOrders, sumTakerAssetFillableOrders } from '../../util/orders';
+import { buildLimitOrder, buildMarketOrders, sumTakerAssetFillableOrders, createOHLVCDataset } from '../../util/orders';
 import { getTransactionOptions } from '../../util/transactions';
 import { NotificationKind, OrderSide, RelayerState, ThunkCreator, Token, UIOrder, Web3State } from '../../util/types';
 import { updateTokenBalances } from '../blockchain/actions';
@@ -172,11 +172,12 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
         const gasPrice = getGasPriceInWei(state);
 
         const isBuy = side === OrderSide.Buy;
-        const allOrders = isBuy ? getOpenSellOrders(state) : getOpenBuyOrders(state);
+        const openSellOrders = getOpenSellOrders(state);
+        const openBuyOrders = getOpenBuyOrders(state);
         const { orders, amounts, canBeFilled } = buildMarketOrders(
             {
                 amount,
-                orders: allOrders,
+                orders: isBuy ? openBuyOrders : openSellOrders,
             },
             side,
         );
@@ -193,6 +194,15 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             }, new BigNumber(0));
             const isEthBalanceEnough = ethBalance.isGreaterThan(ethAmountRequired);
             const isMarketBuyForwarder = isBuy && isWeth(quoteToken.symbol) && isEthBalanceEnough;
+
+            createOHLVCDataset(
+                {
+                    buyOrders: openBuyOrders,
+                    sellOrders: openSellOrders,
+                    amount
+                },
+                side
+            );
 
             let txHash;
             if (isMarketBuyForwarder) {
