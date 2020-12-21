@@ -17,7 +17,7 @@ export default {
       // asset: split_symbol[1],
       from: from * 1000,
       to: to * 1000,
-      interval: resolution == "D" ? 3600000 : parseInt(resolution) * 1000,
+      interval: resolution == "D" ? 86400000 : parseInt(resolution) * 60000,
       // limit: limit ? limit : 2000
       // aggregate: 1//resolution
     };
