@@ -7,7 +7,7 @@ import { Content } from '../common/content_wrapper';
 import { BuySellContainer } from '../marketplace/buy_sell';
 import { OrderBookTableContainer } from '../marketplace/order_book';
 import { OrderHistoryContainer } from '../marketplace/order_history';
-// import { OrderChartContainer } from '../marketplace/order_chart';
+import { OrderChartContainer } from '../marketplace/order_chart';
 import { WalletBalanceContainer } from '../marketplace/wallet_balance';
 
 class Marketplace extends React.PureComponent {
@@ -22,7 +22,7 @@ class Marketplace extends React.PureComponent {
                     <OrderBookTableContainer />
                 </ColumnNarrow>
                 <ColumnWide> 
-                    {/*<OrderChartContainer />*/}
+                    <OrderChartContainer />
                     <OrderHistoryContainer />
                    
                 </ColumnWide>
