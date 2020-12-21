@@ -31,8 +31,8 @@ export default {
       // 	return []
       // }
       console.log(data);
-      if (data.Data.length) {
-        var bars = data.Data.map(el => {
+      if (data.length) {
+        var bars = data.map(el => {
           return {
             time: el.time, //TradingView requires bar time in ms
             low: el.low,
