@@ -1,6 +1,6 @@
 var rp = require("request-promise").defaults({ json: true });
 const proxy = "";
-const api_root = "https://demo_feed.tradingview.com"
+const api_root = "https://mmcors.autonio.foundation/http://18.188.255.60:3000/v2"
 const history = {};
 
 export default {
@@ -10,15 +10,15 @@ export default {
     var split_symbol = symbolInfo.name.split(/[:/]/);
     const url = "/history";
     const qs = {
-      baseAssetData: '0xf47261b0000000000000000000000000fe4f5145f6e09952a5ba9e956ed0c25e3fa4c7f1',
-      quoteAssetData: '0xf47261b0000000000000000000000000d0f219e2e0bb6d3b3d7fd8e2b141114932979478',
-      networkId: '80001',
-      base: split_symbol[0],
-      asset: split_symbol[1],
+      // baseAssetData: '0xf47261b0000000000000000000000000fe4f5145f6e09952a5ba9e956ed0c25e3fa4c7f1',
+      // quoteAssetData: '0xf47261b0000000000000000000000000d0f219e2e0bb6d3b3d7fd8e2b141114932979478',
+      // networkId: '80001',
+      // base: split_symbol[0],
+      // asset: split_symbol[1],
       from: from * 1000,
       to: to * 1000,
-      interval: resolution == "D" ? 3600 : resolution,
-      limit: limit ? limit : 2000
+      interval: resolution == "D" ? 3600000 : parseInt(resolution) * 1000,
+      // limit: limit ? limit : 2000
       // aggregate: 1//resolution
     };
 
@@ -30,6 +30,7 @@ export default {
       // 	console.log('CryptoCompare API error:',data.Message)
       // 	return []
       // }
+      console.log(data);
       if (data.Data.length) {
         var bars = data.Data.map(el => {
           return {
