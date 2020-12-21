@@ -76,30 +76,31 @@ class OrderChart extends React.Component<Props> {
                 if (web3State !== Web3State.Error && (!baseToken || !quoteToken)) {
                     content = <LoadingWrapper minHeight="120px" />;
                 }
-                //  else if (!ordersToShow.length || !baseToken || !quoteToken) {
-                //     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
-                // } 
+                else if (!ordersToShow.length || !baseToken || !quoteToken) {
+                    content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
+                } 
                 else {
                     content = (
-                         <div className="main-box chart chartBox">
+                        <div className="main-box chart chartBox">
                             {/*<h2 className="chart__title">Price Chart</h2>*/}
                             <div className="box-body chart-body" style={{ padding: "0px" }}>
                               <TVChartContainer props={this.props} />
                             </div>
-                          </div>
-                        // <Table isResponsive={true}>
-                        //     <THead>
-                        //         <TR>
-                        //             <TH>Side</TH>
-                        //             <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
-                        //             <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
-                        //             <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
-                        //             <TH>Status</TH>
-                        //             <TH>&nbsp;</TH>
-                        //         </TR>
-                        //     </THead>
-                        //     <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
-                        // </Table>
+
+                            <Table isResponsive={true}>
+                                <THead>
+                                    <TR>
+                                        <TH>Side</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                        <TH>Status</TH>
+                                        <TH>&nbsp;</TH>
+                                    </TR>
+                                </THead>
+                                <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
+                            </Table>
+                        </div>
                     );
                 }
                 break;
