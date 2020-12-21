@@ -119,8 +119,7 @@ export class TVChartContainer extends React.Component {
           enabled_features: [
             //"move_logo_to_main_pane",
             //"study_templates",
-            "side_toolbar_in_fullscreen_mode",
-            "hide_left_toolbar_by_default"
+            "side_toolbar_in_fullscreen_mode"
           ],
 
           overrides: {
@@ -245,7 +244,7 @@ export class TVChartContainer extends React.Component {
 
   async componentWillReceiveProps(nextProps) {
     let base = 'derc20';
-    let asset = 'weth';
+    let asset = 'wmatic';
     // let base = nextProps.props.props.params.base.toUpperCase();
     // let asset = nextProps.props.props.params.asset.toUpperCase();
     this.setState(
