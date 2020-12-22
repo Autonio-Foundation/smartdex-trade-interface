@@ -64,13 +64,15 @@ export class TVChartContainer extends React.Component {
 
   componentDidMount() {
     // this.componentWillReceiveProps(this.props);
+    var width = document.getElementById(this.state.containerId).offsetWidth;
     let inter = setInterval(() => {
       if (this.state.symbol !== "") {
         clearInterval(inter);
         const widgetOptions = {
           // autosize: true,
           fullscreen: false,
-          height: 600,
+          height: 550,
+          width: width,
           symbol: this.state.symbol,
           interval: this.state.interval,
           container_id: "tv_chart_container",
