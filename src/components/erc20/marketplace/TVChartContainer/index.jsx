@@ -241,7 +241,7 @@ export class TVChartContainer extends React.Component {
           $(".chartBox").removeClass("loading");
         });
       }
-    }, 100);
+    }, 1000);
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -252,17 +252,6 @@ export class TVChartContainer extends React.Component {
     this.setState(
       {
         symbol: base + "/" + asset
-      },
-      () => {
-        let inter = setInterval(() => {
-          if (this.widget !== undefined) {
-            clearInterval(inter);
-            this.widget.onChartReady(() => {
-              this.widget.chart().setSymbol(this.state.symbol, () => {});
-              $(".chartBox").removeClass("loading");
-            });
-          }
-        }, 500);
       }
     );
   }
