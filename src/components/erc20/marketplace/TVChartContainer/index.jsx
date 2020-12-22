@@ -68,9 +68,9 @@ export class TVChartContainer extends React.Component {
       if (this.state.symbol !== "") {
         clearInterval(inter);
         const widgetOptions = {
-          autosize: true,
+          // autosize: true,
           fullscreen: false,
-          height: 500,
+          height: 600,
           symbol: this.state.symbol,
           interval: this.state.interval,
           container_id: "tv_chart_container",
@@ -112,9 +112,9 @@ export class TVChartContainer extends React.Component {
             "header_saveload",
             //"header_screenshot",
             //"header_fullscreen_button",
-            "timeframes_toolbar",
+            // "timeframes_toolbar",
             "use_localstorage_for_settings",
-            "display_market_status"
+            // "display_market_status"
           ],
           enabled_features: [
             //"move_logo_to_main_pane",
@@ -270,7 +270,7 @@ export class TVChartContainer extends React.Component {
       <div
         id={this.state.containerId}
         className={"TVChartContainer"}
-        style={{ height: "200%", overflow: "hidden", borderRadius: "5px" }}
+        style={{ overflow: "hidden", borderRadius: "5px" }}
       />
     );
   }

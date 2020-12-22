@@ -52,7 +52,7 @@ const CardBody = styled.div<{ minHeightBody?: string }>`
 `;
 
 CardBody.defaultProps = {
-    minHeightBody: '140px',
+    minHeightBody: '200px',
 };
 
 export const Card: React.FC<Props> = props => {

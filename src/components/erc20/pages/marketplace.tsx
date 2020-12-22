@@ -21,10 +21,9 @@ class Marketplace extends React.PureComponent {
                 <ColumnNarrow>
                     <OrderBookTableContainer />
                 </ColumnNarrow>
-                <ColumnWide> 
+                <ColumnWide style={{height: '100%', maxHeight: '100%'}}> 
                     <OrderChartContainer />
                     <OrderHistoryContainer />
-                   
                 </ColumnWide>
                 <CheckMetamaskStateModalContainer />
             </Content>
