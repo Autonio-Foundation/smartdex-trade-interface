@@ -252,10 +252,10 @@ export const createOHLVCDataset = (
     const { amount, buyOrders, sellOrders } = params;
 
     const sortedBuyOrders = buyOrders.sort((a, b) => {
-        return a.price.comparedTo(b.price);
+        return b.price.comparedTo(a.price);
     });
     const sortedSellOrders = sellOrders.sort((a, b) => {
-        return b.price.comparedTo(a.price);
+        return a.price.comparedTo(b.price);
     });
 
     const amountDecimal = tokenAmountInUnitsToBigNumber(amount, quoteTokenDecimal).toString();
