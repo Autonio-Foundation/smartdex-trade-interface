@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { UI_DECIMALS_DISPLAYED_PRICE_ETH } from '../../../common/constants';
-import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State } from '../../../store/selectors';
+import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State, getOrders } from '../../../store/selectors';
 import { tokenAmountInUnits } from '../../../util/tokens';
 import { OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
 import { Card } from '../../common/card';
@@ -61,8 +61,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
 class OrderHistory extends React.Component<Props> {
     public render = () => {
         const { orders, baseToken, quoteToken, web3State } = this.props;
-        // const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
-        const ordersToShow = orders;
+        const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
         let content: React.ReactNode;
         switch (web3State) {
@@ -105,7 +104,7 @@ class OrderHistory extends React.Component<Props> {
 const mapStateToProps = (state: StoreState): StateProps => {
     return {
         baseToken: getBaseToken(state),
-        orders: getUserOrders(state),
+        orders: getOrders(state),
         quoteToken: getQuoteToken(state),
         web3State: getWeb3State(state),
     };
