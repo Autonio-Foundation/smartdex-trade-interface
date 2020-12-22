@@ -61,7 +61,8 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
 class OrderHistory extends React.Component<Props> {
     public render = () => {
         const { orders, baseToken, quoteToken, web3State } = this.props;
-        const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
+        // const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
+        const ordersToShow = orders;
 
         let content: React.ReactNode;
         switch (web3State) {
