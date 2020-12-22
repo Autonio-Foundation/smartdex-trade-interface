@@ -71,7 +71,7 @@ export class TVChartContainer extends React.Component {
         const widgetOptions = {
           // autosize: true,
           fullscreen: false,
-          height: 550,
+          height: 530,
           width: width,
           symbol: this.state.symbol,
           interval: this.state.interval,
@@ -245,8 +245,8 @@ export class TVChartContainer extends React.Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    let base = 'derc20';
-    let asset = 'wmatic';
+    let base = 'DERC20';
+    let asset = 'WMATIC';
     // let base = nextProps.props.props.params.base.toUpperCase();
     // let asset = nextProps.props.props.params.asset.toUpperCase();
     this.setState(
