@@ -18,13 +18,13 @@ class Marketplace extends React.PureComponent {
                     <WalletBalanceContainer />
                     <BuySellContainer />
                 </ColumnNarrow>
-                <ColumnNarrow>
-                    <OrderBookTableContainer />
-                </ColumnNarrow>
                 <ColumnWide style={{height: '100%', maxHeight: '100%'}}> 
                     <OrderChartContainer />
                     <OrderHistoryContainer />
                 </ColumnWide>
+                <ColumnNarrow>
+                    <OrderBookTableContainer />
+                </ColumnNarrow>
                 <CheckMetamaskStateModalContainer />
             </Content>
         );
