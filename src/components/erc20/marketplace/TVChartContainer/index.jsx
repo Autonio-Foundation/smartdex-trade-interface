@@ -64,15 +64,15 @@ export class TVChartContainer extends React.Component {
 
   componentDidMount() {
     // this.componentWillReceiveProps(this.props);
-    var width = document.getElementById(this.state.containerId).offsetWidth;
+    // var width = document.getElementById(this.state.containerId).offsetWidth;
     let inter = setInterval(() => {
       if (this.state.symbol !== "") {
-        clearInterval(inter);
+        // clearInterval(inter);
         const widgetOptions = {
-          // autosize: true,
+          autosize: true,
           fullscreen: false,
-          height: 530,
-          width: width,
+          // height: 530,
+          // width: width,
           symbol: this.state.symbol,
           interval: this.state.interval,
           container_id: "tv_chart_container",
@@ -261,7 +261,7 @@ export class TVChartContainer extends React.Component {
       <div
         id={this.state.containerId}
         className={"TVChartContainer"}
-        style={{ overflow: "hidden", borderRadius: "5px" }}
+        style={{ minHeight: '530px', height: '530px', overflow: "hidden", borderRadius: "5px" }}
       />
     );
   }
