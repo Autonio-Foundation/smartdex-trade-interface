@@ -261,8 +261,8 @@ export const createOHLVCDataset = (
     const amountDecimal = tokenAmountInUnitsToBigNumber(amount, quoteTokenDecimal).toString();
 
     const requestBody = JSON.stringify({
-        bid: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
-        ask: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,
+        bid: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,
+        ask: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
         bid_vol: side === OrderSide.Buy ? parseFloat(amountDecimal) : 0,
         ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amountDecimal)
     });
