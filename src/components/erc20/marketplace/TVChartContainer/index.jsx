@@ -70,7 +70,7 @@ export class TVChartContainer extends React.Component {
         const widgetOptions = {
           autosize: true,
           fullscreen: false,
-          height: "100%",
+          height: "500px",
           symbol: this.state.symbol,
           interval: this.state.interval,
           container_id: "tv_chart_container",
