@@ -1,4 +1,10 @@
 import historyProvider from "./historyProvider";
+import {
+	subscribeOnStream,
+	unsubscribeFromStream,
+} from './streaming.js';
+
+const lastBarsCache = new Map();
 
 const supportedResolutions = [
   "1",
@@ -92,9 +98,20 @@ export default {
     onResetCacheNeededCallback
   ) => {
     // console.log("=====subscribeBars runnning");
+    console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
+		subscribeOnStream(
+			symbolInfo,
+			resolution,
+			onRealtimeCallback,
+			subscribeUID,
+			onResetCacheNeededCallback,
+			lastBarsCache.get(symbolInfo.full_name),
+		);
   },
   unsubscribeBars: subscriberUID => {
     // console.log("=====unsubscribeBars running");
+    console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
+		unsubscribeFromStream(subscriberUID);
   },
   calculateHistoryDepth: (resolution, resolutionBack, intervalBack) => {
     //optional
