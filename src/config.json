@@ -4,8 +4,8 @@
     },
     "tokens": [
         {
-            "symbol": "zrx",
-            "name": "0x Protocol Token",
+            "symbol": "niox",
+            "name": "Autonio Token",
             "primaryColor": "#333333",
             "icon": "assets/icons/zrx.svg",
             "addresses": {
@@ -55,6 +55,9 @@
     "pairs": [
         {
             "base": "derc20",
+            "quote": "wmatic"
+	},{
+            "base": "niox",
             "quote": "wmatic"
         }
     ],

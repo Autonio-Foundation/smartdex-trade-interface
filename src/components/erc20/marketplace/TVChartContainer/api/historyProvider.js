@@ -30,7 +30,6 @@ export default {
       // 	console.log('CryptoCompare API error:',data.Message)
       // 	return []
       // }
-      console.log(data);
       if (data.length) {
         var bars = data.map(el => {
           return {

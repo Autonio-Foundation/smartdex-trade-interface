@@ -19,7 +19,7 @@ export enum Network {
     Rinkeby = 4,
     Kovan = 42,
     Ganache = 50,
-    Matic = 137
+    Matic = 137,
 }
 
 export interface Token {

@@ -18,7 +18,7 @@ class Marketplace extends React.PureComponent {
                     <WalletBalanceContainer />
                     <BuySellContainer />
                 </ColumnNarrow>
-                <ColumnWide style={{height: '100%', maxHeight: '100%'}}> 
+                <ColumnWide style={{ height: '100%', maxHeight: '100%' }}>
                     <OrderChartContainer />
                     <OrderHistoryContainer />
                 </ColumnWide>

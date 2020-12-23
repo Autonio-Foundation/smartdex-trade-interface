@@ -8,7 +8,7 @@ import { Card } from '../../common/card';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
 
-import { TVChartContainer } from "./TVChartContainer/index";
+import { TVChartContainer } from './TVChartContainer/index';
 interface StateProps {
     baseToken: Token | null;
     orders: UIOrder[];
@@ -33,12 +33,14 @@ class OrderChart extends React.Component<Props> {
             default: {
                 if (web3State !== Web3State.Error && (!baseToken || !quoteToken)) {
                     content = <LoadingWrapper minHeight="120px" />;
-                }
-                else {
+                } else {
                     content = (
-                        <div className="main-box chart chartBox" style={{ minHeight: '530px', height: '530px'}}>
-                            <div className="box-body chart-body" style={{ minHeight: '530px', height: '530px', padding: "0px" }}>
-                              <TVChartContainer props={this.props} />
+                        <div className="main-box chart chartBox" style={{ minHeight: '530px', height: '530px' }}>
+                            <div
+                                className="box-body chart-body"
+                                style={{ minHeight: '530px', height: '530px', padding: '0px' }}
+                            >
+                                <TVChartContainer props={this.props} />
                             </div>
                         </div>
                     );

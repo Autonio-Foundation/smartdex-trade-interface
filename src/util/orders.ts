@@ -153,10 +153,7 @@ export const getOrderWithTakerAndFeeConfigFromRelayer = async (orderConfigReques
     };
 };
 
-export const matchLimitOrders = (
-    params: MatchLimitOrderParams,
-    side: OrderSide,
-): { filledAmount: BigNumber; } => {
+export const matchLimitOrders = (params: MatchLimitOrderParams, side: OrderSide): { filledAmount: BigNumber } => {
     const { amount, price, orders } = params;
 
     console.log(amount, price);
@@ -179,7 +176,6 @@ export const matchLimitOrders = (
         if (side === OrderSide.Sell && order.price.isLessThan(price)) {
             break;
         }
-
 
         let available = order.size;
         if (order.filled) {
@@ -244,11 +240,7 @@ export const buildMarketOrders = (
     return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled };
 };
 
-export const createOHLVCDataset = (
-    params: CreateOHLVCDatasetParams,
-    side: OrderSide,
-    quoteTokenDecimal: number
-) => {
+export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, quoteTokenDecimal: number) => {
     const { amount, buyOrders, sellOrders } = params;
 
     const sortedBuyOrders = buyOrders.sort((a, b) => {
@@ -264,7 +256,7 @@ export const createOHLVCDataset = (
         bid: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,
         ask: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
         bid_vol: side === OrderSide.Buy ? parseFloat(amountDecimal) : 0,
-        ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amountDecimal)
+        ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amountDecimal),
     });
 
     console.log(requestBody);
@@ -272,12 +264,12 @@ export const createOHLVCDataset = (
     fetch(RELAYER_URL + '/market', {
         method: 'post',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
         },
-        body: requestBody
-    })
-}
+        body: requestBody,
+    });
+};
 
 export const sumTakerAssetFillableOrders = (
     side: OrderSide,

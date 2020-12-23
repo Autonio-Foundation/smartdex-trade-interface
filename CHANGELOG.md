@@ -1,26 +1,30 @@
 # CHANGELOG
 
 ## [Autonio Smartdex v1.1.1](https://gitlab.com/autonio/smartdex-front-end/-/commit/feea0173bf9f8195ebe032029122ee57fd449f1b)
-- update README.md
-- Add CHANGELOG
+
+-   update README.md
+-   Add CHANGELOG
 
 ## [Autonio Smartdex v1.1](https://gitlab.com/autonio/smartdex-front-end/-/commit/17a2cdd985409e0ff23e4e352da3c962ffab2613)
 
-- Dex UI update and corrections
-- Fix the issue with showing wMATIC as wETH incorrectly on some of the UI elements
-- Listed NIOX and USDT
+-   Dex UI update and corrections
+-   Fix the issue with showing wMATIC as wETH incorrectly on some of the UI elements
+-   Listed NIOX and USDT
 
 ## [Autonio Smartdex v1](https://gitlab.com/autonio/smartdex-front-end/-/commit/27cb870c590ee22de896719902fc9eecf3614a33)
 
-- Clone the 0x-launch-kit-frontend in the same parent directory with 0x-monorepo and 0x-launch-kit-backend
-- Similar to the backend, open yarn.lock file and replace all line "@0x/contract-addresses" "^3.0.1" with "@0x/contract-addresses" "file:../0x-monorepo/packages/contract-addresses", then install the dependencies with
+-   Clone the 0x-launch-kit-frontend in the same parent directory with 0x-monorepo and 0x-launch-kit-backend
+-   Similar to the backend, open yarn.lock file and replace all line "@0x/contract-addresses" "^3.0.1" with "@0x/contract-addresses" "file:../0x-monorepo/packages/contract-addresses", then install the dependencies with
+
 ```
 –frozen-lockfile flag
 $ yarn install --frozen-lockfile
 ```
-- Open src/common/constants.ts file, change the DEFAULT_GAS_PRICE to zero
-export const DEFAULT_GAS_PRICE = new BigNumber(0);
-- Open src/util/types.ts file, add matic to network enum
+
+-   Open src/common/constants.ts file, change the DEFAULT_GAS_PRICE to zero
+    export const DEFAULT_GAS_PRICE = new BigNumber(0);
+-   Open src/util/types.ts file, add matic to network enum
+
 ```
 export enum Network {
     Mainnet = 1,
@@ -30,7 +34,9 @@ export enum Network {
     Matic = 80001,
 }
 ```
-- Update src/config.json with our addresses
+
+-   Update src/config.json with our addresses
+
 ```
 {
     "general": {
@@ -84,5 +90,6 @@ export enum Network {
     ]
 }
 ```
-- Start the frontend using our above relayer (restart the backend if you stopped it)
-REACT_APP_NETWORK_ID='80001' REACT_APP_RELAYER_URL='http://localhost:3000/v2' yarn start
+
+-   Start the frontend using our above relayer (restart the backend if you stopped it)
+    REACT_APP_NETWORK_ID='80001' REACT_APP_RELAYER_URL='http://localhost:3000/v2' yarn start

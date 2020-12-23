@@ -236,7 +236,9 @@ class WalletBalance extends React.Component<Props, State> {
             const toolTip = isWeth(quoteToken.symbol) ? (
                 <TooltipStyled description="Showing MATIC + wMATIC balance" iconType={IconType.Fill} />
             ) : null;
-            const quoteTokenLabel = isWeth(quoteToken.symbol) ? 'MATIC' : tokenSymbolToDisplayString(currencyPair.quote);
+            const quoteTokenLabel = isWeth(quoteToken.symbol)
+                ? 'MATIC'
+                : tokenSymbolToDisplayString(currencyPair.quote);
             content = (
                 <>
                     <LabelWrapper>

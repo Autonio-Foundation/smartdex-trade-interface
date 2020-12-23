@@ -84,9 +84,7 @@ const poweredBySVG = () => {
 export const Footer: React.FC<Props> = props => {
     return (
         <FooterWrapper title={GIT_COMMIT} {...props}>
-            <a href="https://autonio.foundation" target="_blank" rel="noopener noreferrer">
-              
-            </a>
+            <a href="https://autonio.foundation" target="_blank" rel="noopener noreferrer" />
         </FooterWrapper>
     );
 };

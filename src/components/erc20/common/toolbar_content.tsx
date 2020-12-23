@@ -82,7 +82,7 @@ const ToolbarContent = (props: Props) => {
             <LogoHeader
                 image={logo}
                 onClick={handleLogoClick}
-                text='smartdex'
+                text="smartdex"
                 textColor={props.theme.componentsTheme.logoERC20TextColor}
             />
             <MarketsDropdownHeader shouldCloseDropdownBodyOnClick={false} />

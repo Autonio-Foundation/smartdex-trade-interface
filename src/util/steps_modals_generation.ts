@@ -1,6 +1,5 @@
 import { BigNumber, SignedOrder } from '0x.js';
 
-
 import { isWeth, isZrx } from './known_tokens';
 import {
     Collectible,

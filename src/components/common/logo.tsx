@@ -20,7 +20,7 @@ const LogoLink = styled.a<any>`
 `;
 
 const LogoText = styled.h1<{ textColor?: string }>`
-    color: #6DC9B9;
+    color: #6dc9b9;
     display: none;
     // font-size: 26px;
     font-weight: 600;
