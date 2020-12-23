@@ -85,14 +85,14 @@ interface DispatchProps {
 type Props = StateProps & OwnProps & DispatchProps;
 
 interface State {
-    feeInZrx: BigNumber;
+    feeInNiox: BigNumber;
     quoteTokenAmount: BigNumber;
     canOrderBeFilled?: boolean;
 }
 
 class OrderDetails extends React.Component<Props, State> {
     public state = {
-        feeInZrx: new BigNumber(0),
+        feeInNiox: new BigNumber(0),
         quoteTokenAmount: new BigNumber(0),
         canOrderBeFilled: true,
     };
@@ -152,7 +152,7 @@ class OrderDetails extends React.Component<Props, State> {
             const quoteTokenAmount = baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits);
             const { makerFee } = await onFetchTakerAndMakerFee(tokenAmount, tokenPrice, orderSide);
             this.setState({
-                feeInZrx: makerFee,
+                feeInNiox: makerFee,
                 quoteTokenAmount,
             });
         } else {
@@ -165,11 +165,11 @@ class OrderDetails extends React.Component<Props, State> {
                 },
                 orderSide,
             );
-            const feeInZrx = orders.reduce((sum, order) => sum.plus(order.takerFee), new BigNumber(0));
+            const feeInNiox = orders.reduce((sum, order) => sum.plus(order.takerFee), new BigNumber(0));
             const quoteTokenAmount = sumTakerAssetFillableOrders(orderSide, orders, amounts);
 
             this.setState({
-                feeInZrx,
+                feeInNiox,
                 quoteTokenAmount,
                 canOrderBeFilled: canBeFilled,
             });
@@ -177,13 +177,13 @@ class OrderDetails extends React.Component<Props, State> {
     };
 
     private readonly _getFeeStringForRender = () => {
-        const { feeInZrx } = this.state;
-        const feeToken = getKnownTokens().getTokenBySymbol('zrx');
+        const { feeInNiox } = this.state;
+        const feeToken = getKnownTokens().getTokenBySymbol('niox');
         return `${tokenAmountInUnits(
-            feeInZrx,
+            feeInNiox,
             feeToken.decimals,
             feeToken.displayDecimals,
-        )} ${tokenSymbolToDisplayString('ZRX')}`;
+        )} ${tokenSymbolToDisplayString('NIOX')}`;
     };
 
     private readonly _getCostStringForRender = () => {
