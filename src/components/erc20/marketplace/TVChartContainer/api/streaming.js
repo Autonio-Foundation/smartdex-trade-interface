@@ -2,7 +2,7 @@ import { parseFullSymbol } from './helpers.js';
 import socketIOClient from "socket.io-client";
 const ENDPOINT = "wss://streamer.cryptocompare.com";
 
-const socket = socketIOClient(ENDPOINT);
+export const socket = socketIOClient(ENDPOINT);
 // const socket = io('wss://streamer.cryptocompare.com');
 const channelToSubscription = new Map();
 
@@ -105,7 +105,7 @@ export function subscribeOnStream(
 	};
 	channelToSubscription.set(channelString, subscriptionItem);
 	console.log('[subscribeBars]: Subscribe to streaming. Channel:', channelString);
-	// socket.emit('SubAdd', { subs: [channelString] });
+	socket.emit('SubAdd', { subs: [channelString] });
 }
 
 export function unsubscribeFromStream(subscriberUID) {
@@ -122,7 +122,7 @@ export function unsubscribeFromStream(subscriberUID) {
 			if (subscriptionItem.handlers.length === 0) {
 				// unsubscribe from the channel, if it was the last handler
 				console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString);
-				// socket.emit('SubRemove', { subs: [channelString] });
+				socket.emit('SubRemove', { subs: [channelString] });
 				channelToSubscription.delete(channelString);
 				break;
 			}

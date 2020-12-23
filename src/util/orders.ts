@@ -10,6 +10,7 @@ import * as orderHelper from './orders';
 import { tomorrow } from './time_utils';
 import { tokenAmountInUnitsToBigNumber, unitsInTokenAmount } from './tokens';
 import { OrderSide, UIOrder } from './types';
+import { socket } from './streaming';
 
 interface BuildSellCollectibleOrderParams {
     collectibleAddress: string;
