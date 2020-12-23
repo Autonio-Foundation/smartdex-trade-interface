@@ -4,7 +4,7 @@
     },
     "tokens": [
         {
-            "symbol": "zrx",
+            "symbol": "niox",
             "name": "Autonio",
             "primaryColor": "#333333",
             "icon": "assets/icons/zrx.svg",
@@ -14,7 +14,7 @@
                 "4": "0x8080c7e4b81ecf23aa6f877cfbfd9b0c228c6ffa",
                 "42": "0x2002d3812f58e35f0ea1ffbf80a75a38c32175fa",
                 "50": "0x871dd7c2b4b25e1aa18728e9d5f2af4c4e431f5c",
-                "137": "0x93719d8478d238c5996806a733e2068e0ead0b0e"
+                "137": "0xad684e79CE4b6D464f2Ff7c3FD51646892e24b96"
             },
             "decimals": 18,
             "displayDecimals": 2
@@ -50,6 +50,22 @@
             },
             "decimals": 18,
             "displayDecimals": 2
+        },
+        {
+            "symbol": "usdt",
+            "name": "USDT - Tether",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/weth.svg",
+            "addresses": {
+                "1": "0x36928500Bc1dCd7af6a2B4008875CC336b927D57",
+                "3": "0xc778417e063141139fce010982780140aa0cd5ab",
+                "4": "0xc778417e063141139fce010982780140aa0cd5ab",
+                "42": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+                "50": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082",
+                "137": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
+            },
+            "decimals": 18,
+            "displayDecimals": 2
         }
     ],
     "pairs": [
@@ -58,9 +74,14 @@
             "quote": "wmatic"
         },
         {
-            "base": "zrx",
+            "base": "niox",
+            "quote": "wmatic"
+        },
+        {
+            "base": "usdt",
             "quote": "wmatic"
         }
+
     ],
     "marketFilters": [
         {

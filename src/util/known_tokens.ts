@@ -109,7 +109,7 @@ export const getColorBySymbol = (symbol: string): string => {
 };
 
 export const isNiox = (token: string): boolean => {
-    return token === 'zrx';
+    return token === 'niox';
 };
 
 export const isWeth = (token: string): boolean => {

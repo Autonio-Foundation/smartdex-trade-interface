@@ -178,12 +178,12 @@ class OrderDetails extends React.Component<Props, State> {
 
     private readonly _getFeeStringForRender = () => {
         const { feeInNiox } = this.state;
-        const feeToken = getKnownTokens().getTokenBySymbol('zrx');
+        const feeToken = getKnownTokens().getTokenBySymbol('niox');
         return `${tokenAmountInUnits(
             feeInNiox,
             feeToken.decimals,
             feeToken.displayDecimals,
-        )} ${tokenSymbolToDisplayString('ZRX')}`;
+        )} ${tokenSymbolToDisplayString('NIOX')}`;
     };
 
     private readonly _getCostStringForRender = () => {
