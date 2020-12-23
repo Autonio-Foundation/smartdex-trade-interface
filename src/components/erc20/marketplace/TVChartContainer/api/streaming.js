@@ -1,6 +1,9 @@
 import { parseFullSymbol } from './helpers.js';
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "wss://streamer.cryptocompare.com";
 
-const socket = io('wss://streamer.cryptocompare.com');
+const socket = socketIOClient(ENDPOINT);
+// const socket = io('wss://streamer.cryptocompare.com');
 const channelToSubscription = new Map();
 
 socket.on('connect', () => {
