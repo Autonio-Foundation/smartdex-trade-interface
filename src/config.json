@@ -56,10 +56,6 @@
         {
             "base": "niox",
             "quote": "usdt"
-        },
-        {
-            "base": "wmatic",
-            "quote": "usdt"
         }
     ],
     "marketFilters": [
