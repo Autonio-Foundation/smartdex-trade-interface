@@ -1,6 +1,6 @@
 import { BigNumber, SignedOrder } from '0x.js';
 
-import { isWeth, isZrx } from './known_tokens';
+import { isWeth, isNiox } from './known_tokens';
 import {
     Collectible,
     OrderSide,
@@ -40,11 +40,11 @@ export const createBuySellLimitSteps = (
         buySellLimitFlow.push(unlockBaseOrQuoteTokenStep);
     }
 
-    // unlock zrx (for fees) if it's not one of the traded tokens and if the maker fee is positive
-    if (!isZrx(baseToken.symbol) && !isZrx(quoteToken.symbol) && makerFee.isGreaterThan(0)) {
-        const unlockZrxStep = getUnlockZrxStepIfNeeded(tokenBalances);
-        if (unlockZrxStep) {
-            buySellLimitFlow.push(unlockZrxStep);
+    // unlock niox (for fees) if it's not one of the traded tokens and if the maker fee is positive
+    if (!isNiox(baseToken.symbol) && !isNiox(quoteToken.symbol) && makerFee.isGreaterThan(0)) {
+        const unlockNioxStep = getUnlockNioxStepIfNeeded(tokenBalances);
+        if (unlockNioxStep) {
+            buySellLimitFlow.push(unlockNioxStep);
         }
     }
 
@@ -168,11 +168,11 @@ export const createBuySellMarketSteps = (
         buySellMarketFlow.push(unlockTokenStep as Step);
     }
 
-    // unlock zrx (for fees) if the taker fee is positive
-    if (!isZrx(tokenToUnlock.symbol) && takerFee.isGreaterThan(0)) {
-        const unlockZrxStep = getUnlockZrxStepIfNeeded(tokenBalances);
-        if (unlockZrxStep) {
-            buySellMarketFlow.push(unlockZrxStep);
+    // unlock niox (for fees) if the taker fee is positive
+    if (!isNiox(tokenToUnlock.symbol) && takerFee.isGreaterThan(0)) {
+        const unlockNioxStep = getUnlockNioxStepIfNeeded(tokenBalances);
+        if (unlockNioxStep) {
+            buySellMarketFlow.push(unlockNioxStep);
         }
     }
 
@@ -268,16 +268,16 @@ export const getWrapEthStepIfNeeded = (
     }
 };
 
-export const getUnlockZrxStepIfNeeded = (tokenBalances: TokenBalance[]): StepToggleTokenLock | null => {
-    const zrxTokenBalance: TokenBalance = tokenBalances.find(tokenBalance =>
-        isZrx(tokenBalance.token.symbol),
+export const getUnlockNioxStepIfNeeded = (tokenBalances: TokenBalance[]): StepToggleTokenLock | null => {
+    const nioxTokenBalance: TokenBalance = tokenBalances.find(tokenBalance =>
+        isNiox(tokenBalance.token.symbol),
     ) as TokenBalance;
-    if (zrxTokenBalance.isUnlocked) {
+    if (nioxTokenBalance.isUnlocked) {
         return null;
     } else {
         return {
             kind: StepKind.ToggleTokenLock,
-            token: zrxTokenBalance.token,
+            token: nioxTokenBalance.token,
             isUnlocked: false,
             context: 'order',
         };
