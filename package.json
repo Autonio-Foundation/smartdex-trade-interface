@@ -11,6 +11,7 @@
         "@types/recharts": "^1.1.16",
         "async-retry": "^1.2.3",
         "async-sema": "^3.0.0",
+        "axios": "^0.21.0",
         "connected-react-router": "^6.2.2",
         "history": "^4.7.2",
         "http-proxy-middleware": "^0.19.1",
