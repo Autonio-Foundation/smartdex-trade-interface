@@ -241,7 +241,7 @@ export class TVChartContainer extends React.Component {
           $(".chartBox").removeClass("loading");
         });
       }
-    }, 1000);
+    }, 100);
   }
 
   async componentWillReceiveProps(nextProps) {

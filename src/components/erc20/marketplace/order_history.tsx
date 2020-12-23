@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { UI_DECIMALS_DISPLAYED_PRICE_ETH } from '../../../common/constants';
-import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State, getOrders } from '../../../store/selectors';
+import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State } from '../../../store/selectors';
 import { tokenAmountInUnits } from '../../../util/tokens';
 import { OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
 import { Card } from '../../common/card';
@@ -104,7 +104,7 @@ class OrderHistory extends React.Component<Props> {
 const mapStateToProps = (state: StoreState): StateProps => {
     return {
         baseToken: getBaseToken(state),
-        orders: getOrders(state),
+        orders: getUserOrders(state),
         quoteToken: getQuoteToken(state),
         web3State: getWeb3State(state),
     };
