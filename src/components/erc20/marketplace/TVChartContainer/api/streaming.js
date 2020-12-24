@@ -1,6 +1,6 @@
 import { parseFullSymbol } from './helpers.js';
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "ws://18.188.255.60:3000/";
+const ENDPOINT = "https://mmcors.autonio.foundation/http://18.188.255.60:3000/";
 
 export const socket = socketIOClient(ENDPOINT);
 // const socket = io('wss://streamer.cryptocompare.com');
