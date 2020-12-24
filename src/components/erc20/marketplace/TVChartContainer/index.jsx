@@ -249,8 +249,8 @@ class TVChartContainerComponent extends React.Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    let base = this.props.baseToken.symbol;
-    let asset = this.props.quoteToken.symbol;
+    let base = this.props.baseToken.symbol.toUpperCase();
+    let asset = this.props.quoteToken.symbol.toUpperCase();
     // let base = nextProps.props.props.params.base.toUpperCase();
     // let asset = nextProps.props.props.params.asset.toUpperCase();
     this.setState(
