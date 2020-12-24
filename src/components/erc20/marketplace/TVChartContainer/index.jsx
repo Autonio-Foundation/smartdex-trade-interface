@@ -1,5 +1,6 @@
 import * as React from "react";
 // import "./index.css";
+import { connect } from 'react-redux';
 import Datafeed from "./api/";
 import * as $ from "jquery";
 import { getBaseToken, getQuoteToken } from '../../../../store/selectors';
