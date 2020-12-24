@@ -2,6 +2,7 @@ import * as React from "react";
 // import "./index.css";
 import Datafeed from "./api/";
 import * as $ from "jquery";
+import { getBaseToken, getQuoteToken } from '../../../../store/selectors';
 
 function getLanguageFromURL() {
   const regex = new RegExp("[\\?&]lang=([^&#]*)");
@@ -11,7 +12,7 @@ function getLanguageFromURL() {
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-export class TVChartContainer extends React.Component {
+class TVChartContainerComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -247,8 +248,8 @@ export class TVChartContainer extends React.Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    let base = 'DERC20';
-    let asset = 'WMATIC';
+    let base = this.props.baseToken.symbol;
+    let asset = this.props.quoteToken.symbol;
     // let base = nextProps.props.props.params.base.toUpperCase();
     // let asset = nextProps.props.props.params.asset.toUpperCase();
     this.setState(
@@ -279,3 +280,12 @@ export class TVChartContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+      baseToken: getBaseToken(state),
+      quoteToken: getQuoteToken(state),
+  };
+};
+
+export const TVChartContainer = connect(mapStateToProps)(TVChartContainerComponent);

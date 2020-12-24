@@ -238,6 +238,8 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                     buyOrders: openBuyOrders,
                     sellOrders: openSellOrders,
                     amount,
+                    baseToken,
+                    quoteToken
                 },
                 side,
                 quoteToken.decimals,

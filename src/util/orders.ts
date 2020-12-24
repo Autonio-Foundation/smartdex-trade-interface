@@ -9,7 +9,7 @@ import { getKnownTokens } from './known_tokens';
 import * as orderHelper from './orders';
 import { tomorrow } from './time_utils';
 import { tokenAmountInUnitsToBigNumber, unitsInTokenAmount } from './tokens';
-import { OrderSide, UIOrder } from './types';
+import { OrderSide, UIOrder, Token } from './types';
 
 interface BuildSellCollectibleOrderParams {
     collectibleAddress: string;
@@ -48,6 +48,8 @@ interface MatchLimitOrderParams {
 }
 
 interface CreateOHLVCDatasetParams {
+    baseToken: Token,
+    quoteToken: Token,
     buyOrders: UIOrder[];
     sellOrders: UIOrder[];
     amount: BigNumber;
@@ -241,7 +243,7 @@ export const buildMarketOrders = (
 };
 
 export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, quoteTokenDecimal: number) => {
-    const { amount, buyOrders, sellOrders } = params;
+    const { amount, buyOrders, sellOrders, baseToken, quoteToken } = params;
 
     const sortedBuyOrders = buyOrders.sort((a, b) => {
         return b.price.comparedTo(a.price);
@@ -257,6 +259,8 @@ export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: Order
         ask: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
         bid_vol: side === OrderSide.Buy ? parseFloat(amountDecimal) : 0,
         ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amountDecimal),
+        base_token: baseToken.symbol,
+        quote_token: quoteToken.symbol
     });
 
     console.log(requestBody);
