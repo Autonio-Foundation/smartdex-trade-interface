@@ -7,7 +7,7 @@
             "symbol": "niox",
             "name": "Autonio",
             "primaryColor": "#333333",
-            "icon": "assets/icons/zrx.svg",
+            "icon": "assets/icons/niox.svg",
             "addresses": {
                 "1": "0xc813EA5e3b48BEbeedb796ab42A30C5599b01740",
                 "3": "0xff67881f8d12f372d91baae9752eb3631ff0ed00",
@@ -23,7 +23,7 @@
             "symbol": "wmatic",
             "name": "Wrapped Matic",
             "primaryColor": "#3333ff",
-            "icon": "assets/icons/weth.svg",
+            "icon": "assets/icons/matic.svg",
             "addresses": {
                 "1": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
                 "3": "0xc778417e063141139fce010982780140aa0cd5ab",
