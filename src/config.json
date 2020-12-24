@@ -37,7 +37,7 @@
         },
         {
             "symbol": "usdt",
-            "name": "USDT - Tether",
+            "name": "Tether USD",
             "primaryColor": "#3333ff",
             "icon": "assets/icons/weth.svg",
             "addresses": {

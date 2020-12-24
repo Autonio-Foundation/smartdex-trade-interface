@@ -164,7 +164,7 @@ class WalletTokenBalances extends React.PureComponent<Props> {
             const formattedBalance = tokenAmountInUnits(balance, token.decimals, token.displayDecimals);
             const onClick = () => onStartToggleTokenLockSteps(token, isUnlocked);
 
-            return (
+            return parseFloat(formattedBalance) > 0 ? (
                 <TR key={symbol}>
                     <TokenTD>
                         <TokenIconStyled symbol={token.symbol} primaryColor={token.primaryColor} icon={token.icon} />
@@ -181,7 +181,7 @@ class WalletTokenBalances extends React.PureComponent<Props> {
                         styles={{ borderBottom: true, textAlign: 'center' }}
                     />
                 </TR>
-            );
+            ) : null;
         });
 
         let content: React.ReactNode;
