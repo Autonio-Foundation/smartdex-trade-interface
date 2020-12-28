@@ -170,7 +170,7 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
 };
 
 
-export const getOrderHistory: ThunkCreator<Promise<any[]>> = () => {
+export const getOrderHistory: ThunkCreator<Promise<Array<any>>> = () => {
     return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
