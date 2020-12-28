@@ -99,7 +99,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
 };
 
 interface State {
-    selectedTabs: 0
+    selectedTabs: number | 0;
 }
 
 class OrderHistory extends React.Component<Props, State> {
