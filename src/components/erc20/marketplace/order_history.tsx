@@ -135,12 +135,12 @@ class OrderHistory extends React.Component<Props, State> {
         myhistory: []
     }
 
-    componentDidMount() {
-        let inter = setInterval(async () => {
-            clearInterval(inter);
+    async componentDidUpdate(prevProps) {
+        const { baseToken, quoteToken } = this.props;
+        if (prevProps !== this.props && baseToken && quoteToken) {
             let myhistory = await this.props.onGetOrderHistory();
             this.setState({myhistory});
-        }, 1000);
+        }
     }
 
     public render = () => {
