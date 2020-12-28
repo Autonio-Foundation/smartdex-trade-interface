@@ -135,7 +135,7 @@ class OrderHistory extends React.Component<Props, State> {
         myhistory: []
     }
 
-    async componentDidUpdate(prevProps) {
+    public componentDidUpdate = async (prevProps: Readonly<Props>, prevState: Readonly<Props>, snapshot?: any) => {
         const { baseToken, quoteToken } = this.props;
         if (prevProps !== this.props && baseToken && quoteToken) {
             let myhistory = await this.props.onGetOrderHistory();
