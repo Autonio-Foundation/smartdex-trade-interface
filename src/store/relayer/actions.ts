@@ -182,14 +182,20 @@ export const getOrderHistory: ThunkCreator<Promise<Array<any>>> = () => {
             address: ethAccount
         });
 
-        let res = await fetch(RELAYER_URL + '/orderhistory', {
-            method: 'post',
+        let res: any[];
+
+        var response = await (await fetch(RELAYER_URL + '/orderhistory', {
+            method: 'get',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body: requestBody,
-        })
+        })).json();
+
+        console.log(response);
+
+        res = response;
 
         return res;
     }
