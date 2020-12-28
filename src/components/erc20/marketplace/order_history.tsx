@@ -154,7 +154,10 @@ class OrderHistory extends React.Component<Props, State> {
         return (
             <CardWrapper>
                 <CardHeader>
-                    <CardTitle><span onClick={() => this.setState({selectedTabs: 0})}>Orders</span> <span onClick={() => this.setState({selectedTabs: 1})}>History</span></CardTitle>
+                    <CardTitle>
+                        <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#fff'}} onClick={() => this.setState({selectedTabs: 0})}>Orders</span>
+                        <span style={{marginLeft: 12, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.setState({selectedTabs: 1})}>History</span>
+                    </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>
             </CardWrapper>
