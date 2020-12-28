@@ -3,11 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { themeDimensions } from '../../../../themes/commons';
+
 import { UI_DECIMALS_DISPLAYED_PRICE_ETH } from '../../../common/constants';
 import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State } from '../../../store/selectors';
 import { tokenAmountInUnits } from '../../../util/tokens';
 import { OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
-import { Card } from '../../common/card';
+import { CardBase } from '../../common/card_base';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
 import { CustomTD, Table, TH, THead, TR } from '../../common/table';
@@ -26,6 +28,44 @@ type Props = StateProps;
 const SideTD = styled(CustomTD)<{ side: OrderSide }>`
     color: ${props =>
         props.side === OrderSide.Buy ? props.theme.componentsTheme.green : props.theme.componentsTheme.red};
+`;
+
+const CardWrapper = styled(CardBase)`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: ${themeDimensions.verticalSeparationSm};
+    max-height: 100%;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+`;
+
+const CardHeader = styled.div`
+    align-items: center;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: space-between;
+    padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
+`;
+
+const CardTitle = styled.h1`
+    color: #fff;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0 20px 0 0;
+`;
+
+const CardBody = styled.div`
+    margin: 0;
+    min-height: 200px;
+    overflow-x: auto;
+    padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
+    position: relative;
 `;
 
 const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
@@ -58,9 +98,18 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
     );
 };
 
-class OrderHistory extends React.Component<Props> {
+interface State {
+    selectedTabs: 0
+}
+
+class OrderHistory extends React.Component<Props, State> {
+    public state: State = {
+        selectedTabs: 0
+    }
+
     public render = () => {
         const { orders, baseToken, quoteToken, web3State } = this.props;
+        const { selectedTabs } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
         let content: React.ReactNode;
@@ -77,27 +126,40 @@ class OrderHistory extends React.Component<Props> {
                 } else if (!ordersToShow.length || !baseToken || !quoteToken) {
                     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
                 } else {
-                    content = (
-                        <Table isResponsive={true}>
-                            <THead>
-                                <TR>
-                                    <TH>Side</TH>
-                                    <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
-                                    <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
-                                    <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
-                                    <TH>Status</TH>
-                                    <TH>&nbsp;</TH>
-                                </TR>
-                            </THead>
-                            <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
-                        </Table>
-                    );
+                    if (selectedTabs === 0) {
+                        content = (
+                            <Table isResponsive={true}>
+                                <THead>
+                                    <TR>
+                                        <TH>Side</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                        <TH>Status</TH>
+                                        <TH>&nbsp;</TH>
+                                    </TR>
+                                </THead>
+                                <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
+                            </Table>
+                        );    
+                    }
+                    else {
+                        content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
+                    }
                 }
                 break;
             }
         }
 
-        return <Card title="Orders">{content}</Card>;
+        return (
+            <CardWrapper>
+                <CardHeader>
+                    <CardTitle><span onClick={() => this.setState({selectedTabs: 0})}>Orders</span> <span onClick={() => this.setState({selectedTabs: 1})}>History</span></CardTitle>
+                </CardHeader>
+                <CardBody>{content}</CardBody>
+            </CardWrapper>
+        )
+        // <Card title="Orders">{content}</Card>;
     };
 }
 

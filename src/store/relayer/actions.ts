@@ -94,7 +94,10 @@ export const cancelOrder: ThunkCreator = (order: UIOrder) => {
     return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
+        const quoteToken = getQuoteToken(state) as Token;
         const gasPrice = getGasPriceInWei(state);
+
+        console.log(baseToken, quoteToken, order);
 
         const tx = cancelSignedOrder(order.rawOrder, gasPrice);
 
@@ -137,8 +140,11 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
     return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
+        const quoteToken = getQuoteToken(state) as Token;
         try {
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
+
+            console.log(baseToken, quoteToken, signedOrder);
 
             // tslint:disable-next-line:no-floating-promises
             dispatch(getOrderbookAndUserOrders());
