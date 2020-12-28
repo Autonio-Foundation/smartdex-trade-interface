@@ -126,7 +126,7 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
 interface State {
     selectedTabs: number | 0;
-    myhistory: any[] | [];
+    myhistory: any[];
 }
 
 class OrderHistory extends React.Component<Props, State> {
