@@ -11,6 +11,7 @@ import {
     getAllOrdersAsUIOrdersWithoutOrdersInfo,
     getUserOrdersAsUIOrders,
 } from '../../services/orders';
+import { RELAYER_URL } from '../../common/constants';
 import { getRelayer } from '../../services/relayer';
 import { isWeth } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
@@ -167,6 +168,32 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
         }
     };
 };
+
+
+export const getOrderHistory: ThunkCreator<Promise<Array<any>>> = () => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const baseToken = getBaseToken(state) as Token;
+        const quoteToken = getQuoteToken(state) as Token;
+        const ethAccount = getEthAccount(state);
+        const requestBody = JSON.stringify({
+            base_token: baseToken,
+            quote_token: quoteToken,
+            address: ethAccount
+        });
+
+        let res = await fetch(RELAYER_URL + '/orderhistory', {
+            method: 'post',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: requestBody,
+        })
+
+        return res;
+    }
+}
 
 export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInReturn: BigNumber }>> = (
     amount: BigNumber,

@@ -15,6 +15,7 @@ import { LoadingWrapper } from '../../common/loading';
 import { CustomTD, Table, TH, THead, TR } from '../../common/table';
 
 import { CancelOrderButtonContainer } from './cancel_order_button';
+import { getOrderHistory } from '../../../store/actions';
 
 interface StateProps {
     baseToken: Token | null;
@@ -23,7 +24,11 @@ interface StateProps {
     web3State?: Web3State;
 }
 
-type Props = StateProps;
+interface DispatchProps {
+    onGetOrderHistory: () => Promise<any>;
+}
+
+type Props = StateProps & DispatchProps;
 
 const SideTD = styled(CustomTD)<{ side: OrderSide }>`
     color: ${props =>
@@ -98,18 +103,46 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
     );
 };
 
+const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
+    const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
+    const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
+
+    const filled = order.filled
+        ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
+        : null;
+
+    const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+
+    return (
+        <TR key={index}>
+            <SideTD side={order.side}>{sideLabel}</SideTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
+            <CustomTD>{order.status}</CustomTD>
+        </TR>
+    );
+};
+
 interface State {
     selectedTabs: number | 0;
+    myhistory: Array<any> | [];
 }
 
 class OrderHistory extends React.Component<Props, State> {
     public state: State = {
-        selectedTabs: 0
+        selectedTabs: 0,
+        myhistory: []
+    }
+
+    async componentDidMount() {
+        let myhistory = await this.props.onGetOrderHistory();
+        this.setState({myhistory});
     }
 
     public render = () => {
         const { orders, baseToken, quoteToken, web3State } = this.props;
-        const { selectedTabs } = this.state;
+        const { selectedTabs, myhistory } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
         let content: React.ReactNode;
@@ -141,10 +174,24 @@ class OrderHistory extends React.Component<Props, State> {
                                 </THead>
                                 <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
                             </Table>
-                        );    
+                        );
                     }
-                    else {
-                        content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
+                    else if (selectedTabs === 1) {
+                        content = (
+                            <Table isResponsive={true}>
+                                <THead>
+                                    <TR>
+                                        <TH>Side</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                        <TH>Status</TH>
+                                        <TH>&nbsp;</TH>
+                                    </TR>
+                                </THead>
+                                <tbody>{myhistory.map((order, index) => orderHistoryToRow(order, index, baseToken))}</tbody>
+                            </Table>
+                        );
                     }
                 }
                 break;
@@ -175,6 +222,13 @@ const mapStateToProps = (state: StoreState): StateProps => {
     };
 };
 
-const OrderHistoryContainer = connect(mapStateToProps)(OrderHistory);
+const mapDispatchToProps = (dispatch: any): DispatchProps => {
+    return {
+        onGetOrderHistory: () =>
+            dispatch(getOrderHistory()),
+    }
+}
+
+const OrderHistoryContainer = connect(mapStateToProps, mapDispatchToProps)(OrderHistory);
 
 export { OrderHistory, OrderHistoryContainer };
