@@ -176,22 +176,15 @@ export const getOrderHistory: ThunkCreator<Promise<Array<any>>> = () => {
         const baseToken = getBaseToken(state) as Token;
         const quoteToken = getQuoteToken(state) as Token;
         const ethAccount = getEthAccount(state);
-        const requestBody = JSON.stringify({
-            base_token: baseToken,
-            quote_token: quoteToken,
+        const params = {
+            base_token: baseToken.symbol,
+            quote_token: quoteToken.symbol,
             address: ethAccount
-        });
+        };
 
         let res: any[];
 
-        var response = await (await fetch(RELAYER_URL + '/orderhistory', {
-            method: 'get',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: requestBody,
-        })).json();
+        var response = await (await fetch(RELAYER_URL + '/orderhistory?' + new URLSearchParams(params))).json();
 
         console.log(response);
 
