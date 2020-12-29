@@ -159,7 +159,7 @@ class OrderHistory extends React.Component<Props, State> {
             default: {
                 if (web3State !== Web3State.Error && (!baseToken || !quoteToken)) {
                     content = <LoadingWrapper minHeight="120px" />;
-                } else if (!ordersToShow.length || !baseToken || !quoteToken) {
+                } else if ((!ordersToShow.length && selectedTabs === 0) || (selectedTabs === 1 && !myhistory.length) || !baseToken || !quoteToken) {
                     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
                 } else {
                     if (selectedTabs === 0) {
