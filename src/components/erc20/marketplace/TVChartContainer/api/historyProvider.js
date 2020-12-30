@@ -1,6 +1,6 @@
 var rp = require("request-promise").defaults({ json: true });
 const proxy = "";
-const api_root = "https://mmcors.autonio.foundation/http://18.188.255.60:3000/v2"
+const api_root = "https://api.smartdex.io/v2"
 const history = {};
 
 export default {
