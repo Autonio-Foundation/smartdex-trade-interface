@@ -1,6 +1,6 @@
 import { parseFullSymbol } from './helpers.js';
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "wss://api.smartdex.io/";
+const ENDPOINT = "https://api.smartdex.app/";
 
 export const socket = socketIOClient(ENDPOINT);
 // const socket = io('wss://streamer.cryptocompare.com');
