@@ -1,6 +1,6 @@
 var rp = require("request-promise").defaults({ json: true });
 const proxy = "";
-const api_root = "https://api.smartdex.app/v2"
+const api_root = process.env.REACT_APP_RELAYER_URL;
 const history = {};
 
 export default {
