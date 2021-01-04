@@ -124,6 +124,8 @@ class WalletTokenBalances extends React.PureComponent<Props> {
     public render = () => {
         const { ethBalance, tokenBalances, onStartToggleTokenLockSteps, web3State, wethTokenBalance } = this.props;
 
+        console.log(tokenBalances);
+
         if (!wethTokenBalance) {
             return null;
         }
