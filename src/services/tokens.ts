@@ -11,6 +11,7 @@ export const tokensToTokenBalances = async (tokens: Token[], address: string): P
         address,
         assetDatas,
     );
+    console.log(address, assetDatas, balancesAndAllowances);
     const tokenBalances = balancesAndAllowances.map((b, i) => ({
         token: tokens[i],
         balance: b.balance,
