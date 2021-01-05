@@ -215,41 +215,41 @@ class WalletBalance extends React.Component<Props, State> {
             web3State,
             currencyPair,
             onConnectWallet,
-            baseToken,
+            quoteToken,
             quoteTokenBalance,
             baseTokenBalance,
             totalEthBalance,
         } = this.props;
 
-        if (baseToken && baseTokenBalance && quoteTokenBalance) {
-            const baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
-            const baseBalanceString = tokenAmountInUnits(
-                baseTokenBalanceAmount,
-                baseToken.decimals,
-                baseToken.displayDecimals,
-            );
+        if (quoteToken && baseTokenBalance && quoteTokenBalance) {
+            const quoteTokenBalanceAmount = isWeth(quoteToken.symbol) ? totalEthBalance : quoteTokenBalance.balance;
             const quoteBalanceString = tokenAmountInUnits(
-                quoteTokenBalance.balance,
-                quoteTokenBalance.token.decimals,
-                quoteTokenBalance.token.displayDecimals,
+                quoteTokenBalanceAmount,
+                quoteToken.decimals,
+                quoteToken.displayDecimals,
             );
-            const toolTip = isWeth(baseToken.symbol) ? (
+            const baseBalanceString = tokenAmountInUnits(
+                baseTokenBalance.balance,
+                baseTokenBalance.token.decimals,
+                baseTokenBalance.token.displayDecimals,
+            );
+            const toolTip = isWeth(quoteToken.symbol) ? (
                 <TooltipStyled description="Showing MATIC + wMATIC balance" iconType={IconType.Fill} />
             ) : null;
-            const baseTokenLabel = isWeth(baseToken.symbol)
+            const quoteTokenLabel = isWeth(quoteToken.symbol)
                 ? 'MATIC'
-                : tokenSymbolToDisplayString(currencyPair.base);
+                : tokenSymbolToDisplayString(currencyPair.quote);
             content = (
                 <>
                     <LabelWrapper>
-                        <Label>
-                            {baseTokenLabel}
-                            {toolTip}
-                        </Label>
+                        <Label>{tokenSymbolToDisplayString(currencyPair.base)}</Label>
                         <Value>{baseBalanceString}</Value>
                     </LabelWrapper>
                     <LabelWrapper>
-                        <Label>{tokenSymbolToDisplayString(currencyPair.quote)}</Label>
+                        <Label>
+                            {quoteTokenLabel}
+                            {toolTip}
+                        </Label>
                         <Value>{quoteBalanceString}</Value>
                     </LabelWrapper>
                 </>

@@ -74,8 +74,8 @@
             "quote": "usdt"
         },
         {
-            "base": "wmatic",
-            "quote": "usdt"
+            "base": "usdt",
+            "quote": "wmatic"
         }
     ],
     "marketFilters": [
