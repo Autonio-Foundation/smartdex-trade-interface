@@ -20,7 +20,7 @@ export const Erc20App = () => {
     return (
         <ThemeProvider theme={themeColor}>
             <GeneralLayout toolbar={toolbar}>
-                <AdBlockDetector />
+                {/* <AdBlockDetector /> */}
                 <Switch>
                     <Route exact={true} path={`${ERC20_APP_BASE_PATH}/`} component={Marketplace} />
                     <Route exact={true} path={`${ERC20_APP_BASE_PATH}/my-wallet`} component={MyWallet} />
