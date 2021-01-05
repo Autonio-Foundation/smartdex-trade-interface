@@ -213,20 +213,20 @@ export const startBuySellMarketSteps: ThunkCreator = (amount: BigNumber, side: O
 
         if (side === OrderSide.Sell) {
             // When selling, user should have enough BASE Token
-            if (baseTokenBalance && baseTokenBalance.balance.isLessThan(totalFilledAmount)) {
+            const ifEthAndWethNotEnoughBalance =
+                isWeth(baseToken.symbol) && totalEthBalance.isLessThan(totalFilledAmount);
+            const ifOtherBaseTokenAndNotEnoughBalance =
+                !isWeth(baseToken.symbol) &&
+                baseTokenBalance &&
+                baseTokenBalance.balance.isLessThan(totalFilledAmount);
+            if (ifEthAndWethNotEnoughBalance || ifOtherBaseTokenAndNotEnoughBalance) {
                 throw new InsufficientTokenBalanceException(baseToken.symbol);
             }
         } else {
             // When buying and
             // if quote token is weth, should have enough ETH + WETH balance, or
             // if quote token is not weth, should have enough quote token balance
-            const ifEthAndWethNotEnoughBalance =
-                isWeth(quoteToken.symbol) && totalEthBalance.isLessThan(totalFilledAmount);
-            const ifOtherQuoteTokenAndNotEnoughBalance =
-                !isWeth(quoteToken.symbol) &&
-                quoteTokenBalance &&
-                quoteTokenBalance.balance.isLessThan(totalFilledAmount);
-            if (ifEthAndWethNotEnoughBalance || ifOtherQuoteTokenAndNotEnoughBalance) {
+            if (quoteTokenBalance && quoteTokenBalance.balance.isLessThan(totalFilledAmount)) {
                 throw new InsufficientTokenBalanceException(quoteToken.symbol);
             }
         }

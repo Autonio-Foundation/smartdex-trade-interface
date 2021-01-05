@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { ComponentUnmountedException } from '../../../exceptions/component_unmounted_exception';
 import { getStepTitle, isLongStep, makeGetProgress } from '../../../util/steps';
 import { Step } from '../../../util/types';
+import { stepsModalReset } from '../../../store/actions';
 
 import { StepPendingTime } from './step_pending_time';
 import {
@@ -48,7 +50,7 @@ interface State {
     loadingStarted: number | null;
 }
 
-export class BaseStepModal extends React.Component<Props, State> {
+class BaseStepModalCM extends React.Component<Props, State> {
     public state: State = {
         status: StepStatus.ConfirmOnMetamask,
         loadingStarted: null,
@@ -162,6 +164,10 @@ export class BaseStepModal extends React.Component<Props, State> {
             this.setState({
                 status: StepStatus.Done,
             });
+            const intv = setInterval(() => {
+                this.props.reset();
+                clearInterval(intv);
+            }, 1500);
         };
         const onError = (err: Error | ComponentUnmountedException) => {
             if (err instanceof ComponentUnmountedException) {
@@ -191,3 +197,9 @@ export class BaseStepModal extends React.Component<Props, State> {
         }
     };
 }
+
+const BaseStepModal = connect(
+        null,
+        { reset: stepsModalReset },
+    )(BaseStepModalCM);
+export { BaseStepModal };
