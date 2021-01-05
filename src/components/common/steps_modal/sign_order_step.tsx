@@ -100,39 +100,39 @@ class SignOrderStep extends React.Component<Props, State> {
         const { step, onSubmitMarketOrder } = this.props;
         const { amount, price, side, token } = step;
         try {
-            const { filledAmount } = this.props.matchOrderbook(amount, price, side);
-            this.setState({ filledAmount });
-            if (filledAmount.eq(amount)) {
-                const web3Wrapper = await getWeb3Wrapper();
-                const { txHash, amountInReturn } = await onSubmitMarketOrder(amount, side);
-                onLoading();
+            // const { filledAmount } = this.props.matchOrderbook(amount, price, side);
+            // this.setState({ filledAmount });
+            // if (filledAmount.eq(amount)) {
+            //     const web3Wrapper = await getWeb3Wrapper();
+            //     const { txHash, amountInReturn } = await onSubmitMarketOrder(amount, side);
+            //     onLoading();
 
-                await web3Wrapper.awaitTransactionSuccessAsync(txHash);
+            //     await web3Wrapper.awaitTransactionSuccessAsync(txHash);
 
-                onDone();
-                this.props.notifyBuySellMarket(txHash, amount, token, side, Promise.resolve());
-                this.props.refreshOrders();
-            } else if (filledAmount.isGreaterThan(new BigNumber(0))) {
-                const web3Wrapper = await getWeb3Wrapper();
-                const { txHash, amountInReturn } = await onSubmitMarketOrder(filledAmount, side);
-                const signedOrder = await this.props.createSignedOrder(amount.minus(filledAmount), price, side);
-                onLoading();
+            //     onDone();
+            //     this.props.notifyBuySellMarket(txHash, amount, token, side, Promise.resolve());
+            //     this.props.refreshOrders();
+            // } else if (filledAmount.isGreaterThan(new BigNumber(0))) {
+            //     const web3Wrapper = await getWeb3Wrapper();
+            //     const { txHash, amountInReturn } = await onSubmitMarketOrder(filledAmount, side);
+            //     const signedOrder = await this.props.createSignedOrder(amount.minus(filledAmount), price, side);
+            //     onLoading();
 
-                await web3Wrapper.awaitTransactionSuccessAsync(txHash);
+            //     await web3Wrapper.awaitTransactionSuccessAsync(txHash);
 
-                this.setState({ filledAmount: new BigNumber(0) });
+            //     this.setState({ filledAmount: new BigNumber(0) });
 
-                await this.props.submitLimitOrder(signedOrder, amount.minus(filledAmount), side);
+            //     await this.props.submitLimitOrder(signedOrder, amount.minus(filledAmount), side);
 
-                onDone();
-                this.props.notifyBuySellMarket(txHash, amount, token, side, Promise.resolve());
-                this.props.refreshOrders();
-            } else {
+            //     onDone();
+            //     this.props.notifyBuySellMarket(txHash, amount, token, side, Promise.resolve());
+            //     this.props.refreshOrders();
+            // } else {
                 const signedOrder = await this.props.createSignedOrder(amount, price, side);
                 onLoading();
                 await this.props.submitLimitOrder(signedOrder, amount, side);
                 onDone();
-            }
+            // }
         } catch (error) {
             let errorException = error;
             if (error.message.toLowerCase() === INSUFFICIENT_MAKER_BALANCE_ERR.toLowerCase()) {
