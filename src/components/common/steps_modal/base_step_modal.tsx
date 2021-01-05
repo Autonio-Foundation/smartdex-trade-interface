@@ -43,9 +43,6 @@ interface Props {
     errorCaption: string;
     step: Step;
     showPartialProgress?: boolean;
-}
-
-interface DispatchProps {
     reset: () => void;
 }
 
@@ -54,7 +51,7 @@ interface State {
     loadingStarted: number | null;
 }
 
-class BaseStepModalCM extends React.Component<Props & DispatchProps, State> {
+class BaseStepModalCM extends React.Component<Props, State> {
     public state: State = {
         status: StepStatus.ConfirmOnMetamask,
         loadingStarted: null,
