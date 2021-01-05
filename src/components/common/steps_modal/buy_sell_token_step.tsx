@@ -50,8 +50,6 @@ class BuySellTokenStep extends React.Component<Props, State> {
             step.token.displayDecimals,
         ).toString()} ${tokenSymbol}`;
 
-        console.log(amountOfTokenString, step.token.decimals);
-
         const title = 'Order setup';
 
         const confirmCaption = `Confirm on Metamask to ${isBuy ? 'buy' : 'sell'} ${amountOfTokenString}.`;
