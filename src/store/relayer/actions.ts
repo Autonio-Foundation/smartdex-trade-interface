@@ -145,8 +145,6 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
         try {
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
 
-            console.log(baseToken, quoteToken, signedOrder);
-
             // tslint:disable-next-line:no-floating-promises
             dispatch(getOrderbookAndUserOrders());
             dispatch(
@@ -225,7 +223,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                 return total.plus(currentValue);
             }, new BigNumber(0));
             const isEthBalanceEnough = ethBalance.isGreaterThan(ethAmountRequired);
-            const isMarketBuyForwarder = isBuy && isWeth(quoteToken.symbol) && isEthBalanceEnough;
+            const isMarketBuyForwarder = isBuy && isWeth(baseToken.symbol) && isEthBalanceEnough;
 
             let txHash;
             if (isMarketBuyForwarder) {
