@@ -107,17 +107,12 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
 
-    const filled = order.filled
-        ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
-        : null;
-
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
     return (
         <TR key={index}>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
-            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
             <CustomTD>{order.status}</CustomTD>
         </TR>
@@ -147,6 +142,8 @@ class OrderHistory extends React.Component<Props, State> {
         const { orders, baseToken, quoteToken, web3State } = this.props;
         const { selectedTabs, myhistory } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
+
+        console.log(myhistory);
 
         let content: React.ReactNode;
         switch (web3State) {
