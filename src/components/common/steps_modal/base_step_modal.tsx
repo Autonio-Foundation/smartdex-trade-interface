@@ -168,7 +168,7 @@ class BaseStepModalCM extends React.Component<Props, State> {
             const intv = setInterval(() => {
                 this.props.reset();
                 clearInterval(intv);
-            }, 1500);
+            }, 3000);
         };
         const onError = (err: Error | ComponentUnmountedException) => {
             if (err instanceof ComponentUnmountedException) {
