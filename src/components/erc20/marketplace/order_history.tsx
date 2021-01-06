@@ -13,6 +13,7 @@ import { CardBase } from '../../common/card_base';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
 import { CustomTD, Table, TH, THead, TR } from '../../common/table';
+import { ordersToUIOrders } from '../../../util/ui_orders';
 
 import { CancelOrderButtonContainer } from './cancel_order_button';
 import { getOrderHistory } from '../../../store/actions';
@@ -109,10 +110,15 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
+    const filled = order.filled
+    ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
+    : null;
+
     return (
         <TR key={index}>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
             <CustomTD>{order.status}</CustomTD>
         </TR>
@@ -133,7 +139,8 @@ class OrderHistory extends React.Component<Props, State> {
     public componentDidUpdate = async (prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) => {
         const { baseToken, quoteToken } = this.props;
         if (prevProps !== this.props && baseToken && quoteToken) {
-            let myhistory = await this.props.onGetOrderHistory();
+            let ht = await this.props.onGetOrderHistory();
+            let myhistory = ordersToUIOrders(ht, baseToken);
             this.setState({myhistory});
         }
     }
