@@ -13,7 +13,7 @@ import { CardBase } from '../../common/card_base';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
 import { CustomTD, Table, TH, THead, TR } from '../../common/table';
-import { ordersToUIOrders } from '../../../util/ui_orders';
+import { ordersToUIOrdersWithoutOrderInfo } from '../../../util/ui_orders';
 
 import { CancelOrderButtonContainer } from './cancel_order_button';
 import { getOrderHistory } from '../../../store/actions';
@@ -150,7 +150,7 @@ class OrderHistory extends React.Component<Props, State> {
                 cur.expirationTimeSeconds = new BigNumber(cur.expirationTimeSeconds);
             })
 
-            let myhistory = ordersToUIOrders(ht ? ht : [], baseToken);
+            let myhistory = ordersToUIOrdersWithoutOrderInfo(ht ? ht : [], baseToken);
             this.setState({myhistory});
         }
     }

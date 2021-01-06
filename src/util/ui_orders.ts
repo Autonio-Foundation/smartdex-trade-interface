@@ -23,7 +23,7 @@ export const ordersToUIOrders = (
 };
 
 // The user does not have web3 and the order info could not be retrieved from the contract
-const ordersToUIOrdersWithoutOrderInfo = (orders: SignedOrder[], baseToken: Token): UIOrder[] => {
+export const ordersToUIOrdersWithoutOrderInfo = (orders: SignedOrder[], baseToken: Token): UIOrder[] => {
     const baseTokenEncoded = assetDataUtils.encodeERC20AssetData(baseToken.address);
 
     return orders.map((order, i) => {
@@ -67,7 +67,7 @@ const filterUIOrders = (orders: UIOrder[]): UIOrder[] => {
 };
 
 // The user has web3 and the order info could be retrieved from the contract
-const ordersToUIOrdersWithOrdersInfo = (
+export const ordersToUIOrdersWithOrdersInfo = (
     orders: SignedOrder[],
     orderAndTraderInfos: OrderAndTraderInfo[],
     baseToken: Token,
