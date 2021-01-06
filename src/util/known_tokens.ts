@@ -34,7 +34,6 @@ export class KnownTokens {
     public getTokenByAddress = (address: string): Token => {
         const addressInLowerCase = address.toLowerCase();
         let token = this._tokens.find(t => t.address.toLowerCase() === addressInLowerCase);
-        console.log(this._wethToken, address);
         if (!token) {
             // If it's not on the tokens list, we check if it's an wETH token
             // TODO - Maybe the this._tokens could be refactored to also have wETH inside
