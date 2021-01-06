@@ -122,7 +122,7 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
-            <CustomTD>{order.status}</CustomTD>
+            <CustomTD>{status}</CustomTD>
         </TR>
     );
 };
@@ -162,8 +162,6 @@ class OrderHistory extends React.Component<Props, State> {
         const { selectedTabs, myhistory } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
-        console.log(myhistory);
-
         let content: React.ReactNode;
         switch (web3State) {
             case Web3State.Locked:
@@ -202,7 +200,6 @@ class OrderHistory extends React.Component<Props, State> {
                                     <TR>
                                         <TH>Side</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
-                                        <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH>Status</TH>
                                         <TH>&nbsp;</TH>
