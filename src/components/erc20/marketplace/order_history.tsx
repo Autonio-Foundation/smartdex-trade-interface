@@ -1,4 +1,4 @@
-import { OrderStatus } from '0x.js';
+import { OrderStatus, BigNumber } from '0x.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -140,6 +140,16 @@ class OrderHistory extends React.Component<Props, State> {
         const { baseToken, quoteToken } = this.props;
         if (prevProps !== this.props && baseToken && quoteToken) {
             let ht = await this.props.onGetOrderHistory();
+
+            ht.map((cur) => {
+                cur.makerFee = new BigNumber(cur.makerFee);
+                cur.takerFee = new BigNumber(cur.takerFee);
+                cur.makerAssetAmount = new BigNumber(cur.makerAssetAmount);
+                cur.takerAssetAmount = new BigNumber(cur.takerAssetAmount);
+                cur.salt = new BigNumber(cur.salt);
+                cur.expirationTimeSeconds = new BigNumber(cur.expirationTimeSeconds);
+            })
+
             let myhistory = ordersToUIOrders(ht, baseToken);
             this.setState({myhistory});
         }
