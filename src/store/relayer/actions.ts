@@ -184,8 +184,6 @@ export const getOrderHistory: ThunkCreator<Promise<Array<any>>> = () => {
 
         var response = await (await fetch(RELAYER_URL + '/orderhistory?' + new URLSearchParams(params))).json();
 
-        console.log(response);
-
         res = response;
 
         return res;

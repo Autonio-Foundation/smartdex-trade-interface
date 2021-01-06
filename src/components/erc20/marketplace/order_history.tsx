@@ -110,19 +110,12 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
-    let status = '--';
-    let isOrderFillable = false;
-    if (order.status) {
-        isOrderFillable = order.status === OrderStatus.Fillable;
-        status = isOrderFillable ? 'Cancelled' : 'Filled';
-    }
-
     return (
         <TR key={index}>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
-            <CustomTD>{status}</CustomTD>
+            <CustomTD>{order.status}</CustomTD>
         </TR>
     );
 };
@@ -153,6 +146,10 @@ class OrderHistory extends React.Component<Props, State> {
             })
 
             let myhistory = ordersToUIOrdersWithoutOrderInfo(ht ? ht : [], baseToken);
+
+            myhistory && myhistory.map((cur: any, idx: number) => {
+                cur.status = ht[idx].status;
+            })
             this.setState({myhistory});
         }
     }
