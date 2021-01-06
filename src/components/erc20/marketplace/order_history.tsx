@@ -141,7 +141,7 @@ class OrderHistory extends React.Component<Props, State> {
         if (prevProps !== this.props && baseToken && quoteToken) {
             let ht = await this.props.onGetOrderHistory();
 
-            ht.map((cur) => {
+            ht && ht.map((cur: any) => {
                 cur.makerFee = new BigNumber(cur.makerFee);
                 cur.takerFee = new BigNumber(cur.takerFee);
                 cur.makerAssetAmount = new BigNumber(cur.makerAssetAmount);
@@ -150,7 +150,7 @@ class OrderHistory extends React.Component<Props, State> {
                 cur.expirationTimeSeconds = new BigNumber(cur.expirationTimeSeconds);
             })
 
-            let myhistory = ordersToUIOrders(ht, baseToken);
+            let myhistory = ordersToUIOrders(ht ? ht : [], baseToken);
             this.setState({myhistory});
         }
     }
