@@ -15,7 +15,6 @@ export class KnownTokens {
     constructor(knownTokensMetadata: TokenMetaData[]) {
         this._tokens = mapTokensMetaDataToTokenByNetworkId(knownTokensMetadata).filter(token => !isWeth(token.symbol));
         this._wethToken = getWethTokenFromTokensMetaDataByNetworkId(knownTokensMetadata);
-        console.log(this._wethToken, this._tokens);
     }
 
     public getTokenBySymbol = (symbol: string): Token => {
@@ -38,7 +37,7 @@ export class KnownTokens {
         if (!token) {
             // If it's not on the tokens list, we check if it's an wETH token
             // TODO - Maybe the this._tokens could be refactored to also have wETH inside
-            token = this._wethToken.address === address ? this._wethToken : undefined;
+            token = this._wethToken.address === addressInLowerCase ? this._wethToken : undefined;
         }
         if (!token) {
             throw new Error(`Token with address ${address} not found in known tokens`);
