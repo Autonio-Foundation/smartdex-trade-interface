@@ -110,15 +110,17 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
-    const filled = order.filled
-    ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
-    : null;
+    let status = '--';
+    let isOrderFillable = false;
+    if (order.status) {
+        isOrderFillable = order.status === OrderStatus.Fillable;
+        status = isOrderFillable ? 'Cancelled' : 'Filled';
+    }
 
     return (
         <TR key={index}>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
-            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
             <CustomTD>{order.status}</CustomTD>
         </TR>
