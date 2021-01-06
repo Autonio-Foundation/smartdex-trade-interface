@@ -15,6 +15,7 @@ export class KnownTokens {
     constructor(knownTokensMetadata: TokenMetaData[]) {
         this._tokens = mapTokensMetaDataToTokenByNetworkId(knownTokensMetadata).filter(token => !isWeth(token.symbol));
         this._wethToken = getWethTokenFromTokensMetaDataByNetworkId(knownTokensMetadata);
+        console.log(this._wethToken, this._tokens);
     }
 
     public getTokenBySymbol = (symbol: string): Token => {
