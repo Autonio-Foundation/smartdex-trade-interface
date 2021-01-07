@@ -230,10 +230,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                 txHash = await contractWrappers.forwarder.marketSellOrdersWithEthAsync(
                     orders,
                     ethAccount,
-                    ethAmountRequired,
-                    [],
-                    0,
-                    FEE_RECIPIENT,
+                    amount,
                     getTransactionOptions(gasPrice),
                 );
             } else {
