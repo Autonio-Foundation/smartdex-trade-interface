@@ -231,7 +231,6 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                     orders,
                     amount,
                     ethAccount,
-                    ethAmountRequired,
                     [],
                     AFFILIATE_FEE_PERCENTAGE,
                     FEE_RECIPIENT,
