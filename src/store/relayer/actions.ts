@@ -230,7 +230,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                 txHash = await contractWrappers.forwarder.marketSellOrdersWithEthAsync(
                     orders,
                     ethAccount,
-                    ethAmountRequired,
+                    amount,
                     [],
                     AFFILIATE_FEE_PERCENTAGE,
                     FEE_RECIPIENT,
