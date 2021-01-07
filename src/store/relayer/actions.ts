@@ -226,15 +226,17 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             const isMarketSellForwarder = !isBuy && isWeth(baseToken.symbol) && isEthBalanceEnough;
 
             let txHash;
-            if (isMarketSellForwarder) {
-                txHash = await contractWrappers.forwarder.marketSellOrdersWithEthAsync(
-                    orders,
-                    ethAccount,
-                    ethAmountRequired,
-                    [],
-                    getTransactionOptions(gasPrice),
-                );
-            } else {
+            // if (isMarketSellForwarder) {
+            //     txHash = await contractWrappers.forwarder.marketSellOrdersWithEthAsync(
+            //         orders,
+            //         ethAccount,
+            //         amount,
+            //         [],
+            //         0,
+            //         FEE_RECIPIENT,
+            //         getTransactionOptions(gasPrice),
+            //     );
+            // } else {
                 if (isBuy) {
                     txHash = await contractWrappers.exchange.marketBuyOrdersAsync(
                         orders,
@@ -250,7 +252,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                         getTransactionOptions(gasPrice),
                     );
                 }
-            }
+            // }
 
             const web3Wrapper = await getWeb3Wrapper();
             const tx = web3Wrapper.awaitTransactionSuccessAsync(txHash);
