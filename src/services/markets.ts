@@ -8,7 +8,7 @@ export const getMarketPriceEther = async (): Promise<BigNumber> => {
         const data = await promisePriceEtherResolved.json();
         if (data && data.length) {
             const item = data[0];
-            const priceTokenUSD = new BigNumber(item.price_usd);
+            const priceTokenUSD = new BigNumber(item.current_price);
             return priceTokenUSD;
         }
     }
