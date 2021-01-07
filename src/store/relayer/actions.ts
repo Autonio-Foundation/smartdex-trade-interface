@@ -232,7 +232,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                     ethAccount,
                     amount,
                     [],
-                    AFFILIATE_FEE_PERCENTAGE,
+                    0,
                     FEE_RECIPIENT,
                     getTransactionOptions(gasPrice),
                 );
