@@ -210,6 +210,8 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             side,
         );
 
+        console.log(orders, amounts, canBeFilled);
+
         if (canBeFilled) {
             const baseToken = getBaseToken(state) as Token;
             const quoteToken = getQuoteToken(state) as Token;
