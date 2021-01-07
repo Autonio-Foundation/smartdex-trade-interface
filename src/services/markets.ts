@@ -1,6 +1,6 @@
 import { BigNumber } from '0x.js';
 
-const ETH_MARKET_PRICE_API_ENDPOINT = 'https://api.coinmarketcap.com/v1/ticker/ethereum/';
+const ETH_MARKET_PRICE_API_ENDPOINT = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum';
 
 export const getMarketPriceEther = async (): Promise<BigNumber> => {
     const promisePriceEtherResolved = await fetch(ETH_MARKET_PRICE_API_ENDPOINT);
