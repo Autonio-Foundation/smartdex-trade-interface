@@ -87,7 +87,8 @@ export function subscribeOnStream(
 	lastDailyBar,
 ) {
 	const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
-	const channelString = `0~${parsedSymbol.exchange}~${parsedSymbol.fromSymbol}~${parsedSymbol.toSymbol}`;
+	const exchange = "Smartdex";
+	const channelString = `0~${exchange}~${parsedSymbol.fromSymbol}~${parsedSymbol.toSymbol}`;
 	const handler = {
 		id: subscribeUID,
 		callback: onRealtimeCallback,
