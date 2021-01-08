@@ -99,6 +99,7 @@ export default {
   ) => {
     // console.log("=====subscribeBars runnning");
     console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
+    console.log(symbolInfo);
 		subscribeOnStream(
 			symbolInfo,
 			resolution,

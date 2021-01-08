@@ -43,8 +43,8 @@ socket.on('m', data => {
 	if (subscriptionItem === undefined) {
 		return;
 	}
+	console.log(subscriptionItem);
 	const lastDailyBar = subscriptionItem.lastDailyBar;
-	console.log(lastDailyBar);
 	const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time);
 
 	let bar;
