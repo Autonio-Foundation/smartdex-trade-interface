@@ -31,7 +31,6 @@ socket.on('m', data => {
 		,
 		tradePriceStr,
 	] = data.split('~');
-	console.log(fromSymbol, toSymbol, tradeTimeStr, tradePriceStr);
 
 	if (parseInt(eventTypeStr) !== 0) {
 		// skip all non-TRADE events
