@@ -47,7 +47,7 @@ export default {
       session: "24x7",
       timezone: "Etc/UTC",
       ticker: symbolName,
-      exchange: "Autonio Smartdex",
+      exchange: "Smartdex",
       pricescale: 100000000,
       has_intraday: true,
       supported_resolution: supportedResolutions,
