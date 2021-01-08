@@ -80,6 +80,7 @@ export default {
       .getBars(symbolInfo, resolution, from, to, firstDataRequest)
       .then(bars => {
         if (bars.length) {
+          lastBarsCache.set(symbolInfo.full_name, bars[bars.length - 1]);
           onHistoryCallback(bars, { noData: false });
         } else {
           onHistoryCallback(bars, { noData: true });
@@ -99,7 +100,6 @@ export default {
   ) => {
     // console.log("=====subscribeBars runnning");
     console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
-    console.log(symbolInfo);
 		subscribeOnStream(
 			symbolInfo,
 			resolution,
