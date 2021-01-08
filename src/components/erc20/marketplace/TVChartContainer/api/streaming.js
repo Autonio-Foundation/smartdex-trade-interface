@@ -87,7 +87,7 @@ export function subscribeOnStream(
 ) {
 	const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
 	const exchange = "Smartdex";
-	const channelString = `0~${exchange}~${parsedSymbol.fromSymbol}~${parsedSymbol.toSymbol}`;
+	const channelString = `0~${exchange}~${parsedSymbol.fromSymbol.toLowerCase()}~${parsedSymbol.toSymbol.toLowerCase()}`;
 	const handler = {
 		id: subscribeUID,
 		callback: onRealtimeCallback,
