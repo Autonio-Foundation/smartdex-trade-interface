@@ -242,7 +242,7 @@ export const buildMarketOrders = (
     return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled };
 };
 
-export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, quoteTokenDecimal: number) => {
+export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, baseTokenDecimal: number) => {
     const { amount, buyOrders, sellOrders, baseToken, quoteToken } = params;
 
     const sortedBuyOrders = buyOrders.sort((a, b) => {
@@ -252,7 +252,7 @@ export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: Order
         return a.price.comparedTo(b.price);
     });
 
-    const amountDecimal = tokenAmountInUnitsToBigNumber(amount, quoteTokenDecimal).toString();
+    const amountDecimal = tokenAmountInUnitsToBigNumber(amount, baseTokenDecimal).toString();
 
     const requestBody = JSON.stringify({
         bid: sortedSellOrders.length > 0 ? parseFloat(sortedSellOrders[0].price.toString()) : 0,

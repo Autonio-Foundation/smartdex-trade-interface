@@ -271,7 +271,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                     quoteToken
                 },
                 side,
-                quoteToken.decimals,
+                baseToken.decimals,
             );
 
             dispatch(
