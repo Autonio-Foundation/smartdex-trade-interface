@@ -44,6 +44,7 @@ socket.on('m', data => {
 		return;
 	}
 	const lastDailyBar = subscriptionItem.lastDailyBar;
+	console.log(lastDailyBar);
 	const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time);
 
 	let bar;
