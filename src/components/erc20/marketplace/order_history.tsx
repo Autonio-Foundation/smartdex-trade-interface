@@ -64,6 +64,7 @@ const CardTitle = styled.h1`
     line-height: 1.2;
     margin: 0;
     padding: 0 20px 0 0;
+    width: 100%;
 `;
 
 const CardBody = styled.div`
@@ -243,7 +244,8 @@ class OrderHistory extends React.Component<Props, State> {
                         <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(1)}>Order History</span>
                         {selectedTabs === 0 && 
                             <div style={{float: 'right'}}>
-                                <input type="checkbox" id="myhistory" name="Show History" onClick={() => this.onClickHistory()} />
+                                <input type="checkbox" id="myhistory" name="myhistory" onClick={() => this.onClickHistory()} />
+                                <label for="myhistory" style={{color: '#fff'}}> Show History</label>
                             </div>
                         }
                     </CardTitle>
