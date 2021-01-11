@@ -122,12 +122,14 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
 interface State {
     selectedTabs: number | 0;
+    history: number | 0;
     myhistory: Array<any>;
 }
 
 class OrderHistory extends React.Component<Props, State> {
     public state: State = {
         selectedTabs: 0,
+        history: 0,
         myhistory: []
     }
 
@@ -150,13 +152,22 @@ class OrderHistory extends React.Component<Props, State> {
             myhistory && myhistory.map((cur: any, idx: number) => {
                 cur.status = ht[idx].status;
             })
+            console.log(myhistory);
             this.setState({myhistory});
         }
     }
 
+    public onSelectTab = (tabIdx: number) => {
+        this.setState({selectedTabs: tabIdx});
+    }
+
+    public onClickHistory = () => {
+        this.setState({history: (1 - this.state.history)});
+    }
+
     public render = () => {
         const { orders, baseToken, quoteToken, web3State } = this.props;
-        const { selectedTabs, myhistory } = this.state;
+        const { selectedTabs, myhistory, history } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
         let content: React.ReactNode;
@@ -174,7 +185,7 @@ class OrderHistory extends React.Component<Props, State> {
                     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
                 } else {
                     if (selectedTabs === 0) {
-                        content = (
+                        content = history === 0 ? (
                             <Table isResponsive={true}>
                                 <THead>
                                     <TR>
@@ -187,6 +198,19 @@ class OrderHistory extends React.Component<Props, State> {
                                     </TR>
                                 </THead>
                                 <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
+                            </Table>
+                        ) : (
+                            <Table isResponsive={true}>
+                                <THead>
+                                    <TR>
+                                        <TH>Side</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                        <TH>Status</TH>
+                                        <TH>&nbsp;</TH>
+                                    </TR>
+                                </THead>
+                                <tbody>{myhistory.map((order, index) => orderHistoryToRow(order, index, baseToken))}</tbody>
                             </Table>
                         );
                     }
@@ -215,8 +239,13 @@ class OrderHistory extends React.Component<Props, State> {
             <CardWrapper>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#fff'}} onClick={() => this.setState({selectedTabs: 0})}>Orders</span>
-                        <span style={{marginLeft: 12, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.setState({selectedTabs: 1})}>History</span>
+                        <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(0)}>My Orders</span>
+                        <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(1)}>Order History</span>
+                        {selectedTabs === 0 && 
+                            <div style={{float: 'right'}}>
+                                <input type="checkbox" id="myhistory" name="Show History" onClick={() => this.onClickHistory()}>
+                            </div>
+                        }
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>
