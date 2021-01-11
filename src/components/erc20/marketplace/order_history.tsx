@@ -243,7 +243,7 @@ class OrderHistory extends React.Component<Props, State> {
                         <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(1)}>Order History</span>
                         {selectedTabs === 0 && 
                             <div style={{float: 'right'}}>
-                                <input type="checkbox" id="myhistory" name="Show History" onClick={() => this.onClickHistory()}>
+                                <input type="checkbox" id="myhistory" name="Show History" onClick={() => this.onClickHistory()} />
                             </div>
                         }
                     </CardTitle>
