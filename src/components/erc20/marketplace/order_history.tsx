@@ -122,7 +122,7 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     );
 };
 
-const allOrderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
+const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
 
@@ -247,7 +247,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH>&nbsp;</TH>
                                     </TR>
                                 </THead>
-                                <tbody>{myhistory.map((order, index) => orderHistoryToRow(order, index, baseToken))}</tbody>
+                                <tbody>{overallHistory.map((order, index) => allOrderHistoryToRow(order, index, baseToken))}</tbody>
                             </Table>
                         );
                     }

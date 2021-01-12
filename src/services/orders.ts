@@ -90,7 +90,7 @@ export const getOverallOrders = async (
     baseToken: Token,
     quoteToken: Token
 ) => {
-    const orders: SignedOrder[] = await getAllOrderHistory(baseToken, quoteToken);
+    const orders: any[] = await getAllOrderHistory(baseToken, quoteToken);
     return orders;
 };
 
