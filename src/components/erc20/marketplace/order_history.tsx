@@ -1,4 +1,4 @@
-import { OrderStatus, BigNumber, SignedOrder } from '0x.js';
+import { assetDataUtils, OrderStatus, BigNumber, SignedOrder } from '0x.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ import { themeDimensions } from '../../../themes/commons';
 
 import { UI_DECIMALS_DISPLAYED_PRICE_ETH } from '../../../common/constants';
 import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State, getOverallHistory } from '../../../store/selectors';
-import { tokenAmountInUnits } from '../../../util/tokens';
+import { tokenAmountInUnits, tokenAmountInUnitsToBigNumber } from '../../../util/tokens';
 import { OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
 import { CardBase } from '../../common/card_base';
 import { EmptyContent } from '../../common/empty_content';
@@ -17,6 +17,7 @@ import { ordersToUIOrdersWithoutOrderInfo } from '../../../util/ui_orders';
 
 import { CancelOrderButtonContainer } from './cancel_order_button';
 import { getOrderHistory } from '../../../store/actions';
+import { getKnownTokens } from '../../../util/known_tokens';
 
 interface StateProps {
     baseToken: Token | null;
@@ -123,18 +124,32 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
 };
 
 const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
-    const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
-    const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
+    const baseTokenEncoded = assetDataUtils.encodeERC20AssetData(baseToken.address);
 
-    const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+    const sideLabel = order.takerAssetData === baseTokenEncoded ? 'Buy' : 'Sell';
 
-    return (
+    const size = tokenAmountInUnits(sideLabel === 'Buy' ? order.takerAssetAmount : order.makerAssetAmount, baseToken.decimals, baseToken.displayDecimals);
+
+    const makerAssetAddress = assetDataUtils.decodeERC20AssetData(order.makerAssetData).tokenAddress;
+    const makerAssetTokenDecimals = getKnownTokens().getTokenByAddress(makerAssetAddress).decimals;
+    const makerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(order.makerAssetAmount, makerAssetTokenDecimals);
+
+    const takerAssetAddress = assetDataUtils.decodeERC20AssetData(order.takerAssetData).tokenAddress;
+    const takerAssetTokenDecimals = getKnownTokens().getTokenByAddress(takerAssetAddress).decimals;
+    const takerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(order.takerAssetAmount, takerAssetTokenDecimals);
+    const priceV = sideLabel === 'Buy'
+        ? makerAssetAmountInUnits.div(takerAssetAmountInUnits)
+        : takerAssetAmountInUnits.div(makerAssetAmountInUnits);
+
+
+    const price = parseFloat(priceV.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+
+    return order.status === 'Executed' && (
         <TR key={index}>
             <SideTD side={order.side}>{sideLabel}</SideTD>
-            <CustomTD>{order.rawOrder.makerAddress}</CustomTD>
+            <CustomTD>{order.makerAddress}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
-            <CustomTD>{order.status}</CustomTD>
         </TR>
     );
 };
@@ -243,7 +258,6 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH>MakerAddress</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
-                                        <TH>Status</TH>
                                         <TH>&nbsp;</TH>
                                     </TR>
                                 </THead>
