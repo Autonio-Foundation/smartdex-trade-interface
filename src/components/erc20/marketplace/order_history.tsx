@@ -128,15 +128,15 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const sideLabel = order.takerAssetData === baseTokenEncoded ? 'Buy' : 'Sell';
 
-    const size = tokenAmountInUnits(sideLabel === 'Buy' ? order.takerAssetAmount : order.makerAssetAmount, baseToken.decimals, baseToken.displayDecimals);
+    const size = tokenAmountInUnits(sideLabel === 'Buy' ? new BigNumber(order.takerAssetAmount) : new BigNumber(order.makerAssetAmount), baseToken.decimals, baseToken.displayDecimals);
 
     const makerAssetAddress = assetDataUtils.decodeERC20AssetData(order.makerAssetData).tokenAddress;
     const makerAssetTokenDecimals = getKnownTokens().getTokenByAddress(makerAssetAddress).decimals;
-    const makerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(order.makerAssetAmount, makerAssetTokenDecimals);
+    const makerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.makerAssetAmount), makerAssetTokenDecimals);
 
     const takerAssetAddress = assetDataUtils.decodeERC20AssetData(order.takerAssetData).tokenAddress;
     const takerAssetTokenDecimals = getKnownTokens().getTokenByAddress(takerAssetAddress).decimals;
-    const takerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(order.takerAssetAmount, takerAssetTokenDecimals);
+    const takerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.takerAssetAmount), takerAssetTokenDecimals);
     const priceV = sideLabel === 'Buy'
         ? makerAssetAmountInUnits.div(takerAssetAmountInUnits)
         : takerAssetAmountInUnits.div(makerAssetAmountInUnits);
