@@ -255,7 +255,7 @@ class OrderHistory extends React.Component<Props, State> {
                                 <THead>
                                     <TR>
                                         <TH>Side</TH>
-                                        <TH>MakerAddress</TH>
+                                        <TH>Maker Address</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH>&nbsp;</TH>
