@@ -64,6 +64,7 @@ export interface BlockchainState {
 
 export interface RelayerState {
     readonly orders: UIOrder[];
+    readonly overallHistory: UIOrder[];
     readonly userOrders: UIOrder[];
 }
 

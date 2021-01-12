@@ -1,4 +1,4 @@
-import { OrderStatus, BigNumber } from '0x.js';
+import { OrderStatus, BigNumber, SignedOrder } from '0x.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { themeDimensions } from '../../../themes/commons';
 
 import { UI_DECIMALS_DISPLAYED_PRICE_ETH } from '../../../common/constants';
-import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State } from '../../../store/selectors';
+import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State, getOverallHistory } from '../../../store/selectors';
 import { tokenAmountInUnits } from '../../../util/tokens';
 import { OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
 import { CardBase } from '../../common/card_base';
@@ -21,6 +21,7 @@ import { getOrderHistory } from '../../../store/actions';
 interface StateProps {
     baseToken: Token | null;
     orders: UIOrder[];
+    overallHistory: SignedOrder[];
     quoteToken: Token | null;
     web3State?: Web3State;
 }
@@ -121,6 +122,23 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     );
 };
 
+const allOrderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
+    const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
+    const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
+
+    const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+
+    return (
+        <TR key={index}>
+            <SideTD side={order.side}>{sideLabel}</SideTD>
+            <CustomTD>{order.rawOrder.makerAddress}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
+            <CustomTD>{order.status}</CustomTD>
+        </TR>
+    );
+};
+
 interface State {
     selectedTabs: number | 0;
     history: number | 0;
@@ -167,7 +185,7 @@ class OrderHistory extends React.Component<Props, State> {
     }
 
     public render = () => {
-        const { orders, baseToken, quoteToken, web3State } = this.props;
+        const { orders, baseToken, quoteToken, web3State, overallHistory } = this.props;
         const { selectedTabs, myhistory, history } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
@@ -216,11 +234,13 @@ class OrderHistory extends React.Component<Props, State> {
                         );
                     }
                     else if (selectedTabs === 1) {
+                        console.log(overallHistory);
                         content = (
                             <Table isResponsive={true}>
                                 <THead>
                                     <TR>
                                         <TH>Side</TH>
+                                        <TH>MakerAddress</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH>Status</TH>
@@ -261,6 +281,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
     return {
         baseToken: getBaseToken(state),
         orders: getUserOrders(state),
+        overallHistory: getOverallHistory(state),
         quoteToken: getQuoteToken(state),
         web3State: getWeb3State(state),
     };

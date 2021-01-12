@@ -10,6 +10,7 @@ import {
     getAllOrdersAsUIOrders,
     getAllOrdersAsUIOrdersWithoutOrdersInfo,
     getUserOrdersAsUIOrders,
+    getOverallOrders
 } from '../../services/orders';
 import { RELAYER_URL } from '../../common/constants';
 import { getRelayer } from '../../services/relayer';
@@ -43,6 +44,10 @@ export const setOrders = createAction('relayer/ORDERS_set', resolve => {
     return (orders: UIOrder[]) => resolve(orders);
 });
 
+export const setOverallHistory = createAction('relayer/OVERALLORDERHISTORY_set', resolve => {
+    return (orders: UIOrder[]) => resolve(orders);
+});
+
 export const setUserOrders = createAction('relayer/USER_ORDERS_set', resolve => {
     return (orders: UIOrder[]) => resolve(orders);
 });
@@ -63,7 +68,9 @@ export const getAllOrders: ThunkCreator = () => {
             } else {
                 uiOrders = await getAllOrdersAsUIOrders(baseToken, quoteToken, makerAddresses);
             }
+            let overall = await getOverallOrders(baseToken, quoteToken);
             dispatch(setOrders(uiOrders));
+            dispatch(setOverallHistory(overall));
         } catch (err) {
             logger.error(`getAllOrders: fetch orders from the relayer failed.`, err);
         }
