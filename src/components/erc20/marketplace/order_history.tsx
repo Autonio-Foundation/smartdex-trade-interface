@@ -146,7 +146,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     return order.status === 'Executed' && (
         <TR key={index}>
-            <SideTD side={order.side}>{sideLabel}</SideTD>
+            <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{sideLabel}</SideTD>
             <CustomTD>{order.makerAddress}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
@@ -284,7 +284,7 @@ class OrderHistory extends React.Component<Props, State> {
                         }
                     </CardTitle>
                 </CardHeader>
-                <CardBody>{content}</CardBody>
+                <CardBody style={{maxHeight: 250}}>{content}</CardBody>
             </CardWrapper>
         )
         // <Card title="Orders">{content}</Card>;
