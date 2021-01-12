@@ -45,7 +45,7 @@ export const setOrders = createAction('relayer/ORDERS_set', resolve => {
 });
 
 export const setOverallHistory = createAction('relayer/OVERALLORDERHISTORY_set', resolve => {
-    return (orders: UIOrder[]) => resolve(orders);
+    return (orders: SignedOrder[]) => resolve(orders);
 });
 
 export const setUserOrders = createAction('relayer/USER_ORDERS_set', resolve => {
