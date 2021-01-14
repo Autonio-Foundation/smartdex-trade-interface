@@ -276,7 +276,7 @@ class TVChartContainerComponent extends React.Component {
       <div
         id={this.state.containerId}
         className={"TVChartContainer"}
-        style={{ minHeight: '530px', height: '530px', overflow: "hidden", borderRadius: "5px" }}
+        style={{ minHeight: 'calc(100% - 270px)', height: 'calc(100% - 270px)', overflow: "hidden", borderRadius: "5px" }}
       />
     );
   }
