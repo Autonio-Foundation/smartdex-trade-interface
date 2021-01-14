@@ -151,7 +151,7 @@ class TradeHistory extends React.Component<Props, State> {
                         <span style={{color: '#0FEE90'}}>Recent Trades</span>
                     </CardTitle>
                 </CardHeader>
-                <CardBody style={{maxHeight: 250, height: 250}}>{content}</CardBody>
+                <CardBody style={{maxHeight: 'calc(100% - 550px)', height: 'calc(100% - 550px)'}}>{content}</CardBody>
             </CardWrapper>
         )
     };

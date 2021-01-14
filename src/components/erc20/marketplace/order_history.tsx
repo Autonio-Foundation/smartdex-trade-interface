@@ -284,7 +284,7 @@ class OrderHistory extends React.Component<Props, State> {
                         }
                     </CardTitle>
                 </CardHeader>
-                <CardBody style={{maxHeight: 250, height: 250}}>{content}</CardBody>
+                <CardBody style={{maxHeight: 'calc(100% - 550px)', height: 'calc(100% - 550px)'}}>{content}</CardBody>
             </CardWrapper>
         )
         // <Card title="Orders">{content}</Card>;
