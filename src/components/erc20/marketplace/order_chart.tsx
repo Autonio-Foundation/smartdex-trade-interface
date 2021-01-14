@@ -32,13 +32,13 @@ class OrderChart extends React.Component<Props> {
             }
             default: {
                 if (web3State !== Web3State.Error && (!baseToken || !quoteToken)) {
-                    content = <LoadingWrapper minHeight="100%" />;
+                    content = <LoadingWrapper minHeight="120px" />;
                 } else {
                     content = (
-                        <div className="main-box chart chartBox" style={{height: '100%'}}>
+                        <div className="main-box chart chartBox" style={{ minHeight: '530px', height: '530px' }}>
                             <div
                                 className="box-body chart-body"
-                                style={{ padding: '0px', height: '100%' }}
+                                style={{ minHeight: '530px', height: '530px', padding: '0px' }}
                             >
                                 <TVChartContainer props={this.props} />
                             </div>
@@ -49,7 +49,7 @@ class OrderChart extends React.Component<Props> {
             }
         }
 
-        return <Card title="Price Chart" style={{ height: 'calc(100% - 270px)' }} minHeightBody="100%">{content}</Card>;
+        return <Card title="Price Chart" style={{height: 'calc(100% - 270px)'}}>{content}</Card>;
     };
 }
 
