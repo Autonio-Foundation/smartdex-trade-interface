@@ -144,7 +144,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const price = parseFloat(priceV.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
-    const datetime = new Date(parseInt(order.dt));
+    const datetime = new Date(parseInt(order.salt));
 
     return order.status === 'Executed' && (
         <TR key={index}>
