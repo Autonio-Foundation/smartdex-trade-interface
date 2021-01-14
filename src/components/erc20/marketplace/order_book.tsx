@@ -57,6 +57,7 @@ const OrderbookCard = styled(Card)`
     flex-direction: column;
     flex-grow: 1;
     max-height: 592px;
+    height: 592px;
 
     > div:first-child {
         flex-grow: 0;

@@ -72,7 +72,7 @@ const CardBody = styled.div`
 const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const baseTokenEncoded = assetDataUtils.encodeERC20AssetData(baseToken.address);
 
-    const sideLabel = order.takerAssetData === baseTokenEncoded ? 'Buy' : 'Sell';
+    const sideLabel = order.takerAssetData === baseTokenEncoded ? 'Sell' : 'Buy'; //reversed
 
     const size = tokenAmountInUnits(sideLabel === 'Buy' ? new BigNumber(order.takerAssetAmount) : new BigNumber(order.makerAssetAmount), baseToken.decimals, baseToken.displayDecimals);
 
