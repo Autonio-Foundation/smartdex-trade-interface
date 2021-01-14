@@ -161,10 +161,6 @@ class OrderHistory extends React.Component<Props, State> {
         this.setState({selectedTabs: tabIdx});
     }
 
-    public onClickHistory = () => {
-        this.setState({history: (1 - this.state.history)});
-    }
-
     public render = () => {
         const { orders, baseToken, quoteToken, web3State } = this.props;
         const { selectedTabs, myhistory } = this.state;
