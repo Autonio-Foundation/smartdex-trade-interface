@@ -81,6 +81,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
     let status = '--';
     let isOrderFillable = false;
+    let datetime = new Date(parseInt(order.rawOrder.salt.toString()));
 
     const filled = order.filled
         ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
@@ -94,6 +95,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
     return (
         <TR key={index}>
+            <CustomTD styles={{ textAlign: 'left', tabular: true }}>{datetime.toLocaleDateString()} {datetime.toLocaleTimeString()}</CustomTD>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
@@ -110,10 +112,13 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
 
+    let datetime = new Date(parseInt(order.rawOrder.salt.toString()));
+
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
     return (
         <TR key={index}>
+            <CustomTD styles={{ textAlign: 'left', tabular: true }}>{datetime.toLocaleDateString()} {datetime.toLocaleTimeString()}</CustomTD>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
@@ -185,6 +190,7 @@ class OrderHistory extends React.Component<Props, State> {
                             <Table isResponsive={true}>
                                 <THead>
                                     <TR>
+                                        <TH>Date</TH>
                                         <TH>Side</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
@@ -202,6 +208,7 @@ class OrderHistory extends React.Component<Props, State> {
                             <Table isResponsive={true}>
                                 <THead>
                                     <TR>
+                                        <TH>Date</TH>
                                         <TH>Side</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>

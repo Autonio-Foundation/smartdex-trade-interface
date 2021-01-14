@@ -30,7 +30,8 @@ const Button = styled.button`
     margin-left: auto;
     outline: 0;
     padding: 0;
-    width: 25px;
+    width: 50px;
+    color: #AAA;
 
     &:hover {
         cursor: pointer;
