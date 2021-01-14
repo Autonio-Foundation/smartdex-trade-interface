@@ -1,4 +1,4 @@
-import { assetDataUtils, OrderStatus, BigNumber, SignedOrder } from '0x.js';
+import { assetDataUtils, OrderStatus, BigNumber } from '0x.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { themeDimensions } from '../../../themes/commons';
 
 import { UI_DECIMALS_DISPLAYED_PRICE_ETH } from '../../../common/constants';
-import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State, getOverallHistory } from '../../../store/selectors';
+import { getBaseToken, getQuoteToken, getUserOrders, getWeb3State } from '../../../store/selectors';
 import { tokenAmountInUnits, tokenAmountInUnitsToBigNumber } from '../../../util/tokens';
 import { OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
 import { CardBase } from '../../common/card_base';
@@ -22,7 +22,6 @@ import { getKnownTokens } from '../../../util/known_tokens';
 interface StateProps {
     baseToken: Token | null;
     orders: UIOrder[];
-    overallHistory: SignedOrder[];
     quoteToken: Token | null;
     web3State?: Web3State;
 }
@@ -123,49 +122,14 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     );
 };
 
-const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
-    const baseTokenEncoded = assetDataUtils.encodeERC20AssetData(baseToken.address);
-
-    const sideLabel = order.takerAssetData === baseTokenEncoded ? 'Buy' : 'Sell';
-
-    const size = tokenAmountInUnits(sideLabel === 'Buy' ? new BigNumber(order.takerAssetAmount) : new BigNumber(order.makerAssetAmount), baseToken.decimals, baseToken.displayDecimals);
-
-    const makerAssetAddress = assetDataUtils.decodeERC20AssetData(order.makerAssetData).tokenAddress;
-    const makerAssetTokenDecimals = getKnownTokens().getTokenByAddress(makerAssetAddress).decimals;
-    const makerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.makerAssetAmount), makerAssetTokenDecimals);
-
-    const takerAssetAddress = assetDataUtils.decodeERC20AssetData(order.takerAssetData).tokenAddress;
-    const takerAssetTokenDecimals = getKnownTokens().getTokenByAddress(takerAssetAddress).decimals;
-    const takerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.takerAssetAmount), takerAssetTokenDecimals);
-    const priceV = sideLabel === 'Buy'
-        ? makerAssetAmountInUnits.div(takerAssetAmountInUnits)
-        : takerAssetAmountInUnits.div(makerAssetAmountInUnits);
-
-
-    const price = parseFloat(priceV.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
-
-    const datetime = new Date(parseInt(order.salt));
-
-    return order.status === 'Executed' && (
-        <TR key={index}>
-            <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{sideLabel}</SideTD>
-            <CustomTD>{datetime.toLocaleDateString('en-US')} {datetime.toLocaleTimeString('en-US')}</CustomTD>
-            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
-            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
-        </TR>
-    );
-};
-
 interface State {
     selectedTabs: number | 0;
-    history: number | 0;
     myhistory: Array<any>;
 }
 
 class OrderHistory extends React.Component<Props, State> {
     public state: State = {
         selectedTabs: 0,
-        history: 0,
         myhistory: []
     }
 
@@ -202,8 +166,8 @@ class OrderHistory extends React.Component<Props, State> {
     }
 
     public render = () => {
-        const { orders, baseToken, quoteToken, web3State, overallHistory } = this.props;
-        const { selectedTabs, myhistory, history } = this.state;
+        const { orders, baseToken, quoteToken, web3State } = this.props;
+        const { selectedTabs, myhistory } = this.state;
         const ordersToShow = orders.filter(order => order.status === OrderStatus.Fillable);
 
         let content: React.ReactNode;
@@ -221,7 +185,7 @@ class OrderHistory extends React.Component<Props, State> {
                     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
                 } else {
                     if (selectedTabs === 0) {
-                        content = history === 0 ? (
+                        content = (
                             <Table isResponsive={true}>
                                 <THead>
                                     <TR>
@@ -235,7 +199,10 @@ class OrderHistory extends React.Component<Props, State> {
                                 </THead>
                                 <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
                             </Table>
-                        ) : (
+                        );
+                    }
+                    else if (selectedTabs === 1) {
+                        content = (
                             <Table isResponsive={true}>
                                 <THead>
                                     <TR>
@@ -250,23 +217,6 @@ class OrderHistory extends React.Component<Props, State> {
                             </Table>
                         );
                     }
-                    else if (selectedTabs === 1) {
-                        console.log(overallHistory);
-                        content = (
-                            <Table isResponsive={true}>
-                                <THead>
-                                    <TR>
-                                        <TH>Side</TH>
-                                        <TH>Date</TH>
-                                        <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
-                                        <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
-                                        <TH>&nbsp;</TH>
-                                    </TR>
-                                </THead>
-                                <tbody>{overallHistory.map((order, index) => allOrderHistoryToRow(order, index, baseToken))}</tbody>
-                            </Table>
-                        );
-                    }
                 }
                 break;
             }
@@ -277,13 +227,7 @@ class OrderHistory extends React.Component<Props, State> {
                 <CardHeader>
                     <CardTitle>
                         <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(0)}>Open Orders</span>
-                        <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(1)}>Trade History</span>
-                        {selectedTabs === 0 && 
-                            <div style={{float: 'right'}}>
-                                <input type="checkbox" id="myhistory" name="myhistory" onClick={() => this.onClickHistory()} />
-                                <span style={{color: '#fff'}}> Show History</span>
-                            </div>
-                        }
+                        <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>
@@ -297,7 +241,6 @@ const mapStateToProps = (state: StoreState): StateProps => {
     return {
         baseToken: getBaseToken(state),
         orders: getUserOrders(state),
-        overallHistory: getOverallHistory(state),
         quoteToken: getQuoteToken(state),
         web3State: getWeb3State(state),
     };

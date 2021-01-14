@@ -50,7 +50,7 @@ class CancelOrderButton extends React.Component<Props, State> {
         const { isLoading } = this.state;
         return (
             <Button title="Cancel order" type="button" disabled={isLoading} onClick={this._cancelOrder}>
-                <CloseIcon />
+                Cancel
             </Button>
         );
     };
