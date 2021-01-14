@@ -108,7 +108,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
-            <CustomTD>{status}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{status}</CustomTD>
             <CustomTD styles={{ textAlign: 'center' }}>
                 {isOrderFillable ? <CancelOrderButtonContainer order={order} /> : ''}
             </CustomTD>
@@ -131,7 +131,7 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
-            <CustomTD>{order.status}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{order.status}</CustomTD>
         </TR>
     );
 };
@@ -204,7 +204,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
-                                        <TH>Status</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Status</TH>
                                         <TH>&nbsp;</TH>
                                     </TR>
                                 </THead>
@@ -221,7 +221,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH>Side</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
-                                        <TH>Status</TH>
+                                        <TH styles={{ textAlign: 'right' }}>Status</TH>
                                         <TH>&nbsp;</TH>
                                     </TR>
                                 </THead>
@@ -238,8 +238,8 @@ class OrderHistory extends React.Component<Props, State> {
             <CardWrapper style={{maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)'}}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(0)}>Open Orders</span>
-                        <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
+                        <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#999'}} onClick={() => this.onSelectTab(0)}>Open Orders</span>
+                        <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#999'}} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>
