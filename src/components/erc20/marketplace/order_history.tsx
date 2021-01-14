@@ -76,12 +76,20 @@ const CardBody = styled.div`
     position: relative;
 `;
 
+function pad_with_zeroes(number: number, length: number) {
+    var my_string = '' + number;
+    while (my_string.length < length) {
+        my_string = '0' + my_string;
+    }
+    return my_string;
+}
 const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
     const sideLabel = order.side === OrderSide.Sell ? 'Sell' : 'Buy';
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
     let status = '--';
     let isOrderFillable = false;
     let datetime = new Date(parseInt(order.rawOrder.salt.toString()));
+    let dateStr = `${pad_with_zeroes(datetime.getMonth(), 2)}-${pad_with_zeroes(datetime.getDay(), 2)} ${pad_with_zeroes(datetime.getHours(), 2)}:${pad_with_zeroes(datetime.getMinutes(), 2)}:${pad_with_zeroes(datetime.getSeconds(), 2)}`
 
     const filled = order.filled
         ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
@@ -95,7 +103,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
 
     return (
         <TR key={index}>
-            <CustomTD styles={{ textAlign: 'left', tabular: true }}>{datetime.toLocaleDateString()} {datetime.toLocaleTimeString()}</CustomTD>
+            <CustomTD styles={{ textAlign: 'left', tabular: true }}>{dateStr}</CustomTD>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{filled}</CustomTD>
@@ -113,12 +121,13 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
 
     let datetime = new Date(parseInt(order.rawOrder.salt.toString()));
+    let dateStr = `${pad_with_zeroes(datetime.getMonth(), 2)}-${pad_with_zeroes(datetime.getDay(), 2)} ${pad_with_zeroes(datetime.getHours(), 2)}:${pad_with_zeroes(datetime.getMinutes(), 2)}:${pad_with_zeroes(datetime.getSeconds(), 2)}`
 
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
     return (
         <TR key={index}>
-            <CustomTD styles={{ textAlign: 'left', tabular: true }}>{datetime.toLocaleDateString()} {datetime.toLocaleTimeString()}</CustomTD>
+            <CustomTD styles={{ textAlign: 'left', tabular: true }}>{dateStr}</CustomTD>
             <SideTD side={order.side}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
