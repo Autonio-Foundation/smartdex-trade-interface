@@ -83,7 +83,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const takerAssetAddress = assetDataUtils.decodeERC20AssetData(order.takerAssetData).tokenAddress;
     const takerAssetTokenDecimals = getKnownTokens().getTokenByAddress(takerAssetAddress).decimals;
     const takerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.takerAssetAmount), takerAssetTokenDecimals);
-    const priceV = sideLabel === 'Buy'
+    const priceV = sideLabel === 'Sell'
         ? makerAssetAmountInUnits.div(takerAssetAmountInUnits)
         : takerAssetAmountInUnits.div(makerAssetAmountInUnits);
 
