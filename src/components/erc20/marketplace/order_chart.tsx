@@ -35,10 +35,10 @@ class OrderChart extends React.Component<Props> {
                     content = <LoadingWrapper minHeight="100%" />;
                 } else {
                     content = (
-                        <div className="main-box chart chartBox">
+                        <div className="main-box chart chartBox" style={{height: '100%'}}>
                             <div
                                 className="box-body chart-body"
-                                style={{ padding: '0px' }}
+                                style={{ padding: '0px', height: '100%' }}
                             >
                                 <TVChartContainer props={this.props} />
                             </div>
