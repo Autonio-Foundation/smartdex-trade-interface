@@ -332,7 +332,7 @@ class OrderBookTable extends React.Component<Props> {
             );
         }
 
-        return <OrderbookCard title="Orderbook" style={{paddingBottom: 45}}>{content}</OrderbookCard>;
+        return <OrderbookCard title="Orderbook">{content}</OrderbookCard>;
     };
 
     public componentDidMount = () => {

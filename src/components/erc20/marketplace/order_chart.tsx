@@ -49,7 +49,7 @@ class OrderChart extends React.Component<Props> {
             }
         }
 
-        return <Card title="Price Chart" style={{ height: 'calc(100% - 270px)' }}>{content}</Card>;
+        return <Card title="Price Chart" style={{ height: 'calc(100% - 270px)' }} minHeightBody="100%">{content}</Card>;
     };
 }
 
