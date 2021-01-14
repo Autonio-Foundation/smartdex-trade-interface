@@ -32,7 +32,7 @@ class OrderChart extends React.Component<Props> {
             }
             default: {
                 if (web3State !== Web3State.Error && (!baseToken || !quoteToken)) {
-                    content = <LoadingWrapper minHeight="120px" />;
+                    content = <LoadingWrapper minHeight="100%" />;
                 } else {
                     content = (
                         <div className="main-box chart chartBox">
