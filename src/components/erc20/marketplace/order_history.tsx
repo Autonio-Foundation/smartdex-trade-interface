@@ -144,10 +144,12 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const price = parseFloat(priceV.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
+    const datetime = new Date(parseInt(order.dt));
+
     return order.status === 'Executed' && (
         <TR key={index}>
             <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{sideLabel}</SideTD>
-            <CustomTD>{order.makerAddress}</CustomTD>
+            <CustomTD>{datetime.toLocaleDateString('en-US')} {datetime.toLocaleTimeString('en-US')}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
         </TR>
@@ -255,7 +257,7 @@ class OrderHistory extends React.Component<Props, State> {
                                 <THead>
                                     <TR>
                                         <TH>Side</TH>
-                                        <TH>Maker Address</TH>
+                                        <TH>Date</TH>
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH>&nbsp;</TH>
