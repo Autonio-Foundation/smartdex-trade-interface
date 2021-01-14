@@ -271,7 +271,7 @@ class OrderHistory extends React.Component<Props, State> {
         }
 
         return (
-            <CardWrapper>
+            <CardWrapper style={{maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)'}}>
                 <CardHeader>
                     <CardTitle>
                         <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#fff'}} onClick={() => this.onSelectTab(0)}>Open Orders</span>
@@ -284,7 +284,7 @@ class OrderHistory extends React.Component<Props, State> {
                         }
                     </CardTitle>
                 </CardHeader>
-                <CardBody style={{maxHeight: 'calc(100% - 550px)', height: 'calc(100% - 550px)'}}>{content}</CardBody>
+                <CardBody>{content}</CardBody>
             </CardWrapper>
         )
         // <Card title="Orders">{content}</Card>;
