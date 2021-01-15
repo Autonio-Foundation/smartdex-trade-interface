@@ -209,6 +209,7 @@ export interface CurrencyPair {
 export interface Market {
     currencyPair: CurrencyPair;
     price: BigNumber | null;
+    prvPrice: BigNumber | null;
 }
 
 export enum NotificationKind {

@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import queryString from 'query-string';
 import { createAction } from 'typesafe-actions';
 
-import { ERC20_APP_BASE_PATH } from '../../common/constants';
+import { ERC20_APP_BASE_PATH, RELAYER_URL } from '../../common/constants';
 import { availableMarkets } from '../../common/markets';
 import { getMarketPriceEther } from '../../services/markets';
 import { getRelayer } from '../../services/relayer';
@@ -82,10 +82,19 @@ export const fetchMarkets: ThunkCreator = () => {
                     const quoteToken = knownTokens.getTokenBySymbol(availableMarket.quote);
 
                     const price = await relayer.getCurrencyPairPriceAsync(baseToken, quoteToken);
+                    const params = {
+                        base_token: baseToken.symbol,
+                        quote_token: quoteToken.symbol,
+                    };
+            
+                    var response = await (await fetch(RELAYER_URL + '/prev-market?' + new URLSearchParams(params))).json();
+                    console.log(response);
+            
 
                     return {
                         currencyPair: availableMarket,
                         price,
+                        prevPrice: price
                     };
                 } catch (err) {
                     logger.error(

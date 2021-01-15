@@ -16,11 +16,12 @@ import {
     getSpreadInPercentage,
     getUserOrders,
     getWeb3State,
+    getMarkets
 } from '../../../store/selectors';
 import { setOrderPriceSelected } from '../../../store/ui/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
 import { tokenAmountInUnits } from '../../../util/tokens';
-import { OrderBook, OrderBookItem, OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
+import { OrderBook, OrderBookItem, OrderSide, StoreState, Token, UIOrder, Web3State, Market } from '../../../util/types';
 import { Card } from '../../common/card';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
@@ -44,6 +45,7 @@ interface StateProps {
     web3State?: Web3State;
     absoluteSpread: BigNumber;
     percentageSpread: BigNumber;
+    markets: Market[] | null;
 }
 
 interface OwnProps {
@@ -416,6 +418,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
         web3State: getWeb3State(state),
         absoluteSpread: getSpread(state),
         percentageSpread: getSpreadInPercentage(state),
+        markets: getMarkets(state),
     };
 };
 
