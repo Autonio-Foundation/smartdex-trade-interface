@@ -269,8 +269,8 @@ class OrderBookTable extends React.Component<Props> {
                     if (market.price) {
                         marketPrice = parseFloat(market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH));
                     }
-                    if (market.prvPrice) {
-                        marketPrevPrice = market.prvPrice;
+                    if (market.prevPrice) {
+                        marketPrevPrice = market.prevPrice;
                     }
                 }
             })    
