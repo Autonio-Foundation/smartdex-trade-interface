@@ -88,13 +88,11 @@ export const fetchMarkets: ThunkCreator = () => {
                     };
             
                     var response = await (await fetch(RELAYER_URL + '/prev-market?' + new URLSearchParams(params))).json();
-                    console.log(response);
-            
 
                     return {
                         currencyPair: availableMarket,
                         price,
-                        prevPrice: price
+                        prevPrice: response.prevPrice
                     };
                 } catch (err) {
                     logger.error(

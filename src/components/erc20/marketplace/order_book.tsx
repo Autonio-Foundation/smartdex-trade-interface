@@ -16,12 +16,13 @@ import {
     getSpreadInPercentage,
     getUserOrders,
     getWeb3State,
-    getMarkets
+    getMarkets,
+    getCurrencyPair
 } from '../../../store/selectors';
 import { setOrderPriceSelected } from '../../../store/ui/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
 import { tokenAmountInUnits } from '../../../util/tokens';
-import { OrderBook, OrderBookItem, OrderSide, StoreState, Token, UIOrder, Web3State, Market } from '../../../util/types';
+import { OrderBook, OrderBookItem, OrderSide, StoreState, Token, UIOrder, Web3State, Market, CurrencyPair } from '../../../util/types';
 import { Card } from '../../common/card';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
@@ -46,6 +47,7 @@ interface StateProps {
     absoluteSpread: BigNumber;
     percentageSpread: BigNumber;
     markets: Market[] | null;
+    currencyPair: CurrencyPair;
 }
 
 interface OwnProps {
@@ -243,7 +245,7 @@ class OrderBookTable extends React.Component<Props> {
     }
 
     public render = () => {
-        const { orderBook, baseToken, quoteToken, web3State, theme, absoluteSpread, percentageSpread } = this.props;
+        const { orderBook, baseToken, quoteToken, web3State, theme, absoluteSpread, percentageSpread, currencyPair, markets } = this.props;
         const { sellOrders, buyOrders, mySizeOrders } = orderBook;
         const mySizeSellArray = mySizeOrders.filter((order: { side: OrderSide }) => {
             return order.side === OrderSide.Sell;
@@ -254,6 +256,25 @@ class OrderBookTable extends React.Component<Props> {
         const getColor = (order: OrderBookItem): string => {
             return order.side === OrderSide.Buy ? theme.componentsTheme.green : theme.componentsTheme.red;
         };
+
+        let marketPrice = null;
+        let marketPrevPrice = null;
+
+        markets.forEach((market: any) => {
+            const isActive =
+            market.currencyPair.base === currencyPair.base &&
+            market.currencyPair.quote === currencyPair.quote;
+            if (isActive) {
+                if (market.price) {
+                    marketPrice = market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+                }
+                if (market.prevPrice) {
+                    marketPrevPrice = market.prvPrice.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+                }
+            }
+        })
+
+        console.log(marketPrevPrice, marketPrice);
 
         let content: React.ReactNode;
 
@@ -419,6 +440,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
         absoluteSpread: getSpread(state),
         percentageSpread: getSpreadInPercentage(state),
         markets: getMarkets(state),
+        currencyPair: getCurrencyPair(state),
     };
 };
 
