@@ -30,7 +30,7 @@ const Button = styled.button`
     margin-left: auto;
     outline: 0;
     padding: 0;
-    width: 70px;
+    width: 50px;
     color: #999;
 
     &:hover {
