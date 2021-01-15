@@ -257,8 +257,9 @@ class OrderBookTable extends React.Component<Props> {
             return order.side === OrderSide.Buy ? theme.componentsTheme.green : theme.componentsTheme.red;
         };
 
-        let marketPrice = null;
-        let marketPrevPrice = null;
+        let marketPrice: number = 0;
+        let marketPrevPrice: number = 0;
+        let priceRatio: number = 0.0;
 
         if (markets !== null && markets.length > 0) {
             markets.forEach((market: any) => {
@@ -275,7 +276,9 @@ class OrderBookTable extends React.Component<Props> {
                 }
             })    
         }
-        console.log(marketPrevPrice, marketPrice);
+        if (marketPrice > 0 && marketPrevPrice > 0) {
+            priceRatio = (marketPrice - marketPrevPrice) * 100 / marketPrevPrice;
+        }
 
         let content: React.ReactNode;
 
@@ -328,13 +331,13 @@ class OrderBookTable extends React.Component<Props> {
                             </TopItems>
                             <GridRowSpreadContainer ref={this._spreadRowScrollable}>
                                 <CustomTDTitle as="div" styles={customTDTitleStyles}>
-                                    Spread
+                                    24H {priceRatio.toFixed(2)}%
                                 </CustomTDTitle>
-                                <CustomTD as="div" styles={customTDStyles}>
+                                {/* <CustomTD as="div" styles={customTDStyles}>
                                     {spreadAbsFixed}
-                                </CustomTD>
+                                </CustomTD> */}
                                 <CustomTDLast as="div" styles={customTDLastStyles}>
-                                    {spreadPercentFixed}%
+                                    Spread {spreadPercentFixed}%
                                 </CustomTDLast>
                             </GridRowSpreadContainer>
                             <BottomItems>
