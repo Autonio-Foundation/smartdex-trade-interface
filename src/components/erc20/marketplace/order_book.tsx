@@ -267,10 +267,10 @@ class OrderBookTable extends React.Component<Props> {
                 market.currencyPair.quote === currencyPair.quote;
                 if (isActive) {
                     if (market.price) {
-                        marketPrice = market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+                        marketPrice = parseFloat(market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH));
                     }
                     if (market.prevPrice) {
-                        marketPrevPrice = market.prvPrice.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+                        marketPrevPrice = market.prvPrice;
                     }
                 }
             })    
