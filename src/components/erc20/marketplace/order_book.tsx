@@ -260,20 +260,21 @@ class OrderBookTable extends React.Component<Props> {
         let marketPrice = null;
         let marketPrevPrice = null;
 
-        markets.forEach((market: any) => {
-            const isActive =
-            market.currencyPair.base === currencyPair.base &&
-            market.currencyPair.quote === currencyPair.quote;
-            if (isActive) {
-                if (market.price) {
-                    marketPrice = market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+        if (markets !== null && markets.length > 0) {
+            markets.forEach((market: any) => {
+                const isActive =
+                market.currencyPair.base === currencyPair.base &&
+                market.currencyPair.quote === currencyPair.quote;
+                if (isActive) {
+                    if (market.price) {
+                        marketPrice = market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+                    }
+                    if (market.prevPrice) {
+                        marketPrevPrice = market.prvPrice.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+                    }
                 }
-                if (market.prevPrice) {
-                    marketPrevPrice = market.prvPrice.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
-                }
-            }
-        })
-
+            })    
+        }
         console.log(marketPrevPrice, marketPrice);
 
         let content: React.ReactNode;
