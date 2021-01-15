@@ -330,14 +330,15 @@ class OrderBookTable extends React.Component<Props> {
                                 ))}
                             </TopItems>
                             <GridRowSpreadContainer ref={this._spreadRowScrollable}>
-                                <CustomTDTitle as="div" styles={customTDTitleStyles}>
-                                    24H {priceRatio.toFixed(2)}%
-                                </CustomTDTitle>
-                                {/* <CustomTD as="div" styles={customTDStyles}>
-                                    {spreadAbsFixed}
-                                </CustomTD> */}
+                                <CustomTD as="div" styles={customTDTitleStyles}>
+                                    24H <span style={{color: priceRatio === 0 ? '#fff' : (priceRatio > 0 ? '#0FEE90': '#F91A4F')}}>{priceRatio.toFixed(2)}%</span>
+                                </CustomTD>
+                                <CustomTD as="div" styles={customTDStyles}>
+                                    {/* {spreadAbsFixed} */}
+                                    SPREAD
+                                </CustomTD>
                                 <CustomTDLast as="div" styles={customTDLastStyles}>
-                                    Spread {spreadPercentFixed}%
+                                    {spreadPercentFixed}%
                                 </CustomTDLast>
                             </GridRowSpreadContainer>
                             <BottomItems>

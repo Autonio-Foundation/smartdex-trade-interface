@@ -166,7 +166,6 @@ class OrderHistory extends React.Component<Props, State> {
             myhistory && myhistory.map((cur: any, idx: number) => {
                 cur.status = ht[idx].status;
             })
-            console.log(myhistory);
             this.setState({myhistory});
         }
     }
