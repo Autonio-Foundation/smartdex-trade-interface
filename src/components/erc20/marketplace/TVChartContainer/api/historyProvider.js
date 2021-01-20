@@ -7,6 +7,7 @@ export default {
   history: history,
 
   getBars: function(symbolInfo, resolution, from, to, first, limit) {
+    console.log(resolution);
     var split_symbol = symbolInfo.name.split(/[:/]/);
     const url = "/history";
     const qs = {
