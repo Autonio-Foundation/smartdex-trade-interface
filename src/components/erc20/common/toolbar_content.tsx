@@ -87,56 +87,93 @@ const WalletDropdown = styled(WalletConnectionContentContainer)`
     }
 `;
 
-const ToolbarContent = (props: Props) => {
-    const handleLogoClick: React.EventHandler<React.MouseEvent> = e => {
-        e.preventDefault();
-        props.onGoToHome();
-    };
-    const generalConfig = Config.getConfig().general;
-    // const logo = <LogoSVGStyled />;
-    const logo = null;
-    const startContent = (
-        <>
-            <LogoHeader
-                image={logo}
-                onClick={handleLogoClick}
-                text="smartdex"
-                textColor={props.theme.componentsTheme.logoERC20TextColor}
-            />
-            <MarketsDropdownHeader shouldCloseDropdownBodyOnClick={false} />
-        </>
-    );
+interface State {
+    isArkaneAuthenticated: Boolean;
+}
 
-    const handleMyWalletClick: React.EventHandler<React.MouseEvent> = e => {
-        e.preventDefault();
-        props.onGoToWallet();
-    };
+class ToolbarContent extends React.Component<Props, State> {
 
-    const handleArkaneConnect: React.EventHandler<React.MouseEvent> = e => {
-        e.preventDefault();
-        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {chains: ['Ethereum'], environment: ARKANE_ENV});
-        window.arkaneConnect.checkAuthenticated({redirectUri: ARKANE_REDIRECT_URI})
-            .then((result: any) => result.authenticated((auth: any) => {
-                    console.log('Authentication successfull ' + auth.subject);
-                })
-                .notAuthenticated((auth: any) => {
-                    console.log('Not authenticated');
-                })
-            );
+    public readonly state: State = {
+        isArkaneAuthenticated: false
     }
 
-    const endContent = (
-        <>
-            <ArkaneConnectLink onClick={handleArkaneConnect}>Connect to Arkane</ArkaneConnectLink>
-            <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
-                My Wallet
-            </MyWalletLink>
-            <WalletDropdown />
-            <NotificationsDropdownContainer />
-        </>
-    );
+    public componentDidMount = async () => {
+        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {chains: ['Ethereum'], environment: ARKANE_ENV});
+        if (window.arkaneConnect) {
+            window.arkaneConnect.checkAuthenticated()
+                .then((result: any) => result.authenticated((auth: any) => {
+                        console.log('Authentication successfull ' + auth.subject);
+                        this.setState({isArkaneAuthenticated: true});
+                    })
+                    .notAuthenticated((auth: any) => {
+                        console.log('Not authenticated');
+                    })
+                );
+        }
+    }
 
-    return <ToolbarContainer startContent={startContent} endContent={endContent} />;
+    private readonly handleLogoClick = (e: any) => {
+        e.preventDefault();
+        this.props.onGoToHome();
+    };
+
+    private readonly handleMyWalletClick = (e: any) => {
+        e.preventDefault();
+        this.props.onGoToWallet();
+    };
+
+    private readonly handleArkaneConnect = (e: any) => {
+        const { isArkaneAuthenticated } = this.state;
+        e.preventDefault();
+        if (window.arkaneConnect) {
+            if (!isArkaneAuthenticated) {
+                window.arkaneConnect.authenticate({windowMode: 'POPUP', redirectUri: ARKANE_REDIRECT_URI})
+                    .then((result: any) => result.authenticated((auth: any) => {
+                            console.log('Authentication successfull ' + auth.subject);
+                            this.setState({isArkaneAuthenticated: true});
+                        })
+                        .notAuthenticated((auth: any) => {
+                            console.log('Not authenticated');
+                            this.setState({isArkaneAuthenticated: false});
+                        })
+                    );
+            }
+            else {
+                window.arkaneConnect.logout();
+            }
+        }
+    }
+
+    public render() {
+        const generalConfig = Config.getConfig().general;
+        const { isArkaneAuthenticated } = this.state;
+        // const logo = <LogoSVGStyled />;
+        const logo = null;
+        const startContent = (
+            <>
+                <LogoHeader
+                    image={logo}
+                    onClick={this.handleLogoClick}
+                    text="smartdex"
+                    textColor={this.props.theme.componentsTheme.logoERC20TextColor}
+                />
+                <MarketsDropdownHeader shouldCloseDropdownBodyOnClick={false} />
+            </>
+        );
+    
+        const endContent = (
+            <>
+                <ArkaneConnectLink onClick={this.handleArkaneConnect}>{isArkaneAuthenticated ? 'Connect to Arkane' : 'Arkane Logout'}</ArkaneConnectLink>
+                <MyWalletLink href="/my-wallet" onClick={this.handleMyWalletClick}>
+                    My Wallet
+                </MyWalletLink>
+                <WalletDropdown />
+                <NotificationsDropdownContainer />
+            </>
+        );
+    
+        return <ToolbarContainer startContent={startContent} endContent={endContent} />;    
+    }
 };
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => {
