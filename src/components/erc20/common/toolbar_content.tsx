@@ -5,7 +5,7 @@ import styled, { withTheme } from 'styled-components';
 
 import { ReactComponent as LogoSvg } from '../../../assets/icons/erc20_logo.svg';
 import { Config } from '../../../common/config';
-import { UI_GENERAL_TITLE, ARKANE_CLIENTID, ARKANE_ENV } from '../../../common/constants';
+import { UI_GENERAL_TITLE, ARKANE_CLIENTID, ARKANE_ENV, ARKANE_REDIRECT_URI } from '../../../common/constants';
 import { Logo } from '../../../components/common/logo';
 import { separatorTopbar, ToolbarContainer } from '../../../components/common/toolbar';
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
@@ -114,10 +114,15 @@ const ToolbarContent = (props: Props) => {
 
     const handleArkaneConnect: React.EventHandler<React.MouseEvent> = e => {
         e.preventDefault();
-        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {environment: ARKANE_ENV});
-        window.arkaneConnect.flows.authenticate({windowMode: 'POPUP'}).then((result: any) => {
-            console.log(result)
-        });
+        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {chains: ['Ethereum'], environment: ARKANE_ENV});
+        window.arkaneConnect.checkAuthenticated({redirectUri: ARKANE_REDIRECT_URI})
+            .then((result: any) => result.authenticated((auth: any) => {
+                    console.log('Authentication successfull ' + auth.subject);
+                })
+                .notAuthenticated((auth: any) => {
+                    console.log('Not authenticated');
+                })
+            );
     }
 
     const endContent = (
