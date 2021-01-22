@@ -28,6 +28,21 @@ interface OwnProps {
 
 type Props = DispatchProps & OwnProps;
 
+const ArkaneConnectLink = styled.a`
+    align-items: center;
+    color: ${props => props.theme.componentsTheme.myWalletLinkColor};
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    ${separatorTopbar}
+`;
+
 const MyWalletLink = styled.a`
     align-items: center;
     color: ${props => props.theme.componentsTheme.myWalletLinkColor};
@@ -95,11 +110,18 @@ const ToolbarContent = (props: Props) => {
         e.preventDefault();
         props.onGoToWallet();
     };
+
+    const handleArkaneConnect: React.EventHandler<React.MouseEvent> = e => {
+        e.preventDefault();
+        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {environment: ARKANE_ENV, windowMode: 'POPUP'});
+        window.arkaneConnect.flows.authenticate({windowMode: 'POPUP'}).then((result: any) => {
+            console.log(result)
+        });
+    }
+
     const endContent = (
         <>
-            <Button onClick={() => {
-                window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {environment: ARKANE_ENV});
-            }}>Connect to Arkane</Button>
+            <ArkaneConnectLink onClick={handleArkaneConnect}>Connect to Arkane</ArkaneConnectLink>
             <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
                 My Wallet
             </MyWalletLink>
