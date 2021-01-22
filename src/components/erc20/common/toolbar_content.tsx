@@ -35,6 +35,7 @@ const ArkaneConnectLink = styled.a`
     font-size: 16px;
     font-weight: 500;
     text-decoration: none;
+    cursor: pointer;
 
     &:hover {
         text-decoration: underline;
