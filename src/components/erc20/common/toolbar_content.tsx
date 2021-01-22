@@ -11,6 +11,7 @@ import { separatorTopbar, ToolbarContainer } from '../../../components/common/to
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
 import { goToHome, goToWallet } from '../../../store/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
+import { Button } from '../../common/button';
 import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
 
 import { MarketsDropdownContainer } from './markets_dropdown';
@@ -95,6 +96,9 @@ const ToolbarContent = (props: Props) => {
     };
     const endContent = (
         <>
+            <Button onClick={() => {
+                window.arkaneConnect = new ArkaneConnect(process.env.ARKANE_CLIENTID, {environment: process.env.ARKANE_ENV});
+            }}>Connect to Arkane</Button>
             <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
                 My Wallet
             </MyWalletLink>
