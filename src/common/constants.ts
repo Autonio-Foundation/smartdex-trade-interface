@@ -13,6 +13,9 @@ export const TX_DEFAULTS = {
     shouldValidate: true,
 };
 
+export const ARKANE_CLIENTID = "AutonioFoundation";
+export const ARKANE_ENV = "staging";
+
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const FEE_RECIPIENT = process.env.REACT_APP_FEE_RECIPIENT || ZERO_ADDRESS;

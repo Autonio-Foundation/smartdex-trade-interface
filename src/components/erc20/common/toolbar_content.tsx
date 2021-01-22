@@ -5,7 +5,7 @@ import styled, { withTheme } from 'styled-components';
 
 import { ReactComponent as LogoSvg } from '../../../assets/icons/erc20_logo.svg';
 import { Config } from '../../../common/config';
-import { UI_GENERAL_TITLE } from '../../../common/constants';
+import { UI_GENERAL_TITLE, ARKANE_CLIENTID, ARKANE_ENV } from '../../../common/constants';
 import { Logo } from '../../../components/common/logo';
 import { separatorTopbar, ToolbarContainer } from '../../../components/common/toolbar';
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
@@ -97,7 +97,7 @@ const ToolbarContent = (props: Props) => {
     const endContent = (
         <>
             <Button onClick={() => {
-                window.arkaneConnect = new ArkaneConnect(process.env.ARKANE_CLIENTID, {environment: process.env.ARKANE_ENV});
+                window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {environment: ARKANE_ENV});
             }}>Connect to Arkane</Button>
             <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
                 My Wallet
