@@ -98,7 +98,7 @@ class ToolbarContent extends React.Component<Props, State> {
     }
 
     public componentDidMount = async () => {
-        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {chains: ['Ethereum'], environment: ARKANE_ENV});
+        window.arkaneConnect = await new ArkaneConnect(ARKANE_CLIENTID, {chains: ['Ethereum'], environment: ARKANE_ENV});
         if (window.arkaneConnect) {
             window.arkaneConnect.checkAuthenticated()
                 .then((result: any) => result.authenticated((auth: any) => {
