@@ -113,7 +113,7 @@ const ToolbarContent = (props: Props) => {
 
     const handleArkaneConnect: React.EventHandler<React.MouseEvent> = e => {
         e.preventDefault();
-        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {environment: ARKANE_ENV, windowMode: 'POPUP'});
+        window.arkaneConnect = new ArkaneConnect(ARKANE_CLIENTID, {environment: ARKANE_ENV});
         window.arkaneConnect.flows.authenticate({windowMode: 'POPUP'}).then((result: any) => {
             console.log(result)
         });
