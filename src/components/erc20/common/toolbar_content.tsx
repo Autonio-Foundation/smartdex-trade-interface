@@ -163,7 +163,7 @@ class ToolbarContent extends React.Component<Props, State> {
     
         const endContent = (
             <>
-                <ArkaneConnectLink onClick={this.handleArkaneConnect}>{isArkaneAuthenticated ? 'Connect to Arkane' : 'Arkane Logout'}</ArkaneConnectLink>
+                <ArkaneConnectLink onClick={this.handleArkaneConnect}>{isArkaneAuthenticated ? 'Arkane Logout' : 'Connect to Arkane'}</ArkaneConnectLink>
                 <MyWalletLink href="/my-wallet" onClick={this.handleMyWalletClick}>
                     My Wallet
                 </MyWalletLink>
