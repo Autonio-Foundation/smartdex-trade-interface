@@ -13,7 +13,7 @@ import { goToHome, goToWallet } from '../../../store/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
 import { Button } from '../../common/button';
 import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
-import ArkaneConnect from '@arkane-network/arkane-connect';
+import { ArkaneConnect } from '@arkane-network/arkane-connect';
 
 import { MarketsDropdownContainer } from './markets_dropdown';
 
