@@ -6,8 +6,10 @@ import { getWeb3State } from '../../store/selectors';
 import { themeBreakPoints, themeDimensions } from '../../themes/commons';
 import { errorsWallet } from '../../util/error_messages';
 import { StoreState, Web3State } from '../../util/types';
+import { ARKANE_CLIENTID, ARKANE_ENV, ARKANE_REDIRECT_URI } from '../../common/constants';
 
 import { ErrorCard, ErrorIcons, FontSize } from './error_card';
+import { ArkaneConnect } from '@arkane-network/arkane-connect';
 
 interface OwnProps {
     centerContent?: React.ReactNode;
@@ -33,6 +35,22 @@ export const separatorTopbar = css`
     &:last-child:after {
         display: none;
     }
+`;
+
+const ArkaneConnectLink = styled.a`
+    align-items: center;
+    color: ${props => props.theme.componentsTheme.myWalletLinkColor};
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    ${separatorTopbar}
 `;
 
 const ToolbarWrapper = styled.div`
@@ -81,47 +99,98 @@ const ToolbarEnd = styled.div`
     }
 `;
 
-const Toolbar = (props: Props) => {
-    const { startContent, endContent, centerContent } = props;
+interface State {
+    isArkaneAuthenticated: Boolean;
+}
 
-    const getContentFromWeb3State = (web3State: Web3State): React.ReactNode => {
-        switch (web3State) {
-            case Web3State.Locked:
-                return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLocked} icon={ErrorIcons.Lock} />;
-            case Web3State.NotInstalled:
-                return (
-                    <ErrorCard
-                        fontSize={FontSize.Large}
-                        text={errorsWallet.mmNotInstalled}
-                        icon={ErrorIcons.Metamask}
-                    />
-                );
-            case Web3State.Loading:
-                return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLoading} icon={ErrorIcons.Metamask} />;
-            case Web3State.Error:
-                return (
-                    <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
-                );
-            case Web3State.Done:
-                return (
-                    <>
-                        <ToolbarCenter>{centerContent}</ToolbarCenter>
-                        <ToolbarEnd>{endContent}</ToolbarEnd>
-                    </>
-                );
-            default:
-                const _exhaustiveCheck: never = web3State;
-                return _exhaustiveCheck;
+class Toolbar extends React.Component<Props, State> {
+    public readonly state: State = {
+        isArkaneAuthenticated: false
+    }
+
+    private readonly handleArkaneConnect = (e: any) => {
+        const { isArkaneAuthenticated } = this.state;
+        e.preventDefault();
+        if (window.arkaneConnect) {
+            if (!isArkaneAuthenticated) {
+                window.arkaneConnect.authenticate({windowMode: 'POPUP', redirectUri: ARKANE_REDIRECT_URI})
+                    .then((result: any) => result.authenticated((auth: any) => {
+                            console.log('Authentication successfull ' + auth.subject);
+                            this.setState({isArkaneAuthenticated: true});
+                        })
+                        .notAuthenticated((auth: any) => {
+                            console.log('Not authenticated');
+                            this.setState({isArkaneAuthenticated: false});
+                        })
+                    );
+            }
+            else {
+                window.arkaneConnect.logout();
+            }
         }
-    };
+    }
 
-    return (
-        <ToolbarWrapper>
-            <ToolbarStart>{startContent}</ToolbarStart>
-            {getContentFromWeb3State(props.web3State)}
-        </ToolbarWrapper>
-    );
-};
+    public componentDidMount = async () => {
+        window.arkaneConnect = await new ArkaneConnect(ARKANE_CLIENTID, {chains: ['Ethereum'], environment: ARKANE_ENV});
+        if (window.arkaneConnect) {
+            window.arkaneConnect.checkAuthenticated()
+                .then((result: any) => result.authenticated((auth: any) => {
+                        console.log('Authentication successfull ' + auth.subject);
+                        this.setState({isArkaneAuthenticated: true});
+                    })
+                    .notAuthenticated((auth: any) => {
+                        console.log('Not authenticated');
+                    })
+                );
+        }
+    }
+
+    public render() {
+        const { startContent, endContent, centerContent } = this.props;
+        const { isArkaneAuthenticated } = this.state;
+
+        const getContentFromWeb3State = (web3State: Web3State): React.ReactNode => {
+            switch (web3State) {
+                case Web3State.Locked:
+                    return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLocked} icon={ErrorIcons.Lock} />;
+                case Web3State.NotInstalled:
+                    return (
+                        <ErrorCard
+                            fontSize={FontSize.Large}
+                            text={errorsWallet.mmNotInstalled}
+                            icon={ErrorIcons.Metamask}
+                        />
+                    );
+                case Web3State.Loading:
+                    return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLoading} icon={ErrorIcons.Metamask} />;
+                case Web3State.Error:
+                    return (
+                        <>
+                            <ArkaneConnectLink onClick={this.handleArkaneConnect}>{isArkaneAuthenticated ? 'Arkane Logout' : 'Connect to Arkane'}</ArkaneConnectLink>
+                            <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
+                        </>
+                    );
+                case Web3State.Done:
+                    return (
+                        <>
+                            <ToolbarCenter>{centerContent}</ToolbarCenter>
+                            <ToolbarEnd>{endContent}</ToolbarEnd>
+                        </>
+                    );
+                default:
+                    const _exhaustiveCheck: never = web3State;
+                    return _exhaustiveCheck;
+            }
+        };
+    
+        return (
+            <ToolbarWrapper>
+                <ToolbarStart>{startContent}</ToolbarStart>
+                {getContentFromWeb3State(this.props.web3State)}
+            </ToolbarWrapper>
+        );
+    }
+}
 
 const mapStateToProps = (state: StoreState): StateProps => {
     return {
