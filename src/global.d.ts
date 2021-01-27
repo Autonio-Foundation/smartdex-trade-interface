@@ -1,6 +1,5 @@
 interface Window {
     ethereum: any;
-    arkaneConnect: any;
     web3: any;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
 }

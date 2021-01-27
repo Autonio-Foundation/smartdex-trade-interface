@@ -7,8 +7,6 @@
         "@0x/connect": "^5.0.12",
         "@0x/order-utils": "^8.2.3",
         "@0x/web3-wrapper": "^6.0.6",
-        "@arkane-network/arkane-connect": "^1.22.0",
-        "@arkane-network/web3-arkane-provider": "^0.18.0",
         "@types/async-retry": "^1.4.1",
         "@types/recharts": "^1.1.16",
         "async-retry": "^1.2.3",
