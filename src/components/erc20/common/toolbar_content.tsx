@@ -12,6 +12,7 @@ import { NotificationsDropdownContainer } from '../../../components/notification
 import { goToHome, goToWallet } from '../../../store/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
 import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
+import { MaticBridgeContainer } from '../../common/matic_bridge';
 
 import { MarketsDropdownContainer } from './markets_dropdown';
 
@@ -93,11 +94,13 @@ const ToolbarContent = (props: Props) => {
         e.preventDefault();
         props.onGoToWallet();
     };
+
     const endContent = (
         <>
             <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
                 My Wallet
             </MyWalletLink>
+            <MaticBridgeContainer />
             <WalletDropdown />
             <NotificationsDropdownContainer />
         </>
