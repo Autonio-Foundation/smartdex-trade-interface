@@ -12,7 +12,7 @@ interface Props {
 }
 
 interface State {
-    isOpen: Boolean;
+    isOpen: boolean;
 }
 
 const MaticBridgeLink = styled.a`
