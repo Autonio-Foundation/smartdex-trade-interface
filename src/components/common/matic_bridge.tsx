@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import { Theme } from '../../themes/commons';
 import { CloseModalButton } from './icons/close_modal_button';
 import { ModalContent, Title, ModalText } from './steps_modal/steps_common';
+import { Dropdown, DropdownPositions } from './dropdown';
 
 interface Props {
     theme: Theme;
@@ -14,6 +15,7 @@ interface Props {
 interface State {
     isOpen: boolean;
     isDeposit: boolean;
+    currentToken: string;
 }
 
 const DepositContent = styled.div`
@@ -51,7 +53,8 @@ const MaticBridgeLink = styled.a`
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
-        isDeposit: true
+        isDeposit: true,
+        currentToken: 'NIOX'
     };
 
     constructor(props: Props) {
@@ -73,7 +76,7 @@ class MaticBridge extends React.Component<Props, State> {
 
     public render = () => {
         const { theme } = this.props;
-        const { isOpen, isDeposit } = this.state;
+        const { isOpen, isDeposit, currentToken } = this.state;
 
         return (
             <>
@@ -82,14 +85,32 @@ class MaticBridge extends React.Component<Props, State> {
                 </MaticBridgeLink>
                 <Modal isOpen={isOpen} style={theme.modalTheme}>
                     <CloseModalButton onClick={this.handleCloseModel} />
-                    <ModalContent>
+                    <ModalContent style={{color: '#fff'}}>
                         <Title>Matic Bridge</Title>
                         <div style={{display: 'flex'}}>
                             <DepositContent style={{borderColor: isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}} 
                                 onClick={() => this.setState({isDeposit: true})}>Deposit to Matic</DepositContent>
-                            <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}} 
+                            <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff', color: !isDeposit ? '#0FEE90' : '#fff'}} 
                                 onClick={() => this.setState({isDeposit: false})}>Withdraw to Ethereum</DepositContent>
                         </div>
+
+                        <Dropdown
+                            body={
+                                <>
+                                    <div>NIOX</div>
+                                    <div>MATIC</div>
+                                    <div>USDT</div>
+                                    <div>ETHER</div>
+                                </>
+                            }
+                            header={
+                                <>
+                                    {currentToken}
+                                </>
+                            }
+                            horizontalPosition={DropdownPositions.Right}
+                            shouldCloseDropdownOnClickOutside={true}
+                        />
                     </ModalContent>
                 </Modal>
             </>
