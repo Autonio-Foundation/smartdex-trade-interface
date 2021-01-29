@@ -22,9 +22,14 @@ const DepositContent = styled.div`
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 0;
-    min-height: 80px;
+    min-height: 70px;
     width: 140px;
-    height: 80px;
+    height: 70px;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    margin: 4px;
+    text-align: center;
+    justify-content: center;
 `;
 
 const MaticBridgeLink = styled.a`
@@ -79,9 +84,11 @@ class MaticBridge extends React.Component<Props, State> {
                     <CloseModalButton onClick={this.handleCloseModel} />
                     <ModalContent>
                         <Title>Matic Bridge</Title>
-                        <div>
-                            <DepositContent style={{borderColor: isDeposit ? '#0FEE90' : '#fff'}} onClick={() => this.setState({isDeposit: true})}>Deposit to Matic</DepositContent>
-                            <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff'}} onClick={() => this.setState({isDeposit: false})}>Withdraw to Ethereum</DepositContent>
+                        <div style={{display: 'flex'}}>
+                            <DepositContent style={{borderColor: isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}} 
+                                onClick={() => this.setState({isDeposit: true})}>Deposit to Matic</DepositContent>
+                            <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}} 
+                                onClick={() => this.setState({isDeposit: false})}>Withdraw to Ethereum</DepositContent>
                         </div>
                     </ModalContent>
                 </Modal>
