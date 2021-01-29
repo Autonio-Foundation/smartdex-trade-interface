@@ -1,12 +1,18 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { separatorTopbar } from '../../components/common/toolbar';
+import Modal from 'react-modal';
+
+import { Theme } from '../../themes/commons';
+import { CloseModalButton } from './icons/close_modal_button';
+import { ModalContent } from './steps_modal/steps_common';
 
 interface Props {
+    theme: Theme;
 }
 
 interface State {
-    open: Boolean;
+    isOpen: Boolean;
 }
 
 const MaticBridgeLink = styled.a`
@@ -27,7 +33,7 @@ const MaticBridgeLink = styled.a`
 
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
-        open: false
+        isOpen: false
     };
 
     constructor(props: Props) {
@@ -37,12 +43,31 @@ class MaticBridge extends React.Component<Props, State> {
     public componentDidMount = async () => {
     };
 
+    public handleOpenModal = (ev: React.EventHandler<React.MouseEvent>) => {
+        ev.preventDefault();
+        this.setState({isOpen: true});
+    }
+
+    public handleCloseModel = (ev: React.EventHandler<React.MouseEvent>) => {
+        ev.preventDefault();
+        this.setState({isOpen: false});
+    }
+
     public render = () => {
+        const { theme } = this.props;
+        const { isOpen } = this.state;
+
         return (
             <>
-                <MaticBridgeLink>
+                <MaticBridgeLink onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
+                <Modal isOpen={isOpen} style={theme.modalTheme}>
+                    <CloseModalButton onClick={this.handleCloseModel} />
+                    <ModalContent>
+                        Matic
+                    </ModalContent>
+                </Modal>
             </>
         );
     };
