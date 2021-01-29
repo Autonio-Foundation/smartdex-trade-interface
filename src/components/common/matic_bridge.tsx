@@ -43,12 +43,12 @@ class MaticBridge extends React.Component<Props, State> {
     public componentDidMount = async () => {
     };
 
-    public handleOpenModal = (ev: React.EventHandler<React.MouseEvent>) => {
+    public handleOpenModal = (ev: any) => {
         ev.preventDefault();
         this.setState({isOpen: true});
     }
 
-    public handleCloseModel = (ev: React.EventHandler<React.MouseEvent>) => {
+    public handleCloseModel = (ev: any) => {
         ev.preventDefault();
         this.setState({isOpen: false});
     }
