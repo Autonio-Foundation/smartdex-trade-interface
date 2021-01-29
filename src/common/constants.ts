@@ -80,3 +80,5 @@ export const OPENSEA_API_KEY = process.env.REACT_APP_OPENSEA_API_KEY;
 export const NETWORK_ID: number = Number.parseInt(process.env.REACT_APP_NETWORK_ID as string, 10) || Network.Mainnet;
 
 export const NETWORK_NAME: string = Network[NETWORK_ID];
+
+export const MATIC_BRIDGE_TOKENS = ['niox', 'matic', 'ether', 'usdt'];

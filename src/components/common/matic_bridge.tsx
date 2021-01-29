@@ -7,6 +7,8 @@ import { Theme } from '../../themes/commons';
 import { CloseModalButton } from './icons/close_modal_button';
 import { ModalContent, Title, ModalText } from './steps_modal/steps_common';
 import { Dropdown, DropdownPositions } from './dropdown';
+import { DropdownTextItem } from './dropdown_text_item';
+import { MATIC_BRIDGE_TOKENS } from '../../common/constants';
 
 interface Props {
     theme: Theme;
@@ -54,7 +56,7 @@ class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
         isDeposit: true,
-        currentToken: 'NIOX'
+        currentToken: MATIC_BRIDGE_TOKENS[0]
     };
 
     constructor(props: Props) {
@@ -95,20 +97,25 @@ class MaticBridge extends React.Component<Props, State> {
                         </div>
 
                         <Dropdown
+                            style={{
+                                padding: 4,
+                                marginTop: 20,
+                                width: 288,
+                                borderBottom: '1px solid'
+                            }}
                             body={
                                 <>
-                                    <div>NIOX</div>
-                                    <div>MATIC</div>
-                                    <div>USDT</div>
-                                    <div>ETHER</div>
+                                {MATIC_BRIDGE_TOKENS.map((token) => {
+                                    <DropdownTextItem>{token.toUpperCase()}</DropdownTextItem>
+                                })}
                                 </>
                             }
                             header={
                                 <>
-                                    {currentToken}
+                                    {currentToken.toUpperCase()}
                                 </>
                             }
-                            horizontalPosition={DropdownPositions.Right}
+                            horizontalPosition={DropdownPositions.Left}
                             shouldCloseDropdownOnClickOutside={true}
                         />
                     </ModalContent>
