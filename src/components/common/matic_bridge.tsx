@@ -105,9 +105,9 @@ class MaticBridge extends React.Component<Props, State> {
                             }}
                             body={
                                 <>
-                                {MATIC_BRIDGE_TOKENS.map((token) => {
+                                {MATIC_BRIDGE_TOKENS.map((token) =>
                                     <DropdownTextItem>{token.toUpperCase()}</DropdownTextItem>
-                                })}
+                                )}
                                 </>
                             }
                             header={
