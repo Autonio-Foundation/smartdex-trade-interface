@@ -34,6 +34,7 @@ const DepositContent = styled.div`
     margin: 4px;
     text-align: center;
     justify-content: center;
+    cursor: pointer;
 `;
 
 const MaticBridgeLink = styled.a`
