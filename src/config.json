@@ -66,22 +66,42 @@
             },
             "decimals": 18,
             "displayDecimals": 2
+        },
+        {
+            "symbol": "usdc",
+            "name": "USD Coin",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/weth.svg",
+            "addresses": {
+                "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "3": "0xc778417e063141139fce010982780140aa0cd5ab",
+                "4": "0xc778417e063141139fce010982780140aa0cd5ab",
+                "42": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+                "50": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082",
+                "137": "0x5fab5764f263c5ce93424f8c45e46a742cc5c8d6"
+            },
+            "decimals": 6,
+            "displayDecimals": 2
         }
     ],
     "pairs": [
         {
             "base": "niox",
-            "quote": "usdt"
+            "quote": "usdc"
         },
         {
             "base": "wmatic",
-            "quote": "usdt"
+            "quote": "usdc"
+        },
+        {
+            "base": "usdt",
+            "quote": "usdc"
         }
     ],
     "marketFilters": [
         {
-            "text": "USDT",
-            "value": "usdt"
+            "text": "USDC",
+            "value": "usdc"
         }
     ]
 }
