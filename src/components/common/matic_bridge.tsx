@@ -103,12 +103,6 @@ const Content = styled.div`
     padding: 20px ${themeDimensions.horizontalPadding};
 `;
 
-const BigInputNumberTokenLabel = (props: { tokenSymbol: string }) => (
-    <TokenContainer>
-        <TokenText>{tokenSymbolToDisplayString(props.tokenSymbol)}</TokenText>
-    </TokenContainer>
-);
-
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
@@ -163,29 +157,6 @@ class MaticBridge extends React.Component<Props, State> {
                         </div>
 
                         <Content>
-                            <Dropdown
-                                style={{
-                                    padding: 4,
-                                    marginTop: 20,
-                                    width: 288,
-                                    borderBottom: '1px solid'
-                                }}
-                                body={
-                                    <>
-                                    {MATIC_BRIDGE_TOKENS.map((token) =>
-                                        <DropdownTextItem onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
-                                    )}
-                                    </>
-                                }
-                                header={
-                                    <>
-                                        {currentToken.toUpperCase()}
-                                    </>
-                                }
-                                horizontalPosition={DropdownPositions.Left}
-                                shouldCloseDropdownOnClickOutside={true}
-                            />
-
                             <FieldContainer>
                                 <BigInputNumberStyled
                                     decimals={decimals}
@@ -194,7 +165,26 @@ class MaticBridge extends React.Component<Props, State> {
                                     value={amount}
                                     placeholder={'0.00'}
                                 />
-                                <BigInputNumberTokenLabel tokenSymbol={currentToken} />
+                                <TokenContainer>
+                                    <TokenText>
+                                        <Dropdown
+                                            body={
+                                                <>
+                                                {MATIC_BRIDGE_TOKENS.map((token) =>
+                                                    <DropdownTextItem onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
+                                                )}
+                                                </>
+                                            }
+                                            header={
+                                                <>
+                                                    {currentToken.toUpperCase()}
+                                                </>
+                                            }
+                                            horizontalPosition={DropdownPositions.Right}
+                                            shouldCloseDropdownOnClickOutside={true}
+                                        />
+                                    </TokenText>
+                                </TokenContainer>
                             </FieldContainer>
                         </Content>
                     </ModalContent>
