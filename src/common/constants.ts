@@ -81,4 +81,4 @@ export const NETWORK_ID: number = Number.parseInt(process.env.REACT_APP_NETWORK_
 
 export const NETWORK_NAME: string = Network[NETWORK_ID];
 
-export const MATIC_BRIDGE_TOKENS = ['niox', 'matic', 'eth', 'usdt'];
+export const MATIC_BRIDGE_TOKENS = ['niox', 'wmatic', 'usdc', 'usdt'];

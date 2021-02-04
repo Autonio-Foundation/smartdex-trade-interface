@@ -12,8 +12,8 @@ import { DropdownTextItem } from './dropdown_text_item';
 import { MATIC_BRIDGE_TOKENS } from '../../common/constants';
 import { BigNumberInput } from './big_number_input';
 import { getKnownTokens } from '../../util/known_tokens';
-import { tokenSymbolToDisplayString } from '../../util/tokens';
 import { themeDimensions } from '../../themes/commons';
+import { getWeb3Wrapper } from '../../services/matic_wrapper';
 
 interface Props {
     theme: Theme;
@@ -117,6 +117,26 @@ class MaticBridge extends React.Component<Props, State> {
     }
 
     public componentDidMount = async () => {
+        const maticWrapper = await getWeb3Wrapper();
+
+        let value = await maticWrapper.balanceOfERC20(
+            window.ethereum.selectedAddress,
+            '0xad684e79ce4b6d464f2ff7c3fd51646892e24b96',
+            {
+                from: window.ethereum.selectedAddress,
+            }
+        )
+        console.log("NIOX balance", value);
+
+        let parent = await maticWrapper.balanceOfERC20(
+            window.ethereum.selectedAddress,
+            '0xad684e79ce4b6d464f2ff7c3fd51646892e24b96',
+            {
+                from: window.ethereum.selectedAddress,
+                parent: true
+            }
+        )
+        console.log("Parent NIOX balance", parent);
     };
 
     public handleOpenModal = (ev: any) => {
@@ -139,7 +159,7 @@ class MaticBridge extends React.Component<Props, State> {
         const { theme } = this.props;
         const { isOpen, isDeposit, currentToken, amount } = this.state;
 
-        const decimals = getKnownTokens().getTokenBySymbol(currentToken === 'matic' ? 'wmatic' : currentToken).decimals;
+        const decimals = getKnownTokens().getTokenBySymbol(currentToken).decimals;
 
         return (
             <>
@@ -175,13 +195,13 @@ class MaticBridge extends React.Component<Props, State> {
                                             body={
                                                 <>
                                                 {MATIC_BRIDGE_TOKENS.map((token, idx) =>
-                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
+                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={token === 'wmatic' ? 'MATIC' : token.toUpperCase()} />
                                                 )}
                                                 </>
                                             }
                                             header={
                                                 <>
-                                                    {currentToken.toUpperCase()}
+                                                    {currentToken === 'wmatic' ? 'MATIC' : currentToken.toUpperCase()}
                                                 </>
                                             }
                                             horizontalPosition={DropdownPositions.Right}
