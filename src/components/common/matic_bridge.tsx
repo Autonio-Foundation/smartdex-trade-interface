@@ -135,7 +135,7 @@ class MaticBridge extends React.Component<Props, State> {
                     from: window.ethereum.selectedAddress,
                 }
             )
-            maticBalance[token.symbol] = value / token.decimals;
+            maticBalance[token.symbol] = value / (10^token.decimals);
     
             value = await maticWrapper.balanceOfERC20(
                 window.ethereum.selectedAddress,
@@ -145,7 +145,7 @@ class MaticBridge extends React.Component<Props, State> {
                     parent: true
                 }
             )
-            ethBalance[token.symbol] = value / token.decimals;
+            ethBalance[token.symbol] = value / (10^token.decimals);
         })
 
         this.setState({maticBalance, ethBalance});
