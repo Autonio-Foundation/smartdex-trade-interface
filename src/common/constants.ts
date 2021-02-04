@@ -8,6 +8,8 @@ export const DEFAULT_BASE_PATH = process.env.REACT_APP_DEFAULT_BASE_PATH || ERC2
 
 export const RELAYER_URL = process.env.REACT_APP_RELAYER_URL || 'http://localhost:3001/api/v2';
 
+export const INFURA_PROVIDER = 'https://mainnet.infura.io/v3/21cae5088ccc40b199bc7352155d7c92';
+
 export const TX_DEFAULTS = {
     gasLimit: 1000000,
     shouldValidate: true,
@@ -80,5 +82,3 @@ export const OPENSEA_API_KEY = process.env.REACT_APP_OPENSEA_API_KEY;
 export const NETWORK_ID: number = Number.parseInt(process.env.REACT_APP_NETWORK_ID as string, 10) || Network.Mainnet;
 
 export const NETWORK_NAME: string = Network[NETWORK_ID];
-
-export const MATIC_BRIDGE_TOKENS = ['niox', 'wmatic', 'usdc', 'usdt'];

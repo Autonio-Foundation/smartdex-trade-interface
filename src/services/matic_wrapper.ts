@@ -1,4 +1,5 @@
 import Matic from '@maticnetwork/maticjs';
+import { INFURA_PROVIDER } from '../common/constants';
 
 import { sleep } from '../util/sleep';
 
@@ -15,7 +16,7 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
         network: 'mainnet',
         version: 'v1',
         maticProvider: ethereum ? ethereum : web3.currentProvider,
-        parentProvider: 'https://mainnet.infura.io/v3/21cae5088ccc40b199bc7352155d7c92'
+        parentProvider: INFURA_PROVIDER
     });
 
     maticWrapper.initialize();

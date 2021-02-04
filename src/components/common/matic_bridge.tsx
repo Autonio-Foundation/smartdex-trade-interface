@@ -9,11 +9,12 @@ import { CloseModalButton } from './icons/close_modal_button';
 import { ModalContent, Title, ModalText } from './steps_modal/steps_common';
 import { Dropdown, DropdownPositions } from './dropdown';
 import { DropdownTextItem } from './dropdown_text_item';
-import { MATIC_BRIDGE_TOKENS } from '../../common/constants';
 import { BigNumberInput } from './big_number_input';
 import { getKnownTokens } from '../../util/known_tokens';
 import { themeDimensions } from '../../themes/commons';
 import { getWeb3Wrapper } from '../../services/matic_wrapper';
+import { Token } from '../../util/types';
+import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 
 interface Props {
     theme: Theme;
@@ -22,8 +23,10 @@ interface Props {
 interface State {
     isOpen: boolean;
     isDeposit: boolean;
-    currentToken: string;
+    currentToken: TokenMetaData;
     amount: BigNumber;
+    maticBalance: {[k: string]: any};
+    ethBalance: {[k: string]: any};
 }
 
 const DepositContent = styled.div`
@@ -108,8 +111,10 @@ class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
         isDeposit: true,
-        currentToken: MATIC_BRIDGE_TOKENS[0],
-        amount: new BigNumber(0)
+        currentToken: KNOWN_TOKENS_META_DATA[0],
+        amount: new BigNumber(0),
+        maticBalance: {},
+        ethBalance: {}
     };
 
     constructor(props: Props) {
@@ -118,25 +123,31 @@ class MaticBridge extends React.Component<Props, State> {
 
     public componentDidMount = async () => {
         const maticWrapper = await getWeb3Wrapper();
+        let maticBalance : {[k: string]: any} = {};
+        let ethBalance : {[k: string]: any} = {};
 
-        let value = await maticWrapper.balanceOfERC20(
-            window.ethereum.selectedAddress,
-            '0xad684e79ce4b6d464f2ff7c3fd51646892e24b96',
-            {
-                from: window.ethereum.selectedAddress,
-            }
-        )
-        console.log("NIOX balance", value);
+        KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
+            let value = await maticWrapper.balanceOfERC20(
+                window.ethereum.selectedAddress,
+                token.addresses[137],
+                {
+                    from: window.ethereum.selectedAddress,
+                }
+            )
+            maticBalance[token.symbol] = value;
+    
+            value = await maticWrapper.balanceOfERC20(
+                window.ethereum.selectedAddress,
+                token.addresses[1],
+                {
+                    from: window.ethereum.selectedAddress,
+                    parent: true
+                }
+            )
+            ethBalance[token.symbol] = value;
+        })
 
-        let parent = await maticWrapper.balanceOfERC20(
-            window.ethereum.selectedAddress,
-            '0xc813EA5e3b48BEbeedb796ab42A30C5599b01740',
-            {
-                from: window.ethereum.selectedAddress,
-                parent: true
-            }
-        )
-        console.log("Parent NIOX balance", parent);
+        this.setState({maticBalance, ethBalance});
     };
 
     public handleOpenModal = (ev: any) => {
@@ -157,9 +168,7 @@ class MaticBridge extends React.Component<Props, State> {
 
     public render = () => {
         const { theme } = this.props;
-        const { isOpen, isDeposit, currentToken, amount } = this.state;
-
-        const decimals = getKnownTokens().getTokenBySymbol(currentToken).decimals;
+        const { isOpen, isDeposit, currentToken, amount, maticBalance, ethBalance } = this.state;
 
         return (
             <>
@@ -180,7 +189,7 @@ class MaticBridge extends React.Component<Props, State> {
                         <Content>
                             <FieldContainer>
                                 <BigInputNumberStyled
-                                    decimals={decimals}
+                                    decimals={currentToken.decimals}
                                     min={new BigNumber(0)}
                                     onChange={this.updateAmount}
                                     value={amount}
@@ -194,14 +203,14 @@ class MaticBridge extends React.Component<Props, State> {
                                             }}
                                             body={
                                                 <>
-                                                {MATIC_BRIDGE_TOKENS.map((token, idx) =>
-                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={token === 'wmatic' ? 'MATIC' : token.toUpperCase()} />
+                                                {KNOWN_TOKENS_META_DATA.map((token, idx) =>
+                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={token.symbol === 'wmatic' ? 'MATIC' : token.symbol.toUpperCase()} />
                                                 )}
                                                 </>
                                             }
                                             header={
                                                 <>
-                                                    {currentToken === 'wmatic' ? 'MATIC' : currentToken.toUpperCase()}
+                                                    {currentToken.symbol === 'wmatic' ? 'MATIC' : currentToken.symbol.toUpperCase()}
                                                 </>
                                             }
                                             horizontalPosition={DropdownPositions.Right}
@@ -210,6 +219,8 @@ class MaticBridge extends React.Component<Props, State> {
                                     </TokenText>
                                 </TokenContainer>
                             </FieldContainer>
+
+                            <p>Max Amount: {isDeposit ? ethBalance[currentToken.symbol] : maticBalance[currentToken.symbol]}</p>
                         </Content>
                     </ModalContent>
                 </Modal>
