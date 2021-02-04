@@ -97,6 +97,12 @@ const TokenText = styled.span`
     text-align: right;
 `;
 
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 20px ${themeDimensions.horizontalPadding};
+`;
+
 const BigInputNumberTokenLabel = (props: { tokenSymbol: string }) => (
     <TokenContainer>
         <TokenText>{tokenSymbolToDisplayString(props.tokenSymbol)}</TokenText>
@@ -138,7 +144,7 @@ class MaticBridge extends React.Component<Props, State> {
         const { theme } = this.props;
         const { isOpen, isDeposit, currentToken, amount } = this.state;
 
-        const decimals = getKnownTokens().getTokenBySymbol(currentToken).decimals;
+        const decimals = getKnownTokens().getTokenBySymbol(currentToken === 'matic' ? 'wmatic' : currentToken).decimals;
 
         return (
             <>
@@ -156,40 +162,41 @@ class MaticBridge extends React.Component<Props, State> {
                                 onClick={() => this.setState({isDeposit: false})}>Withdraw to Ethereum</DepositContent>
                         </div>
 
-                        <Dropdown
-                            style={{
-                                padding: 4,
-                                marginTop: 20,
-                                width: 288,
-                                borderBottom: '1px solid'
-                            }}
-                            body={
-                                <>
-                                {MATIC_BRIDGE_TOKENS.map((token) =>
-                                    <DropdownTextItem onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
-                                )}
-                                </>
-                            }
-                            header={
-                                <>
-                                    {currentToken.toUpperCase()}
-                                </>
-                            }
-                            horizontalPosition={DropdownPositions.Left}
-                            shouldCloseDropdownOnClickOutside={true}
-                        />
-
-                        <FieldContainer>
-                            <BigInputNumberStyled
-                                decimals={decimals}
-                                min={new BigNumber(0)}
-                                onChange={this.updateAmount}
-                                value={amount}
-                                placeholder={'0.00'}
+                        <Content>
+                            <Dropdown
+                                style={{
+                                    padding: 4,
+                                    marginTop: 20,
+                                    width: 288,
+                                    borderBottom: '1px solid'
+                                }}
+                                body={
+                                    <>
+                                    {MATIC_BRIDGE_TOKENS.map((token) =>
+                                        <DropdownTextItem onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
+                                    )}
+                                    </>
+                                }
+                                header={
+                                    <>
+                                        {currentToken.toUpperCase()}
+                                    </>
+                                }
+                                horizontalPosition={DropdownPositions.Left}
+                                shouldCloseDropdownOnClickOutside={true}
                             />
-                            <BigInputNumberTokenLabel tokenSymbol={currentToken} />
-                        </FieldContainer>
 
+                            <FieldContainer>
+                                <BigInputNumberStyled
+                                    decimals={decimals}
+                                    min={new BigNumber(0)}
+                                    onChange={this.updateAmount}
+                                    value={amount}
+                                    placeholder={'0.00'}
+                                />
+                                <BigInputNumberTokenLabel tokenSymbol={currentToken} />
+                            </FieldContainer>
+                        </Content>
                     </ModalContent>
                 </Modal>
             </>
