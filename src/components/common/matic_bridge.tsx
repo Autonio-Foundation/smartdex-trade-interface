@@ -10,10 +10,9 @@ import { ModalContent, Title, ModalText } from './steps_modal/steps_common';
 import { Dropdown, DropdownPositions } from './dropdown';
 import { DropdownTextItem } from './dropdown_text_item';
 import { BigNumberInput } from './big_number_input';
-import { getKnownTokens } from '../../util/known_tokens';
 import { themeDimensions } from '../../themes/commons';
 import { getWeb3Wrapper } from '../../services/matic_wrapper';
-import { Token } from '../../util/types';
+import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
 
@@ -123,6 +122,10 @@ class MaticBridge extends React.Component<Props, State> {
     }
 
     public componentDidMount = async () => {
+        await this.updateBalances();
+    };
+
+    public updateBalances = async () => {
         const maticWrapper = await getWeb3Wrapper();
         let maticBalance : {[k: string]: any} = {};
         let ethBalance : {[k: string]: any} = {};
@@ -135,7 +138,7 @@ class MaticBridge extends React.Component<Props, State> {
                     from: window.ethereum.selectedAddress,
                 }
             )
-            maticBalance[token.symbol] = value / (10^token.decimals);
+            maticBalance[token.symbol] = value / Math.pow(10, token.decimals);
     
             value = await maticWrapper.balanceOfERC20(
                 window.ethereum.selectedAddress,
@@ -145,11 +148,11 @@ class MaticBridge extends React.Component<Props, State> {
                     parent: true
                 }
             )
-            ethBalance[token.symbol] = value / (10^token.decimals);
+            ethBalance[token.symbol] = value / Math.pow(10, token.decimals);
         })
 
         this.setState({maticBalance, ethBalance});
-    };
+    }
 
     public handleOpenModal = (ev: any) => {
         ev.preventDefault();
@@ -166,6 +169,51 @@ class MaticBridge extends React.Component<Props, State> {
             amount: newValue,
         });
     };
+
+    public submit = async () => {
+        const maticWrapper = await getWeb3Wrapper();
+        const { isDeposit, currentToken, amount } = this.state;
+
+        console.log(amount.toString())
+
+        if (isDeposit) {
+            await maticWrapper.approveERC20TokensForDeposit(
+                currentToken.addresses[137],
+                amount.toString(),
+                {
+                    from: window.ethereum.selectedAddress
+                }
+            )
+            await maticWrapper.depositERC20ForUser(
+                currentToken.addresses[137],
+                window.ethereum.selectedAddress,
+                amount.toString(),
+                {
+                    from: window.ethereum.selectedAddress
+                }
+            )
+        }
+        else {
+            let txId = await maticWrapper.startWithdraw(
+                currentToken.addresses[1],  // Token address,
+                amount.toString(),  // Token amount for approval (in wei)
+                {
+                    from: window.ethereum.selectedAddress,
+                    encodeAbi: true
+                }
+            )
+            await maticWrapper.withdraw(
+                txId,
+                {
+                    from: window.ethereum.selectedAddress
+                }
+            )
+        }
+
+        await this.updateBalances();
+
+        this.setState({isOpen: false});
+    }
 
     public render = () => {
         const { theme } = this.props;
@@ -226,6 +274,8 @@ class MaticBridge extends React.Component<Props, State> {
 
                             <Button
                                 disabled={amount.isZero()}
+                                variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
+                                onClick={this.submit}
                             >
                                 {isDeposit ? "DEPOSIT" : "WITHDRAW"}
                             </Button>
