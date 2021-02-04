@@ -1,3 +1,4 @@
+import { BigNumber } from '0x.js';
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { separatorTopbar } from '../../components/common/toolbar';
@@ -9,6 +10,9 @@ import { ModalContent, Title, ModalText } from './steps_modal/steps_common';
 import { Dropdown, DropdownPositions } from './dropdown';
 import { DropdownTextItem } from './dropdown_text_item';
 import { MATIC_BRIDGE_TOKENS } from '../../common/constants';
+import { BigNumberInput } from './big_number_input';
+import { getKnownTokens } from '../../util/known_tokens';
+import { tokenSymbolToDisplayString } from '../../util/tokens';
 
 interface Props {
     theme: Theme;
@@ -18,6 +22,7 @@ interface State {
     isOpen: boolean;
     isDeposit: boolean;
     currentToken: string;
+    amount: BigNumber;
 }
 
 const DepositContent = styled.div`
@@ -37,6 +42,12 @@ const DepositContent = styled.div`
     cursor: pointer;
 `;
 
+const FieldContainer = styled.div`
+    height: ${themeDimensions.fieldHeight};
+    margin-bottom: 25px;
+    position: relative;
+`;
+
 const MaticBridgeLink = styled.a`
     align-items: center;
     color: ${props => props.theme.componentsTheme.myWalletLinkColor};
@@ -53,11 +64,50 @@ const MaticBridgeLink = styled.a`
     ${separatorTopbar}
 `;
 
+const BigInputNumberStyled = styled<any>(BigNumberInput)`
+    background-color: ${props => props.theme.componentsTheme.textInputBackgroundColor};
+    border-radius: ${themeDimensions.borderRadius};
+    border: 1px solid ${props => props.theme.componentsTheme.textInputBorderColor};
+    color: ${props => props.theme.componentsTheme.textInputTextColor};
+    font-feature-settings: 'tnum' 1;
+    font-size: 16px;
+    height: 100%;
+    padding-left: 14px;
+    padding-right: 60px;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+`;
+
+const TokenContainer = styled.div`
+    display: flex;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 12;
+`;
+
+const TokenText = styled.span`
+    color: ${props => props.theme.componentsTheme.textInputTextColor};
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 21px;
+    text-align: right;
+`;
+
+const BigInputNumberTokenLabel = (props: { tokenSymbol: string }) => (
+    <TokenContainer>
+        <TokenText>{tokenSymbolToDisplayString(props.tokenSymbol)}</TokenText>
+    </TokenContainer>
+);
+
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
         isDeposit: true,
-        currentToken: MATIC_BRIDGE_TOKENS[0]
+        currentToken: MATIC_BRIDGE_TOKENS[0],
+        amount: null
     };
 
     constructor(props: Props) {
@@ -77,9 +127,17 @@ class MaticBridge extends React.Component<Props, State> {
         this.setState({isOpen: false});
     }
 
+    public updateAmount = (newValue: BigNumber) => {
+        this.setState({
+            amount: newValue,
+        });
+    };
+
     public render = () => {
         const { theme } = this.props;
-        const { isOpen, isDeposit, currentToken } = this.state;
+        const { isOpen, isDeposit, currentToken, amount } = this.state;
+
+        const decimals = getKnownTokens().getTokenBySymbol(currentToken).decimals;
 
         return (
             <>
@@ -119,6 +177,18 @@ class MaticBridge extends React.Component<Props, State> {
                             horizontalPosition={DropdownPositions.Left}
                             shouldCloseDropdownOnClickOutside={true}
                         />
+
+                        <FieldContainer>
+                            <BigInputNumberStyled
+                                decimals={decimals}
+                                min={new BigNumber(0)}
+                                onChange={this.updateAmount}
+                                value={amount}
+                                placeholder={'0.00'}
+                            />
+                            <BigInputNumberTokenLabel tokenSymbol={currentToken} />
+                        </FieldContainer>
+
                     </ModalContent>
                 </Modal>
             </>
