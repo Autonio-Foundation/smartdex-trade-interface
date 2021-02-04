@@ -101,6 +101,7 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     padding: 20px ${themeDimensions.horizontalPadding};
+    width: 100%;
 `;
 
 class MaticBridge extends React.Component<Props, State> {
@@ -168,10 +169,13 @@ class MaticBridge extends React.Component<Props, State> {
                                 <TokenContainer>
                                     <TokenText>
                                         <Dropdown
+                                            style={{
+                                                width: 120
+                                            }}
                                             body={
                                                 <>
-                                                {MATIC_BRIDGE_TOKENS.map((token) =>
-                                                    <DropdownTextItem onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
+                                                {MATIC_BRIDGE_TOKENS.map((token, idx) =>
+                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={token.toUpperCase()} />
                                                 )}
                                                 </>
                                             }
