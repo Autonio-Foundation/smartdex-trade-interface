@@ -13,6 +13,7 @@ import { MATIC_BRIDGE_TOKENS } from '../../common/constants';
 import { BigNumberInput } from './big_number_input';
 import { getKnownTokens } from '../../util/known_tokens';
 import { tokenSymbolToDisplayString } from '../../util/tokens';
+import { themeDimensions } from '../../themes/commons';
 
 interface Props {
     theme: Theme;
