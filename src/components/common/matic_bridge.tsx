@@ -130,7 +130,7 @@ class MaticBridge extends React.Component<Props, State> {
 
         let parent = await maticWrapper.balanceOfERC20(
             window.ethereum.selectedAddress,
-            '0xad684e79ce4b6d464f2ff7c3fd51646892e24b96',
+            '0xc813EA5e3b48BEbeedb796ab42A30C5599b01740',
             {
                 from: window.ethereum.selectedAddress,
                 parent: true
