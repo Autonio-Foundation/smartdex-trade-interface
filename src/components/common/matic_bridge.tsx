@@ -177,33 +177,35 @@ class MaticBridge extends React.Component<Props, State> {
         console.log(amount.toString())
 
         if (isDeposit) {
-            await maticWrapper.approveERC20TokensForDeposit(
-                currentToken.addresses[137],
+            await maticWrapper.approveERC20ForDeposit(
+                currentToken.addresses[1],
                 amount.toString(),
-                {
-                    from: window.ethereum.selectedAddress
-                }
-            )
-            await maticWrapper.depositERC20ForUser(
-                currentToken.addresses[137],
-                window.ethereum.selectedAddress,
-                amount.toString(),
-                {
-                    from: window.ethereum.selectedAddress
-                }
-            )
-        }
-        else {
-            let txId = await maticWrapper.startWithdraw(
-                currentToken.addresses[1],  // Token address,
-                amount.toString(),  // Token amount for approval (in wei)
                 {
                     from: window.ethereum.selectedAddress,
                     encodeAbi: true
                 }
             )
-            await maticWrapper.withdraw(
-                txId,
+            await maticWrapper.depositERC20ForUser(
+                currentToken.addresses[1],
+                window.ethereum.selectedAddress,
+                amount.toString(),
+                {
+                    from: window.ethereum.selectedAddress,
+                    encodeAbi: true
+                }
+            )
+        }
+        else {
+            let txHash = await maticWrapper.burnERC20(
+                currentToken.addresses[137],
+                amount.toString(),
+                {
+                    from: window.ethereum.selectedAddress,
+                    encodeAbi: true
+                }
+            )
+            await maticWrapper.exitERC20(
+                txHash,
                 {
                     from: window.ethereum.selectedAddress
                 }

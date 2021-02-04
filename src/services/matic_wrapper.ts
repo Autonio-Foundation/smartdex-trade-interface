@@ -5,14 +5,14 @@ import { sleep } from '../util/sleep';
 
 let maticWrapper: Matic | null = null;
 
-export const initializeMaticWrapper = async (): Promise<Matic | null> => {
+export const initializeMaticWrapper = async (): Promise<Matic.MaticPOSClient | null> => {
     const { ethereum, web3 } = window;
 
     if (maticWrapper) {
         return maticWrapper;
     }
 
-    maticWrapper = new Matic({
+    maticWrapper = new Matic.MaticPOSClient({
         network: 'mainnet',
         version: 'v1',
         maticProvider: ethereum ? ethereum : web3.currentProvider,
@@ -24,7 +24,7 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     return maticWrapper;
 };
 
-export const getWeb3Wrapper = async (): Promise<Matic> => {
+export const getWeb3Wrapper = async (): Promise<Matic.MaticPOSClient> => {
     while (!maticWrapper) {
         // if web3Wrapper is not set yet, wait and retry
         await sleep(100);
