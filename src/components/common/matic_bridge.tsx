@@ -108,7 +108,7 @@ class MaticBridge extends React.Component<Props, State> {
         isOpen: false,
         isDeposit: true,
         currentToken: MATIC_BRIDGE_TOKENS[0],
-        amount: null
+        amount: new BigNumber(0)
     };
 
     constructor(props: Props) {
