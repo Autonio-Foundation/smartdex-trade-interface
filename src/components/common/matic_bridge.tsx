@@ -15,6 +15,7 @@ import { themeDimensions } from '../../themes/commons';
 import { getWeb3Wrapper } from '../../services/matic_wrapper';
 import { Token } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
+import { Button } from './button';
 
 interface Props {
     theme: Theme;
@@ -134,7 +135,7 @@ class MaticBridge extends React.Component<Props, State> {
                     from: window.ethereum.selectedAddress,
                 }
             )
-            maticBalance[token.symbol] = value;
+            maticBalance[token.symbol] = value / token.decimals;
     
             value = await maticWrapper.balanceOfERC20(
                 window.ethereum.selectedAddress,
@@ -144,7 +145,7 @@ class MaticBridge extends React.Component<Props, State> {
                     parent: true
                 }
             )
-            ethBalance[token.symbol] = value;
+            ethBalance[token.symbol] = value / token.decimals;
         })
 
         this.setState({maticBalance, ethBalance});
@@ -220,7 +221,13 @@ class MaticBridge extends React.Component<Props, State> {
                                 </TokenContainer>
                             </FieldContainer>
 
-                            <p>Max Amount: {isDeposit ? ethBalance[currentToken.symbol] : maticBalance[currentToken.symbol]}</p>
+                            <p>Max Amount: {isDeposit ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)}</p>
+
+                            <Button
+                                disabled={amount === BigNumber(0)}
+                            >
+                                {isDeposit ? "DEPOSIT" : "WITHDRAW"}
+                            </Button>
                         </Content>
                     </ModalContent>
                 </Modal>
