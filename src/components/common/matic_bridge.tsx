@@ -221,7 +221,8 @@ class MaticBridge extends React.Component<Props, State> {
                                 </TokenContainer>
                             </FieldContainer>
 
-                            <p>Max Amount: {isDeposit ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)}</p>
+                            <p>Max Amount: {isDeposit ? ethBalance[currentToken.symbol] && ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)
+                             : maticBalance[currentToken.symbol] && maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)}</p>
 
                             <Button
                                 disabled={amount.isZero()}
