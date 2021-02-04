@@ -21,8 +21,6 @@ export const initializeMaticWrapper = async (): Promise<MaticPOSClient | null> =
         parentProvider: INFURA_PROVIDER
     });
 
-    maticWrapper.initialize();
-
     return maticWrapper;
 };
 
