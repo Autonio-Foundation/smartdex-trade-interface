@@ -3,7 +3,7 @@ import { INFURA_PROVIDER } from '../common/constants';
 
 import { sleep } from '../util/sleep';
 
-let maticWrapper: Matic | null = null;
+let maticWrapper: Matic.MaticPOSClient | null = null;
 
 export const initializeMaticWrapper = async (): Promise<Matic.MaticPOSClient | null> => {
     const { ethereum, web3 } = window;
