@@ -180,7 +180,7 @@ class MaticBridge extends React.Component<Props, State> {
                 network: 'mainnet',
                 version: 'v1',
                 maticProvider: MATIC_PROVIDER,
-                parentProvider: window.ethereum
+                parentProvider: window.web3
             });
             await maticPoSClient.approveERC20ForDeposit(
                 currentToken.addresses[1],
@@ -204,7 +204,7 @@ class MaticBridge extends React.Component<Props, State> {
             const maticPoSClient = new MaticPOSClient({
                 network: 'mainnet',
                 version: 'v1',
-                maticProvider: window.ethereum,
+                maticProvider: window.web3,
                 parentProvider: INFURA_PROVIDER
             });    
             let txHash = await maticPoSClient.burnERC20(
