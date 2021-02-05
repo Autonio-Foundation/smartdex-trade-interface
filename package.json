@@ -8,6 +8,7 @@
         "@0x/order-utils": "^8.2.3",
         "@0x/web3-wrapper": "^6.0.6",
         "@maticnetwork/maticjs": "^2.0.27",
+        "@maticnetwork/metamask-provider": "^0.0.1",
         "@types/async-retry": "^1.4.1",
         "@types/recharts": "^1.1.16",
         "async-retry": "^1.2.3",
