@@ -249,7 +249,7 @@ class MaticBridge extends React.Component<Props, State> {
                         </div>
 
                         <Content>
-                            <p style={{font: 11}}>{isDeposit ? "Please make sure you are on Ethereum Mainnet" : "Please make sure you are on Matic Mainnet" }</p>
+                            <p style={{fontSize: 11}}>{isDeposit ? "Please make sure you are on Ethereum Mainnet" : "Please make sure you are on Matic Mainnet" }</p>
                             <FieldContainer>
                                 <BigInputNumberStyled
                                     decimals={currentToken.decimals}
