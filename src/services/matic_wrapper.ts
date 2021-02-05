@@ -1,6 +1,6 @@
 import Matic from '@maticnetwork/maticjs';
 import { MaticPOSClient } from '@maticnetwork/maticjs';
-import { INFURA_PROVIDER } from '../common/constants';
+import { MATIC_PROVIDER, INFURA_PROVIDER } from '../common/constants';
 
 import { sleep } from '../util/sleep';
 
@@ -19,7 +19,7 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     maticWrapper = new Matic({
         network: 'mainnet',
         version: 'v1',
-        maticProvider: ethereum ? ethereum : web3.currentProvider,
+        maticProvider: MATIC_PROVIDER,
         parentProvider: INFURA_PROVIDER
     });
 
@@ -28,7 +28,7 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     maticPoSClient = new MaticPOSClient({
         network: 'mainnet',
         version: 'v1',
-        maticProvider: ethereum ? ethereum : web3.currentProvider,
+        maticProvider: MATIC_PROVIDER,
         parentProvider: INFURA_PROVIDER
     });
 
