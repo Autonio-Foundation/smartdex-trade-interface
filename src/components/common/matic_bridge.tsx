@@ -17,7 +17,6 @@ import { getMaticWrapper } from '../../services/matic_wrapper';
 import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
-import { getWeb3Wrapper } from '../../services/web3_wrapper';
 
 interface Props {
     theme: Theme;
@@ -175,14 +174,13 @@ class MaticBridge extends React.Component<Props, State> {
 
     public submit = async () => {
         const { isDeposit, currentToken, amount } = this.state;
-        const web3Wrapper = await getWeb3Wrapper();
 
         if (isDeposit) {
             const maticPoSClient = new MaticPOSClient({
                 network: 'mainnet',
                 version: 'v1',
                 maticProvider: MATIC_PROVIDER,
-                parentProvider: web3Wrapper.currentProvider
+                parentProvider: window.ethereum
             });
             await maticPoSClient.approveERC20ForDeposit(
                 currentToken.addresses[1],
@@ -206,7 +204,7 @@ class MaticBridge extends React.Component<Props, State> {
             const maticPoSClient = new MaticPOSClient({
                 network: 'mainnet',
                 version: 'v1',
-                maticProvider: web3Wrapper.currentProvider,
+                maticProvider: window.ethereum,
                 parentProvider: INFURA_PROVIDER
             });    
             let txHash = await maticPoSClient.burnERC20(
