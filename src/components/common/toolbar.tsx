@@ -101,7 +101,10 @@ const Toolbar = (props: Props) => {
                 return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLoading} icon={ErrorIcons.Metamask} />;
             case Web3State.Error:
                 return (
-                    <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
+                    <>
+                        <MaticBridgeContainer />
+                        <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
+                    </>
                 );
             case Web3State.Done:
                 return (
@@ -119,7 +122,6 @@ const Toolbar = (props: Props) => {
     return (
         <ToolbarWrapper>
             <ToolbarStart>{startContent}</ToolbarStart>
-            <MaticBridgeContainer />
             {getContentFromWeb3State(props.web3State)}
         </ToolbarWrapper>
     );
