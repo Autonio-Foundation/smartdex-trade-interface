@@ -174,7 +174,7 @@ class MaticBridge extends React.Component<Props, State> {
         const maticPosClient = await getMaticPOSClient();
         const { isDeposit, currentToken, amount } = this.state;
 
-        console.log(amount.toString())
+        console.log(currentToken.addresses, amount.toString(), window.ethereum.selectedAddress)
 
         if (isDeposit) {
             await maticPosClient.approveERC20ForDeposit(
