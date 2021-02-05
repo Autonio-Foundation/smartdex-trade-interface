@@ -25,7 +25,7 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
 
     maticWrapper.initialize();
 
-    maticPoSClient = new Matic({
+    maticPoSClient = new MaticPOSClient({
         network: 'mainnet',
         version: 'v1',
         maticProvider: ethereum ? ethereum : web3.currentProvider,
