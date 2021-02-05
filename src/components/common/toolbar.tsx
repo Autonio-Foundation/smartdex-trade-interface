@@ -6,6 +6,7 @@ import { getWeb3State } from '../../store/selectors';
 import { themeBreakPoints, themeDimensions } from '../../themes/commons';
 import { errorsWallet } from '../../util/error_messages';
 import { StoreState, Web3State } from '../../util/types';
+import { MaticBridgeContainer } from './matic_bridge';
 
 import { ErrorCard, ErrorIcons, FontSize } from './error_card';
 
@@ -118,6 +119,7 @@ const Toolbar = (props: Props) => {
     return (
         <ToolbarWrapper>
             <ToolbarStart>{startContent}</ToolbarStart>
+            <MaticBridgeContainer />
             {getContentFromWeb3State(props.web3State)}
         </ToolbarWrapper>
     );

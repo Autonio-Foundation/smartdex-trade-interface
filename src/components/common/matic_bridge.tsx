@@ -3,6 +3,8 @@ import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { separatorTopbar } from '../../components/common/toolbar';
 import Modal from 'react-modal';
+import { MaticPOSClient } from '@maticnetwork/maticjs';
+import { MATIC_PROVIDER, INFURA_PROVIDER } from '../../common/constants';
 
 import { Theme } from '../../themes/commons';
 import { CloseModalButton } from './icons/close_modal_button';
@@ -11,7 +13,7 @@ import { Dropdown, DropdownPositions } from './dropdown';
 import { DropdownTextItem } from './dropdown_text_item';
 import { BigNumberInput } from './big_number_input';
 import { themeDimensions } from '../../themes/commons';
-import { getMaticWrapper, getMaticPOSClient } from '../../services/matic_wrapper';
+import { getMaticWrapper } from '../../services/matic_wrapper';
 import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
@@ -171,13 +173,16 @@ class MaticBridge extends React.Component<Props, State> {
     };
 
     public submit = async () => {
-        const maticPosClient = await getMaticPOSClient();
         const { isDeposit, currentToken, amount } = this.state;
 
-        console.log(currentToken.addresses, amount.toString(), window.ethereum.selectedAddress)
-
         if (isDeposit) {
-            await maticPosClient.approveERC20ForDeposit(
+            const maticPoSClient = new MaticPOSClient({
+                network: 'mainnet',
+                version: 'v1',
+                maticProvider: MATIC_PROVIDER,
+                parentProvider: window.web3
+            });
+            await maticPoSClient.approveERC20ForDeposit(
                 currentToken.addresses[1],
                 amount.toString(),
                 {
@@ -185,7 +190,7 @@ class MaticBridge extends React.Component<Props, State> {
                     encodeAbi: true
                 }
             )
-            await maticPosClient.depositERC20ForUser(
+            await maticPoSClient.depositERC20ForUser(
                 currentToken.addresses[1],
                 window.ethereum.selectedAddress,
                 amount.toString(),
@@ -196,7 +201,13 @@ class MaticBridge extends React.Component<Props, State> {
             )
         }
         else {
-            let txHash = await maticPosClient.burnERC20(
+            const maticPoSClient = new MaticPOSClient({
+                network: 'mainnet',
+                version: 'v1',
+                maticProvider: window.web3,
+                parentProvider: INFURA_PROVIDER
+            });    
+            let txHash = await maticPoSClient.burnERC20(
                 currentToken.addresses[137],
                 amount.toString(),
                 {
@@ -204,7 +215,7 @@ class MaticBridge extends React.Component<Props, State> {
                     encodeAbi: true
                 }
             )
-            await maticPosClient.exitERC20(
+            await maticPoSClient.exitERC20(
                 txHash,
                 {
                     from: window.ethereum.selectedAddress

@@ -1,5 +1,4 @@
 import Matic from '@maticnetwork/maticjs';
-import { MaticPOSClient } from '@maticnetwork/maticjs';
 import { MATIC_PROVIDER, INFURA_PROVIDER } from '../common/constants';
 
 import { sleep } from '../util/sleep';
@@ -7,7 +6,6 @@ import { sleep } from '../util/sleep';
 // const MaticPOSClient = require('@maticnetwork/maticjs').MaticPOSClient
 
 let maticWrapper: Matic | null = null;
-let maticPoSClient : MaticPOSClient | null = null;
 
 export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     const { ethereum, web3 } = window;
@@ -19,18 +17,11 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     maticWrapper = new Matic({
         network: 'mainnet',
         version: 'v1',
-        maticProvider: MATIC_PROVIDER,
+        maticProvider: web3.currentProvider,
         parentProvider: INFURA_PROVIDER
     });
 
     maticWrapper.initialize();
-
-    maticPoSClient = new MaticPOSClient({
-        network: 'mainnet',
-        version: 'v1',
-        maticProvider: MATIC_PROVIDER,
-        parentProvider: INFURA_PROVIDER
-    });
 
     return maticWrapper;
 };
@@ -42,13 +33,4 @@ export const getMaticWrapper = async (): Promise<Matic> => {
     }
 
     return maticWrapper;
-};
-
-export const getMaticPOSClient = async (): Promise<MaticPOSClient> => {
-    while (!maticPoSClient) {
-        // if web3Wrapper is not set yet, wait and retry
-        await sleep(100);
-    }
-
-    return maticPoSClient;
 };
