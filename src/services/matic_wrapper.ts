@@ -1,5 +1,6 @@
 import Matic from '@maticnetwork/maticjs';
 import { MaticPOSClient } from '@maticnetwork/maticjs';
+import MetamaskProvider from "@maticnetwork/metamask-provider"
 import { MATIC_PROVIDER, INFURA_PROVIDER } from '../common/constants';
 
 import { sleep } from '../util/sleep';
@@ -16,11 +17,19 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
         return maticWrapper;
     }
 
+    const ethereumProvider = new MetamaskProvider(ethereum, {
+        url: INFURA_PROVIDER
+    })
+
+    const maticProvider = new MetamaskProvider(ethereum, {
+        url: MATIC_PROVIDER
+    })
+
     maticWrapper = new Matic({
         network: 'mainnet',
         version: 'v1',
-        maticProvider: MATIC_PROVIDER,
-        parentProvider: INFURA_PROVIDER
+        maticProvider: maticProvider,
+        parentProvider: ethereumProvider
     });
 
     maticWrapper.initialize();
@@ -28,8 +37,8 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     maticPoSClient = new MaticPOSClient({
         network: 'mainnet',
         version: 'v1',
-        maticProvider: MATIC_PROVIDER,
-        parentProvider: INFURA_PROVIDER
+        maticProvider: maticProvider,
+        parentProvider: ethereumProvider
     });
 
     return maticWrapper;
