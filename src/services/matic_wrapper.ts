@@ -17,7 +17,7 @@ export const initializeMaticWrapper = async (): Promise<Matic | null> => {
     maticWrapper = new Matic({
         network: 'mainnet',
         version: 'v1',
-        maticProvider: web3.currentProvider,
+        maticProvider: ethereum,
         parentProvider: INFURA_PROVIDER
     });
 
