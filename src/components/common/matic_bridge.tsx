@@ -180,24 +180,18 @@ class MaticBridge extends React.Component<Props, State> {
                 network: 'mainnet',
                 version: 'v1',
                 maticProvider: MATIC_PROVIDER,
-                parentProvider: window.web3
+                parentProvider: window.web3,
+                parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                maticDefaultOptions: { from: window.ethereum.selectedAddress }
             });
             await maticPoSClient.approveERC20ForDeposit(
                 currentToken.addresses[1],
-                amount.toString(),
-                {
-                    from: window.ethereum.selectedAddress,
-                    encodeAbi: true
-                }
+                amount.toString()
             )
             await maticPoSClient.depositERC20ForUser(
                 currentToken.addresses[1],
                 window.ethereum.selectedAddress,
-                amount.toString(),
-                {
-                    from: window.ethereum.selectedAddress,
-                    encodeAbi: true
-                }
+                amount.toString()
             )
         }
         else {
@@ -205,21 +199,16 @@ class MaticBridge extends React.Component<Props, State> {
                 network: 'mainnet',
                 version: 'v1',
                 maticProvider: window.web3,
-                parentProvider: INFURA_PROVIDER
+                parentProvider: INFURA_PROVIDER,
+                parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                maticDefaultOptions: { from: window.ethereum.selectedAddress }
             });    
             let txHash = await maticPoSClient.burnERC20(
                 currentToken.addresses[137],
-                amount.toString(),
-                {
-                    from: window.ethereum.selectedAddress,
-                    encodeAbi: true
-                }
+                amount.toString()
             )
             await maticPoSClient.exitERC20(
-                txHash,
-                {
-                    from: window.ethereum.selectedAddress
-                }
+                txHash
             )
         }
 
