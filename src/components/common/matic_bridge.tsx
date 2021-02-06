@@ -3,6 +3,7 @@ import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { separatorTopbar } from '../../components/common/toolbar';
 import Modal from 'react-modal';
+import Matic from '@maticnetwork/maticjs';
 import { MaticPOSClient } from '@maticnetwork/maticjs';
 import { MATIC_PROVIDER, INFURA_PROVIDER } from '../../common/constants';
 
@@ -13,7 +14,6 @@ import { Dropdown, DropdownPositions } from './dropdown';
 import { DropdownTextItem } from './dropdown_text_item';
 import { BigNumberInput } from './big_number_input';
 import { themeDimensions } from '../../themes/commons';
-import { getMaticWrapper } from '../../services/matic_wrapper';
 import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
@@ -128,32 +128,58 @@ class MaticBridge extends React.Component<Props, State> {
     };
 
     public updateBalances = async () => {
-        const maticWrapper = await getMaticWrapper();
-        let maticBalance : {[k: string]: any} = {};
-        let ethBalance : {[k: string]: any} = {};
+        let maticWrapper : Matic = null;
 
-        KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
-            let value = await maticWrapper.balanceOfERC20(
-                window.ethereum.selectedAddress,
-                token.addresses[137],
-                {
-                    from: window.ethereum.selectedAddress,
-                }
-            )
-            maticBalance[token.symbol] = value / Math.pow(10, token.decimals);
+        try {
+            let chainid = await window.ethereum.request({ method: 'eth_chainId' });
+
+            if (chainid === 1) {
+                maticWrapper = new Matic({
+                    network: 'mainnet',
+                    version: 'v1',
+                    maticProvider: MATIC_PROVIDER,
+                    parentProvider: window.ethereum
+                });    
+            }
+            else {
+                maticWrapper = new Matic({
+                    network: 'mainnet',
+                    version: 'v1',
+                    maticProvider: window.ethereum,
+                    parentProvider: INFURA_PROVIDER
+                });    
+            }
+        
+            maticWrapper.initialize();
     
-            value = await maticWrapper.balanceOfERC20(
-                window.ethereum.selectedAddress,
-                token.addresses[1],
-                {
-                    from: window.ethereum.selectedAddress,
-                    parent: true
-                }
-            )
-            ethBalance[token.symbol] = value / Math.pow(10, token.decimals);
-        })
-
-        this.setState({maticBalance, ethBalance});
+            let maticBalance : {[k: string]: any} = {};
+            let ethBalance : {[k: string]: any} = {};
+    
+            KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
+                let value = await maticWrapper.balanceOfERC20(
+                    window.ethereum.selectedAddress,
+                    token.addresses[137],
+                    {
+                        from: window.ethereum.selectedAddress,
+                    }
+                )
+                maticBalance[token.symbol] = value / Math.pow(10, token.decimals);
+        
+                value = await maticWrapper.balanceOfERC20(
+                    window.ethereum.selectedAddress,
+                    token.addresses[1],
+                    {
+                        from: window.ethereum.selectedAddress,
+                        parent: true
+                    }
+                )
+                ethBalance[token.symbol] = value / Math.pow(10, token.decimals);
+            })
+    
+            this.setState({maticBalance, ethBalance});
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     public handleOpenModal = (ev: any) => {

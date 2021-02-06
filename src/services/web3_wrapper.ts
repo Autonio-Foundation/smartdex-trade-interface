@@ -1,5 +1,4 @@
 import { Web3Wrapper } from '@0x/web3-wrapper';
-import { initializeMaticWrapper } from './matic_wrapper';
 
 import { sleep } from '../util/sleep';
 
@@ -31,8 +30,6 @@ export const initializeWeb3Wrapper = async (): Promise<Web3Wrapper | null> => {
             ethereum.on('networkChanged', async (network: number) => {
                 location.reload();
             });
-
-            initializeMaticWrapper();
 
             return web3Wrapper;
         } catch (error) {
