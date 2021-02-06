@@ -1736,10 +1736,10 @@
   dependencies:
     events "^3.0.0"
 
-"@maticnetwork/maticjs@^2.0.27":
-  version "2.0.27"
-  resolved "https://registry.yarnpkg.com/@maticnetwork/maticjs/-/maticjs-2.0.27.tgz#03b8756850f6d72dbcc3f531f4d1f91d64824612"
-  integrity sha512-1/QmLJIwZfPgOL5L+PHd534CYQYmIAaQnInLRNjLf3vhEXElQn8Pi4/lP9WTVOX/5RWzrhxsbHOurq8HeiqV6w==
+"@maticnetwork/maticjs@^2.0.28":
+  version "2.0.29"
+  resolved "https://registry.yarnpkg.com/@maticnetwork/maticjs/-/maticjs-2.0.29.tgz#c128d826adfbd0430e942759e2158fa5206fa235"
+  integrity sha512-yGe6uxSuwOFkBcWhunoBZRSN8KWV2HLP1B7WJHGNm/NUMF1NWm5zzezu9OFJT/PVBQfercI/O72fevrAnjivvg==
   dependencies:
     "@maticnetwork/meta" "^2.4.6"
     "@types/bluebird" "^3.5.29"
