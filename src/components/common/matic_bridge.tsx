@@ -128,7 +128,7 @@ class MaticBridge extends React.Component<Props, State> {
     };
 
     public updateBalances = async () => {
-        let maticWrapper : Matic = null;
+        let maticWrapper : Matic;
 
         try {
             let chainid = await window.ethereum.request({ method: 'eth_chainId' });
