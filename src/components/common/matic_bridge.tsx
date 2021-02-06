@@ -24,11 +24,11 @@ interface Props {
 
 interface State {
     isOpen: boolean;
-    isDeposit: boolean;
     currentToken: TokenMetaData;
     amount: BigNumber;
     maticBalance: {[k: string]: any};
     ethBalance: {[k: string]: any};
+    chainid: number;
 }
 
 const DepositContent = styled.div`
@@ -62,6 +62,7 @@ const MaticBridgeLink = styled.a`
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
+    margin-right: 20px;
 
     &:hover {
         text-decoration: underline;
@@ -112,9 +113,9 @@ const Content = styled.div`
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
-        isDeposit: true,
         currentToken: KNOWN_TOKENS_META_DATA[0],
         amount: new BigNumber(0),
+        chainid: 0,
         maticBalance: {},
         ethBalance: {}
     };
@@ -124,29 +125,39 @@ class MaticBridge extends React.Component<Props, State> {
     }
 
     public componentDidMount = async () => {
+        try {
+            let chainid = await window.ethereum.request({ method: 'eth_chainId' });
+            this.setState({ chainid });    
+        } catch (error) {
+            console.log(error);
+        }
         await this.updateBalances();
     };
 
     public updateBalances = async () => {
         let maticWrapper : Matic;
+        const { chainid } = this.state;
 
         try {
-            let chainid = await window.ethereum.request({ method: 'eth_chainId' });
 
             if (chainid === 1) {
                 maticWrapper = new Matic({
                     network: 'mainnet',
                     version: 'v1',
                     maticProvider: MATIC_PROVIDER,
-                    parentProvider: window.ethereum
-                });    
+                    parentProvider: window.ethereum,
+                    parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                    maticDefaultOptions: { from: window.ethereum.selectedAddress }
+                });
             }
             else {
                 maticWrapper = new Matic({
                     network: 'mainnet',
                     version: 'v1',
                     maticProvider: window.ethereum,
-                    parentProvider: INFURA_PROVIDER
+                    parentProvider: INFURA_PROVIDER,
+                    parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                    maticDefaultOptions: { from: window.ethereum.selectedAddress }
                 });    
             }
         
@@ -199,9 +210,9 @@ class MaticBridge extends React.Component<Props, State> {
     };
 
     public submit = async () => {
-        const { isDeposit, currentToken, amount } = this.state;
+        const { currentToken, amount, chainid } = this.state;
 
-        if (isDeposit) {
+        if (chainid === 1) {
             const maticPoSClient = new MaticPOSClient({
                 network: 'mainnet',
                 version: 'v1',
@@ -220,7 +231,7 @@ class MaticBridge extends React.Component<Props, State> {
                 amount.toString()
             )
         }
-        else {
+        else if (chainid === 137) {
             const maticPoSClient = new MaticPOSClient({
                 network: 'mainnet',
                 version: 'v1',
@@ -245,7 +256,9 @@ class MaticBridge extends React.Component<Props, State> {
 
     public render = () => {
         const { theme } = this.props;
-        const { isOpen, isDeposit, currentToken, amount, maticBalance, ethBalance } = this.state;
+        const { isOpen, currentToken, amount, maticBalance, ethBalance, chainid } = this.state;
+
+        const isDeposit = chainid === 1;
 
         return (
             <>
@@ -257,14 +270,16 @@ class MaticBridge extends React.Component<Props, State> {
                     <ModalContent style={{color: '#fff'}}>
                         <Title>Matic Bridge</Title>
                         <div style={{display: 'flex'}}>
-                            <DepositContent style={{borderColor: isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}} 
-                                onClick={() => this.setState({isDeposit: true})}>Deposit to Matic</DepositContent>
-                            <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff', color: !isDeposit ? '#0FEE90' : '#fff'}} 
-                                onClick={() => this.setState({isDeposit: false})}>Withdraw to Ethereum</DepositContent>
+                            {chainid === 1 &&
+                                <DepositContent style={{borderColor: isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit to Matic</DepositContent>
+                            }
+                            {chainid === 137 &&
+                                <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff', color: !isDeposit ? '#0FEE90' : '#fff'}}>Withdraw to Ethereum</DepositContent>
+                            }
                         </div>
 
                         <Content>
-                            <p style={{fontSize: 11}}>{isDeposit ? "Please make sure you are on Ethereum Mainnet" : "Please make sure you are on Matic Mainnet" }</p>
+                            <p style={{fontSize: 11}}>{chainid === 1 ? "Please make sure you are on Ethereum Mainnet" : "Please make sure you are on Matic Mainnet" }</p>
                             <FieldContainer>
                                 <BigInputNumberStyled
                                     decimals={currentToken.decimals}
