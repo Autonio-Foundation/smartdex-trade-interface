@@ -180,7 +180,7 @@ class MaticBridge extends React.Component<Props, State> {
                 network: 'mainnet',
                 version: 'v1',
                 maticProvider: MATIC_PROVIDER,
-                parentProvider: window.web3,
+                parentProvider: window.ethereum,
                 parentDefaultOptions: { from: window.ethereum.selectedAddress },
                 maticDefaultOptions: { from: window.ethereum.selectedAddress }
             });
@@ -198,7 +198,7 @@ class MaticBridge extends React.Component<Props, State> {
             const maticPoSClient = new MaticPOSClient({
                 network: 'mainnet',
                 version: 'v1',
-                maticProvider: window.web3,
+                maticProvider: window.ethereum,
                 parentProvider: INFURA_PROVIDER,
                 parentDefaultOptions: { from: window.ethereum.selectedAddress },
                 maticDefaultOptions: { from: window.ethereum.selectedAddress }
