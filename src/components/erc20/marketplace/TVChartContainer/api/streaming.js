@@ -45,7 +45,7 @@ socket.on('m', data => {
 	}
 	console.log(subscriptionItem);
 	const lastDailyBar = subscriptionItem.lastDailyBar;
-	const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time);
+	const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time, subscriptionItem.resolution);
 
 	let bar;
 	if (tradeTime >= nextDailyBarTime) {
@@ -72,10 +72,13 @@ socket.on('m', data => {
 	subscriptionItem.handlers.forEach(handler => handler.callback(bar));
 });
 
-function getNextDailyBarTime(barTime) {
+function getNextDailyBarTime(barTime, resolution) {
 	const date = new Date(barTime * 1000);
-	date.setDate(date.getDate() + 1);
-	return date.getTime() / 1000;
+	if (resolution === "D") {
+		date.setDate(date.getDate() + 1);
+		return date.getTime() / 1000;
+	}
+	return barTime + parseInt(resolution) * 60;
 }
 
 export function subscribeOnStream(
