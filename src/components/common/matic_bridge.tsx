@@ -111,7 +111,8 @@ const Content = styled.div`
 const DotDiv = styled.div`
     border-radius: 50%;
     height: 8px;
-    margin-right: 6px;
+    margin-top: 6px;
+    margin-right: 12px;
     width: 8px;
 `;
 
@@ -279,7 +280,7 @@ class MaticBridge extends React.Component<Props, State> {
                         </div>
                         <Content>
                             <p><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></p>
-                            <div style={{display: 'flex'}}>
+                            <div style={{display: 'flex', marginBottom: 6}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#0FEE90' : '#F91A4F'}} />
                                 <span>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "You are not on Ethereum Mainnet") : (!isDeposit ? "You are on Matic Mainnet" : "You are not on Matic Mainnet") }</span>
                             </div>
