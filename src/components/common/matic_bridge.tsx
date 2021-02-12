@@ -108,6 +108,14 @@ const Content = styled.div`
     width: 100%;
 `;
 
+const DotDiv = styled.div`
+    background-color: #0FEE90;
+    border-radius: 50%;
+    height: 8px;
+    margin-right: 6px;
+    width: 8px;
+`;
+
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
@@ -268,12 +276,14 @@ class MaticBridge extends React.Component<Props, State> {
                     <ModalContent style={{color: '#fff'}}>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit</DepositContent>
-                            <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#0FEE90' : '#fff'}}>Withdraw</DepositContent>
+                            <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff'}}>Withdraw</DepositContent>
                         </div>
-                        <p><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></p>
-
                         <Content>
-                            <p>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "You are not on Ethereum Mainnet") : (!isDeposit ? "You are on Matic Mainnet" : "You are not on Matic Mainnet") }</p>
+                            <p><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></p>
+                            <div style={{display: 'flex'}}>
+                                <DotDiv style={!((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) && {backgroundColor: '#F91A4F'}} />
+                                <span>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "You are not on Ethereum Mainnet") : (!isDeposit ? "You are on Matic Mainnet" : "You are not on Matic Mainnet") }</span>
+                            </div>
                             <FieldContainer>
                                 <BigInputNumberStyled
                                     decimals={currentToken.decimals}
