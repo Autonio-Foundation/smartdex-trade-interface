@@ -17,6 +17,7 @@ import { themeDimensions } from '../../themes/commons';
 import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
+import { tokenAmountInUnits } from '../../util/tokens';
 
 interface Props {
     theme: Theme;
@@ -332,7 +333,7 @@ class MaticBridge extends React.Component<Props, State> {
                 </MaticBridgeLink>
                 <Modal isOpen={isOpen} style={theme.modalTheme}>
                     <CloseModalButton onClick={this.handleCloseModel} />
-                    <ModalContent style={{color: '#fff'}}>
+                    <ModalContent style={{color: '#fff', height: 490}}>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit</DepositContent>
                             <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff'}}>Withdraw</DepositContent>
@@ -384,7 +385,7 @@ class MaticBridge extends React.Component<Props, State> {
                             </LabelContainer>
                             <Row>
                                 <FeeLabel>Amount</FeeLabel>
-                                <Value>{amount.toString()} {TokenSymbolFormat(currentToken.symbol)}</Value>
+                                <Value>{tokenAmountInUnits(amount, currentToken.decimals)} {TokenSymbolFormat(currentToken.symbol)}</Value>
                             </Row>
                             <Row>
                                 <CostLabel>Estimated Fee</CostLabel>
