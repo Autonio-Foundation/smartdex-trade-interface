@@ -116,6 +116,61 @@ const DotDiv = styled.div`
     width: 8px;
 `;
 
+const LabelContainer = styled.div`
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0 10px 0;
+`;
+
+const Label = styled.label<{ color?: string }>`
+    color: ${props => props.color || props.theme.componentsTheme.textColorCommon};
+    font-size: 14px;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+`;
+
+const FeeLabel = styled(Label)`
+    color: ${props => props.theme.componentsTheme.textColorCommon};
+    font-weight: normal;
+`;
+
+const Row = styled.div`
+    align-items: center;
+    border-top: dashed 1px ${props => props.theme.componentsTheme.borderColor};
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    position: relative;
+    z-index: 1;
+
+    &:last-of-type {
+        margin-bottom: 20px;
+    }
+`;
+
+const Value = styled.div`
+    color: ${props => props.theme.componentsTheme.textColorCommon};
+    flex-shrink: 0;
+    font-feature-settings: 'tnum' 1;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: nowrap;
+`;
+
+const CostValue = styled(Value)`
+    font-feature-settings: 'tnum' 1;
+    font-weight: bold;
+`;
+
+const CostLabel = styled(Label)`
+    font-weight: 700;
+`;
+
+
+const MainLabel = styled(Label)``;
+
 function TokenSymbolFormat(symbol: string) {
     return symbol === 'wmatic' ? 'MATIC' : symbol.toUpperCase()
 }
@@ -305,7 +360,7 @@ class MaticBridge extends React.Component<Props, State> {
                                             body={
                                                 <>
                                                 {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(currentToken.symbol)} />
+                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} />
                                                 )}
                                                 </>
                                             }
@@ -321,8 +376,21 @@ class MaticBridge extends React.Component<Props, State> {
                                 </TokenContainer>
                             </FieldContainer>
 
-                            <div style={{marginBottom: 20}}>Max. {isDeposit ? ethBalance[currentToken.symbol] && ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)
-                             : maticBalance[currentToken.symbol] && maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)} {TokenSymbolFormat(currentToken.symbol)}</div>
+                            <div style={{marginBottom: 20}}>Max. {isDeposit ? (ethBalance[currentToken.symbol] ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")
+                             : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")} {TokenSymbolFormat(currentToken.symbol)}</div>
+
+                            <LabelContainer>
+                                <MainLabel>Details</MainLabel>
+                            </LabelContainer>
+                            <Row>
+                                <FeeLabel>Amount</FeeLabel>
+                                <Value>{amount.toString()} {TokenSymbolFormat(currentToken.symbol)}</Value>
+                            </Row>
+                            <Row>
+                                <CostLabel>Estimated Fee</CostLabel>
+                                <CostValue>0 Gas</CostValue>
+                            </Row>
+
 
                             <Button
                                 disabled={amount.isZero()}
