@@ -29,6 +29,7 @@ interface State {
     maticBalance: {[k: string]: any};
     ethBalance: {[k: string]: any};
     chainid: number;
+    isDeposit: boolean;
 }
 
 const DepositContent = styled.div`
@@ -38,10 +39,8 @@ const DepositContent = styled.div`
     flex-grow: 1;
     flex-shrink: 0;
     min-height: 70px;
-    width: 140px;
+    width: 50%;
     height: 70px;
-    border: 2px solid #fff;
-    border-radius: 6px;
     margin: 4px;
     text-align: center;
     justify-content: center;
@@ -117,7 +116,8 @@ class MaticBridge extends React.Component<Props, State> {
         amount: new BigNumber(0),
         chainid: 0,
         maticBalance: {},
-        ethBalance: {}
+        ethBalance: {},
+        isDeposit: true
     };
 
     constructor(props: Props) {
@@ -257,9 +257,7 @@ class MaticBridge extends React.Component<Props, State> {
 
     public render = () => {
         const { theme } = this.props;
-        const { isOpen, currentToken, amount, maticBalance, ethBalance, chainid } = this.state;
-
-        const isDeposit = chainid === 1;
+        const { isOpen, currentToken, amount, maticBalance, ethBalance, chainid, isDeposit } = this.state;
 
         return (
             <>
@@ -269,15 +267,11 @@ class MaticBridge extends React.Component<Props, State> {
                 <Modal isOpen={isOpen} style={theme.modalTheme}>
                     <CloseModalButton onClick={this.handleCloseModel} />
                     <ModalContent style={{color: '#fff'}}>
-                        <Title>Matic Bridge</Title>
-                        <div style={{display: 'flex'}}>
-                            {chainid === 1 &&
-                                <DepositContent style={{borderColor: isDeposit ? '#0FEE90' : '#fff', color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit to Matic</DepositContent>
-                            }
-                            {chainid === 137 &&
-                                <DepositContent style={{borderColor: !isDeposit ? '#0FEE90' : '#fff', color: !isDeposit ? '#0FEE90' : '#fff'}}>Withdraw to Ethereum</DepositContent>
-                            }
+                        <div style={{display: 'flex', width: '100%'}}>
+                            <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit</DepositContent>
+                            <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#0FEE90' : '#fff'}}>Withdraw</DepositContent>
                         </div>
+                        <Title style={{textAlign: 'left'}}>Matic Bridge</Title>
 
                         <Content>
                             <p style={{fontSize: 11}}>{chainid === 1 ? "Please make sure you are on Ethereum Mainnet" : "Please make sure you are on Matic Mainnet" }</p>
