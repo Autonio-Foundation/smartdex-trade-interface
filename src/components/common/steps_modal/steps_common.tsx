@@ -82,7 +82,7 @@ const ModalContent = styled.div`
     max-height: 100%;
     min-height: 300px;
     overflow: auto;
-    width: 310px;
+    width: 340px;
     height: 410px;
 `;
 

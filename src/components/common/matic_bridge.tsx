@@ -342,7 +342,7 @@ class MaticBridge extends React.Component<Props, State> {
                 </MaticBridgeLink>
                 <Modal isOpen={isOpen} style={theme.modalTheme}>
                     <CloseModalButton onClick={this.handleCloseModel} />
-                    <ModalContent style={{color: '#fff', height: 490}}>
+                    <ModalContent style={{color: '#fff', height: 450}}>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff', fontWeight: 'bold'}}>Deposit</DepositContent>
                             <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff', fontWeight: 'bold'}}>Withdraw</DepositContent>
@@ -351,7 +351,7 @@ class MaticBridge extends React.Component<Props, State> {
                             <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 20}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#0FEE90' : '#F91A4F'}} />
-                                <span>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "You are not on Ethereum Mainnet") : (!isDeposit ? "You are on Matic Mainnet" : "You are not on Matic Mainnet") }</span>
+                                <span>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Ethereum Mainnet for deposit") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Matic Mainnet for withdrawal") }</span>
                             </div>
                             <FieldContainer>
                                 <BigInputNumberStyled
@@ -396,11 +396,6 @@ class MaticBridge extends React.Component<Props, State> {
                                 <FeeLabel>Amount</FeeLabel>
                                 <Value>{tokenAmountInUnits(amount, currentToken.decimals)} {TokenSymbolFormat(currentToken.symbol)}</Value>
                             </Row>
-                            <Row>
-                                <CostLabel>Estimated Fee</CostLabel>
-                                <CostValue>0 Gas</CostValue>
-                            </Row>
-
 
                             <Button
                                 disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
