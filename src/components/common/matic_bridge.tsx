@@ -351,7 +351,7 @@ class MaticBridge extends React.Component<Props, State> {
                             <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 20}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#0FEE90' : '#F91A4F'}} />
-                                <span style={{frontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Ethereum Mainnet for deposit") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Matic Mainnet for withdrawal") }</span>
+                                <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Ethereum Mainnet for deposit") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Matic Mainnet for withdrawal") }</span>
                             </div>
                             <FieldContainer>
                                 <BigInputNumberStyled
