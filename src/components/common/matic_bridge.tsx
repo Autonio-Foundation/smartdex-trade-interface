@@ -116,6 +116,10 @@ const DotDiv = styled.div`
     width: 8px;
 `;
 
+function TokenSymbolFormat(symbol: string) {
+    return symbol === 'wmatic' ? 'MATIC' : symbol.toUpperCase()
+}
+
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
@@ -279,8 +283,8 @@ class MaticBridge extends React.Component<Props, State> {
                             <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff'}}>Withdraw</DepositContent>
                         </div>
                         <Content>
-                            <p><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></p>
-                            <div style={{display: 'flex', marginBottom: 6}}>
+                            <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
+                            <div style={{display: 'flex', marginBottom: 26, marginTop: 20}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#0FEE90' : '#F91A4F'}} />
                                 <span>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "You are not on Ethereum Mainnet") : (!isDeposit ? "You are on Matic Mainnet" : "You are not on Matic Mainnet") }</span>
                             </div>
@@ -301,13 +305,13 @@ class MaticBridge extends React.Component<Props, State> {
                                             body={
                                                 <>
                                                 {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={token.symbol === 'wmatic' ? 'MATIC' : token.symbol.toUpperCase()} />
+                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(currentToken.symbol)} />
                                                 )}
                                                 </>
                                             }
                                             header={
                                                 <>
-                                                    {currentToken.symbol === 'wmatic' ? 'MATIC' : currentToken.symbol.toUpperCase()}
+                                                    {TokenSymbolFormat(currentToken.symbol)}
                                                 </>
                                             }
                                             horizontalPosition={DropdownPositions.Right}
@@ -317,8 +321,8 @@ class MaticBridge extends React.Component<Props, State> {
                                 </TokenContainer>
                             </FieldContainer>
 
-                            <p>Max Amount: {isDeposit ? ethBalance[currentToken.symbol] && ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)
-                             : maticBalance[currentToken.symbol] && maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)}</p>
+                            <div style={{marginBottom: 20}}>Max. {isDeposit ? ethBalance[currentToken.symbol] && ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)
+                             : maticBalance[currentToken.symbol] && maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals)} {TokenSymbolFormat(currentToken.symbol)}</div>
 
                             <Button
                                 disabled={amount.isZero()}
