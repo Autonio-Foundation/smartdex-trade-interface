@@ -1,7 +1,6 @@
 import { BigNumber } from '0x.js';
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { separatorTopbar } from '../../components/common/toolbar';
 import Modal from 'react-modal';
 import Matic from '@maticnetwork/maticjs';
 import { MaticPOSClient } from '@maticnetwork/maticjs';
@@ -18,6 +17,7 @@ import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
 import { tokenAmountInUnits } from '../../util/tokens';
+import { separatorTopbar } from './toolbar';
 
 interface Props {
     theme: Theme;
@@ -61,13 +61,22 @@ const MaticBridgeLink = styled.a`
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
-    margin-right: 20px;
 
     &:hover {
         text-decoration: underline;
     }
 
-    ${separatorTopbar}
+    &:after {
+        background-color: ${props => props.theme.componentsTheme.topbarSeparatorColor};
+        content: '';
+        height: 26px;
+        margin-left: 17px;
+        margin-right: 17px;
+        width: 1px;
+    }
+    &:last-child:after {
+        display: none;
+    }
 `;
 
 const BigInputNumberStyled = styled<any>(BigNumberInput)`
@@ -328,15 +337,15 @@ class MaticBridge extends React.Component<Props, State> {
 
         return (
             <>
-                <MaticBridgeLink onClick={this.handleOpenModal}>
+                <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
                 <Modal isOpen={isOpen} style={theme.modalTheme}>
                     <CloseModalButton onClick={this.handleCloseModel} />
                     <ModalContent style={{color: '#fff', height: 490}}>
                         <div style={{display: 'flex', width: '100%'}}>
-                            <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit</DepositContent>
-                            <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff'}}>Withdraw</DepositContent>
+                            <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff', fontWeight: 'bold'}}>Deposit</DepositContent>
+                            <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff', fontWeight: 'bold'}}>Withdraw</DepositContent>
                         </div>
                         <Content>
                             <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
