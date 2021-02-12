@@ -41,7 +41,6 @@ const DepositContent = styled.div`
     min-height: 70px;
     width: 50%;
     height: 70px;
-    margin: 4px;
     text-align: center;
     justify-content: center;
     cursor: pointer;
@@ -271,10 +270,10 @@ class MaticBridge extends React.Component<Props, State> {
                             <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff'}}>Deposit</DepositContent>
                             <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#0FEE90' : '#fff'}}>Withdraw</DepositContent>
                         </div>
-                        <Title style={{textAlign: 'left'}}>Matic Bridge</Title>
+                        <p><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></p>
 
                         <Content>
-                            <p style={{fontSize: 11}}>{chainid === 1 ? "Please make sure you are on Ethereum Mainnet" : "Please make sure you are on Matic Mainnet" }</p>
+                            <p>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "You are not on Ethereum Mainnet") : (!isDeposit ? "You are on Matic Mainnet" : "You are not on Matic Mainnet") }</p>
                             <FieldContainer>
                                 <BigInputNumberStyled
                                     decimals={currentToken.decimals}
