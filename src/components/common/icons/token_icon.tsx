@@ -14,7 +14,7 @@ interface Props {
 
 const IconContainer = styled.div<{ color: string; isInline?: boolean }>`
     align-items: center;
-    background-color: ${props => (props.color ? props.color : 'transparent')};
+    background-color: transparent;
     border-radius: 50%;
     display: ${props => (props.isInline ? 'inline-flex' : 'flex')};
     height: 26px;
@@ -38,7 +38,7 @@ const TokenIconContainer = (props: Props) => {
         icon ? <ReactSVG style={{width: 26}} src={icon as string} fallback={() => fallBack} /> : fallBack;
     return (
         // <IconContainer color={primaryColor || theme.componentsTheme.gray} {...restProps}>
-        <IconContainer {...restProps}>
+        <IconContainer color={primaryColor || theme.componentsTheme.gray} {...restProps}>
             {Icon}
         </IconContainer>
     );
