@@ -63,7 +63,6 @@ const CardTitle = styled.h1`
 
 const CardBody = styled.div`
     margin: 0;
-    min-height: 200px;
     overflow-x: auto;
     padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
     position: relative;
