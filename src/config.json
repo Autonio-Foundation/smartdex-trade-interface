@@ -38,7 +38,7 @@
         {
             "symbol": "usdt",
             "name": "Tether USD",
-            "primaryColor": "#3333ff",
+            "primaryColor": "transparent",
             "icon": "assets/icons/usdt.svg",
             "addresses": {
                 "1": "0xdac17f958d2ee523a2206206994597c13d831ec7",
@@ -54,7 +54,7 @@
         {
             "symbol": "usdc",
             "name": "USD Coin",
-            "primaryColor": "#3333ff",
+            "primaryColor": "transparent",
             "icon": "assets/icons/usdc.svg",
             "addresses": {
                 "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
