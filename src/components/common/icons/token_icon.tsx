@@ -35,9 +35,10 @@ const TokenIconContainer = (props: Props) => {
     const fallBack = <Label>{symbol && symbol.toUpperCase()}</Label>;
     const Icon =
         // tslint:disable-next-line:jsx-no-lambda
-        icon ? <ReactSVG src={icon as string} fallback={() => fallBack} /> : fallBack;
+        icon ? <ReactSVG style={{width: 26}} src={icon as string} fallback={() => fallBack} /> : fallBack;
     return (
-        <IconContainer color={primaryColor || theme.componentsTheme.gray} {...restProps}>
+        // <IconContainer color={primaryColor || theme.componentsTheme.gray} {...restProps}>
+        <IconContainer {...restProps}>
             {Icon}
         </IconContainer>
     );
