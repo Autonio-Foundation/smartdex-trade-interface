@@ -211,7 +211,7 @@ class WalletBalance extends React.Component<Props, State> {
         );
     };
 
-    private readonly _getWalletContent = () => {
+    private _getWalletContent = () => {
         let content: any = null;
         const {
             web3State,
