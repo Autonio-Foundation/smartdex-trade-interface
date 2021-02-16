@@ -213,7 +213,6 @@ class WalletBalance extends React.Component<Props, State> {
 
     private readonly _getWalletContent = () => {
         let content: any = null;
-        const { orders } = this.props;
         const {
             web3State,
             currencyPair,
@@ -222,6 +221,7 @@ class WalletBalance extends React.Component<Props, State> {
             quoteTokenBalance,
             baseTokenBalance,
             totalEthBalance,
+            orders
         } = this.props;
 
         console.log(orders);
@@ -230,7 +230,7 @@ class WalletBalance extends React.Component<Props, State> {
             let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
             let quoteTokenBalanceAmount = quoteTokenBalance.balance;
 
-            orders && orders.map((cur) => {
+            orders && orders.map((cur: UIOrder) => {
                 if (cur.side === OrderSide.Sell) {
                     baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
                 }
