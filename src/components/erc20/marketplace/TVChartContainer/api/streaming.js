@@ -45,7 +45,10 @@ socket.on('m', data => {
 	}
 	console.log(subscriptionItem);
 	const lastDailyBar = subscriptionItem.lastDailyBar;
-	const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time, subscriptionItem.resolution);
+	let nextDailyBarTime = new Date().getTime() / 1000;
+	if (lastDailyBar) {
+		nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time, subscriptionItem.resolution);
+	}
 
 	let bar;
 	if (tradeTime >= nextDailyBarTime) {
