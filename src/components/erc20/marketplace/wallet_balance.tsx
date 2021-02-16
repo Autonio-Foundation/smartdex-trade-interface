@@ -14,11 +14,12 @@ import {
     getQuoteTokenBalance,
     getTotalEthBalance,
     getWeb3State,
+    getUserOrders
 } from '../../../store/selectors';
 import { errorsWallet } from '../../../util/error_messages';
 import { isWeth } from '../../../util/known_tokens';
 import { tokenAmountInUnits, tokenSymbolToDisplayString } from '../../../util/tokens';
-import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State } from '../../../util/types';
+import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State, UIOrder, OrderSide } from '../../../util/types';
 import { Button } from '../../common/button';
 import { Card } from '../../common/card';
 import { ErrorCard, ErrorIcons, FontSize } from '../../common/error_card';
@@ -139,6 +140,7 @@ interface StateProps {
     baseTokenBalance: TokenBalance | null;
     quoteTokenBalance: TokenBalance | null;
     totalEthBalance: BigNumber;
+    orders: UIOrder[];
 }
 
 interface DispatchProps {
@@ -211,6 +213,7 @@ class WalletBalance extends React.Component<Props, State> {
 
     private readonly _getWalletContent = () => {
         let content: any = null;
+        const { orders } = this.props;
         const {
             web3State,
             currencyPair,
@@ -222,14 +225,25 @@ class WalletBalance extends React.Component<Props, State> {
         } = this.props;
 
         if (baseToken && baseTokenBalance && quoteTokenBalance) {
-            const baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
+            let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
+            let quoteTokenBalanceAmount = quoteTokenBalance.balance;
+
+            orders && orders.map((cur) => {
+                if (cur.side === OrderSide.Sell) {
+                    baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
+                }
+                else {
+                    quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(cur.size.multipliedBy(cur.price));
+                }
+            })
+            
             const baseBalanceString = tokenAmountInUnits(
                 baseTokenBalanceAmount,
                 baseToken.decimals,
                 baseToken.displayDecimals,
             );
             const quoteBalanceString = tokenAmountInUnits(
-                quoteTokenBalance.balance,
+                quoteTokenBalanceAmount,
                 quoteTokenBalance.token.decimals,
                 quoteTokenBalance.token.displayDecimals,
             );
@@ -341,6 +355,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
         quoteTokenBalance: getQuoteTokenBalance(state),
         baseTokenBalance: getBaseTokenBalance(state),
         totalEthBalance: getTotalEthBalance(state),
+        orders: getUserOrders(state),
     };
 };
 
