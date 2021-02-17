@@ -1,4 +1,4 @@
-import { BigNumber } from '0x.js';
+import { BigNumber, OrderStatus } from '0x.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -228,14 +228,14 @@ class WalletBalance extends React.Component<Props, State> {
             let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
             let quoteTokenBalanceAmount = quoteTokenBalance.balance;
 
-            console.log(orders);
-
             orders && orders.map((cur: UIOrder) => {
-                if (cur.side === OrderSide.Sell) {
-                    baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
-                }
-                else {
-                    quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(cur.size.multipliedBy(cur.price));
+                if (cur.status === OrderStatus.Fillable) {
+                    if (cur.side === OrderSide.Sell) {
+                        baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
+                    }
+                    else {
+                        quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(cur.size.multipliedBy(cur.price));
+                    }    
                 }
             })
             
