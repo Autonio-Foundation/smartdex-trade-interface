@@ -228,6 +228,8 @@ class WalletBalance extends React.Component<Props, State> {
             let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
             let quoteTokenBalanceAmount = quoteTokenBalance.balance;
 
+            console.log(orders);
+
             orders && orders.map((cur: UIOrder) => {
                 if (cur.side === OrderSide.Sell) {
                     baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
