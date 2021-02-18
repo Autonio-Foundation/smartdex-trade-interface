@@ -16,8 +16,7 @@ import {
     getQuoteToken,
     getQuoteTokenBalance,
     getTotalEthBalance,
-    getUserOrders,
-    getMarkets
+    getUserOrders
 } from '../../../store/selectors';
 import { themeDimensions } from '../../../themes/commons';
 import { getKnownTokens, isWeth } from '../../../util/known_tokens';
@@ -32,8 +31,7 @@ import {
     Web3State,
     Token,
     TokenBalance,
-    UIOrder,
-    Market
+    UIOrder
 } from '../../../util/types';
 import { BigNumberInput } from '../../common/big_number_input';
 import { Button } from '../../common/button';
@@ -54,7 +52,6 @@ interface StateProps {
     quoteTokenBalance: TokenBalance | null;
     totalEthBalance: BigNumber;
     orders: UIOrder[];
-    markets: Market[] | null;
 }
 
 interface DispatchProps {
@@ -367,10 +364,9 @@ class BuySell extends React.Component<Props, State> {
             quoteTokenBalance,
             baseTokenBalance,
             totalEthBalance,
-            orders,
-            markets
+            orders
         } = this.props;
-        const { tab } = this.state;
+        const { tab, price } = this.state;
 
         if (baseToken && baseTokenBalance && quoteToken && quoteTokenBalance) {
             let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
@@ -391,16 +387,6 @@ class BuySell extends React.Component<Props, State> {
             })
 
             if (tab === OrderSide.Buy) {
-                let price = new BigNumber(0);
-
-                markets && markets.map((market: Market) => {
-                    if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
-                        if (market.price) {
-                            price = market.price;
-                        }
-                    }
-                })
-
                 if (!price.isZero()) {
                     const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
                     this.setState({
@@ -501,8 +487,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
         quoteTokenBalance: getQuoteTokenBalance(state),
         baseTokenBalance: getBaseTokenBalance(state),
         totalEthBalance: getTotalEthBalance(state),
-        orders: getUserOrders(state),
-        markets: getMarkets(state),
+        orders: getUserOrders(state)
     };
 };
 
