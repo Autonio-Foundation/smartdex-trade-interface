@@ -241,8 +241,8 @@ class TVChartContainerComponent extends React.Component {
         this.widget.onChartReady(() => {
           // console.log("Chart has loaded!");
           $(".chartBox").removeClass("loading");
-          console.log(this.widget);
-          console.log(this.widget.chart());
+          // console.log(this.widget);
+          // console.log(this.widget.chart());
         });
       }
     }, 100);

@@ -158,7 +158,7 @@ export const getOrderWithTakerAndFeeConfigFromRelayer = async (orderConfigReques
 export const matchLimitOrders = (params: MatchLimitOrderParams, side: OrderSide): { filledAmount: BigNumber } => {
     const { amount, price, orders } = params;
 
-    console.log(amount, price);
+    // console.log(amount, price);
 
     // sort orders from best to worse
     const sortedOrders = orders.sort((a, b) => {
@@ -183,7 +183,7 @@ export const matchLimitOrders = (params: MatchLimitOrderParams, side: OrderSide)
         if (order.filled) {
             available = order.size.minus(order.filled);
         }
-        console.log(i, available);
+
         if (filledAmount.plus(available).isGreaterThan(amount)) {
             filledAmount = amount;
         } else {
@@ -263,7 +263,7 @@ export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: Order
         quote_token: quoteToken.symbol
     });
 
-    console.log(requestBody);
+    // console.log(requestBody);
 
     fetch(RELAYER_URL + '/market', {
         method: 'post',

@@ -105,7 +105,7 @@ export const cancelOrder: ThunkCreator = (order: UIOrder) => {
         const quoteToken = getQuoteToken(state) as Token;
         const gasPrice = getGasPriceInWei(state);
 
-        console.log(baseToken, quoteToken, order);
+        // console.log(baseToken, quoteToken, order);
 
         const tx = cancelSignedOrder(order.rawOrder, gasPrice);
 
@@ -150,6 +150,8 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
         const baseToken = getBaseToken(state) as Token;
         const quoteToken = getQuoteToken(state) as Token;
         try {
+            console.log(signedOrder, amount, side);
+
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
 
             // tslint:disable-next-line:no-floating-promises
@@ -217,7 +219,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             side,
         );
 
-        console.log(orders, amounts, canBeFilled);
+        // console.log(orders, amounts, canBeFilled);
 
         if (canBeFilled) {
             const baseToken = getBaseToken(state) as Token;
