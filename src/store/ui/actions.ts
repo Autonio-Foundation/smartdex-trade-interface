@@ -319,7 +319,10 @@ export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNum
                             baseTokenBalance = baseTokenBalance.minus(cur.size);
                         }
                         else {
-                            quoteTokenBalance = quoteTokenBalance.minus(cur.size.multipliedBy(cur.price));
+                            const priceInQuoteBaseUnits = web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                            const baseTokenAmountInUnits = web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+    
+                            quoteTokenBalance = quoteTokenBalance.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                         }    
                     }    
                 })
@@ -329,7 +332,9 @@ export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNum
 
             if (side === OrderSide.Buy) {
                 // check quoteToken
-                if (quoteTokenBalance < amount.multipliedBy(price)) {
+                const priceInQuoteBaseUnits = web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
+                const baseTokenAmountInUnits = web3Wrapper.toUnitAmount(amount, baseToken.decimals);
+                if (quoteTokenBalance < baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits)) {
                     throw new InsufficientTokenBalanceException(quoteToken.symbol);
                 }
             }
