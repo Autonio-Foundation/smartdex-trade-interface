@@ -161,6 +161,18 @@ const TokenText = styled.span`
     text-align: right;
 `;
 
+const PercentContainer = styled.div`
+    display: flex;
+`;
+
+const PercentBox = styled.div`
+    margin: 6px;
+    border-radius: 2px;
+    border: 1px solid #fff;
+    text-align: center;
+    color: #fff;
+`;
+
 const BigInputNumberTokenLabel = (props: { tokenSymbol: string }) => (
     <TokenContainer>
         <TokenText>{tokenSymbolToDisplayString(props.tokenSymbol)}</TokenText>
@@ -271,6 +283,13 @@ class BuySell extends React.Component<Props, State> {
                                 </FieldContainer>
                             </>
                         )}
+                        <PercentContainer>
+                            <PercentBox>0%</PercentBox>
+                            <PercentBox>25%</PercentBox>
+                            <PercentBox>50%</PercentBox>
+                            <PercentBox>75%</PercentBox>
+                            <PercentBox>100%</PercentBox>
+                        </PercentContainer>
                         <OrderDetailsContainer
                             orderType={orderType}
                             orderSide={tab}
