@@ -21,7 +21,7 @@ import {
 } from '../../../store/selectors';
 import { themeDimensions } from '../../../themes/commons';
 import { getKnownTokens, isWeth } from '../../../util/known_tokens';
-import { tokenSymbolToDisplayString } from '../../../util/tokens';
+import { tokenSymbolToDisplayString, unitsInTokenAmount, tokenAmountInUnitsToBigNumber } from '../../../util/tokens';
 import {
     ButtonIcons,
     ButtonVariant,
@@ -409,9 +409,9 @@ class BuySell extends React.Component<Props, State> {
                 }
 
                 if (!price.isZero()) {
-                    const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
+                    const priceInQuoteBaseUnits = tokenAmountInUnitsToBigNumber(price, quoteToken.decimals);
                     this.setState({
-                        makerAmount: Web3Wrapper.toUnitAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits), baseToken.decimals)
+                        makerAmount: unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits).toString(), baseToken.decimals)
                     })
                 }
             }
