@@ -1,10 +1,11 @@
-import { BigNumber, SignedOrder } from '0x.js';
+import { BigNumber, SignedOrder, OrderStatus } from '0x.js';
 import { createAction } from 'typesafe-actions';
 
 import { AFFILIATE_FEE_PERCENTAGE, FEE_RECIPIENT } from '../../common/constants';
 import { INSUFFICIENT_ORDERS_TO_FILL_AMOUNT_ERR } from '../../exceptions/common';
 import { InsufficientOrdersAmountException } from '../../exceptions/insufficient_orders_amount_exception';
 import { RelayerException } from '../../exceptions/relayer_exception';
+import { InsufficientTokenBalanceException } from '../../exceptions/insufficient_token_balance_exception';
 import {
     cancelSignedOrder,
     getAllOrdersAsUIOrders,
@@ -18,11 +19,12 @@ import { isWeth } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
 import { buildLimitOrder, buildMarketOrders, sumTakerAssetFillableOrders, createOHLVCDataset } from '../../util/orders';
 import { getTransactionOptions } from '../../util/transactions';
-import { NotificationKind, OrderSide, RelayerState, ThunkCreator, Token, UIOrder, Web3State } from '../../util/types';
+import { NotificationKind, OrderSide, RelayerState, ThunkCreator, Token, TokenBalance, UIOrder, Web3State } from '../../util/types';
 import { updateTokenBalances } from '../blockchain/actions';
 import { getAllCollectibles } from '../collectibles/actions';
 import {
     getBaseToken,
+    getBaseTokenBalance,
     getEthAccount,
     getEthBalance,
     getGasPriceInWei,
@@ -30,6 +32,7 @@ import {
     getOpenBuyOrders,
     getOpenSellOrders,
     getQuoteToken,
+    getQuoteTokenBalance,
     getWeb3State,
 } from '../selectors';
 import { addNotifications } from '../ui/actions';
@@ -148,9 +151,45 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
     return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
+        let baseTokenBalance = (getBaseTokenBalance(state) as TokenBalance).balance;
         const quoteToken = getQuoteToken(state) as Token;
+        let quoteTokenBalance = (getQuoteTokenBalance(state) as TokenBalance).balance;
+        const ethAccount = getEthAccount(state);
+        const web3State = getWeb3State(state) as Web3State;
+
         try {
             console.log(signedOrder, amount, side);
+
+            const isWeb3DoneState = web3State === Web3State.Done;
+            // tslint:disable-next-line:prefer-conditional-expression
+            if (isWeb3DoneState) {
+                const myUIOrders = await getUserOrdersAsUIOrders(baseToken, quoteToken, ethAccount);
+                myUIOrders && myUIOrders.map((cur: UIOrder) => {
+                    if (cur.status === OrderStatus.Fillable) {
+                        if (cur.side === OrderSide.Sell) {
+                            baseTokenBalance = baseTokenBalance.minus(cur.size);
+                        }
+                        else {
+                            quoteTokenBalance = quoteTokenBalance.minus(cur.size.multipliedBy(cur.price));
+                        }    
+                    }    
+                })
+
+                console.log(baseTokenBalance, quoteTokenBalance);
+            }
+
+            if (side === OrderSide.Buy) {
+                // check quoteToken
+                if (quoteTokenBalance < signedOrder.takerAssetAmount) {
+                    throw new InsufficientTokenBalanceException(quoteToken.symbol);
+                }
+            }
+            else {
+                // check baseToken
+                if (baseTokenBalance < amount) {
+                    throw new InsufficientTokenBalanceException(baseToken.symbol);
+                }
+            }
 
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
 
