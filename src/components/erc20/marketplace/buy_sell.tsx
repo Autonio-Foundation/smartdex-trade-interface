@@ -390,28 +390,32 @@ class BuySell extends React.Component<Props, State> {
             })
 
             if (tab === OrderSide.Buy) {
-                let price = new BigNumber(0);
 
                 if (orderType === OrderType.Limit) {
-                    if (this.state.price) {
-                        price = this.state.price;
+                    const { price } = this.state;
+                    if (price) {
+                        this.setState({
+                            makerAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(price)
+                        })
                     }
                 }
                 else {
+                    let price = new BigNumber(0);
+
                     markets && markets.map((market: Market) => {
                         if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
                             if (market.price) {
                                 price = market.price;
                             }
                         }
-                    })    
-                }
-
-                if (!price.isZero()) {
-                    const priceInQuoteBaseUnits = unitsInTokenAmount(price.toString(), quoteToken.decimals);
-                    this.setState({
-                        makerAmount: unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits).toString(), baseToken.decimals)
                     })
+
+                    if (!price.isZero()) {
+                        const priceInQuoteBaseUnits = unitsInTokenAmount(price.toString(), quoteToken.decimals);
+                        this.setState({
+                            makerAmount: unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits).toString(), baseToken.decimals)
+                        })
+                    }    
                 }
             }
             else {
