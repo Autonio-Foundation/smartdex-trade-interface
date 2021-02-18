@@ -166,14 +166,23 @@ const PercentContainer = styled.div`
     width: 100%;
 `;
 
-const PercentBox = styled.div`
+const PercentBox = styled.button`
     margin: 6px;
+    background-color: transparent;
     border-radius: 2px;
     border: 1px solid #fff;
     text-align: center;
     color: #fff;
     width: 25%;
     padding: 2px;
+
+    &:hover {
+        border-color: #666;
+    }
+
+    &:active {
+        background-color: #0FEE90;
+    }
 `;
 
 const BigInputNumberTokenLabel = (props: { tokenSymbol: string }) => (
