@@ -394,7 +394,9 @@ class BuySell extends React.Component<Props, State> {
                 let price = new BigNumber(0);
 
                 if (orderType === OrderType.Limit) {
-                    price = this.state.price;
+                    if (this.state.price) {
+                        price = this.state.price;
+                    }
                 }
                 else {
                     markets && markets.map((market: Market) => {
