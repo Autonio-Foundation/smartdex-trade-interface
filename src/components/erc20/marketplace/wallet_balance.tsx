@@ -226,7 +226,7 @@ class WalletBalance extends React.Component<Props, State> {
             orders
         } = this.props;
 
-        if (baseToken && baseTokenBalance && quoteTokenBalance) {
+        if (baseToken && baseTokenBalance && quoteToken && quoteTokenBalance) {
             let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
             let quoteTokenBalanceAmount = quoteTokenBalance.balance;
 
