@@ -370,7 +370,7 @@ class BuySell extends React.Component<Props, State> {
             orders,
             markets
         } = this.props;
-        const { tab } = this.state;
+        const { tab, orderType } = this.state;
 
         if (baseToken && baseTokenBalance && quoteToken && quoteTokenBalance) {
             let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
@@ -393,13 +393,18 @@ class BuySell extends React.Component<Props, State> {
             if (tab === OrderSide.Buy) {
                 let price = new BigNumber(0);
 
-                markets && markets.map((market: Market) => {
-                    if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
-                        if (market.price) {
-                            price = market.price;
+                if (orderType === OrderType.Limit) {
+                    price = this.state.price;
+                }
+                else {
+                    markets && markets.map((market: Market) => {
+                        if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
+                            if (market.price) {
+                                price = market.price;
+                            }
                         }
-                    }
-                })
+                    })    
+                }
 
                 if (!price.isZero()) {
                     const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
