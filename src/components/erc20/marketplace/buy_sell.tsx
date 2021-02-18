@@ -403,9 +403,8 @@ class BuySell extends React.Component<Props, State> {
 
                 if (!price.isZero()) {
                     const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
-                    console.log(price ,priceInQuoteBaseUnits);
                     this.setState({
-                        makerAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits)
+                        makerAmount: Web3Wrapper.toUnitAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits), baseToken.decimals)
                     })
                 }
             }
