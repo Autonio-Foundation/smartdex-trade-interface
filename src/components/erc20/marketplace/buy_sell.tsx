@@ -1,13 +1,26 @@
-import { BigNumber } from '0x.js';
+import { BigNumber, OrderStatus } from '0x.js';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { initWallet, startBuySellLimitSteps, startBuySellMarketSteps } from '../../../store/actions';
 import { fetchTakerAndMakerFee } from '../../../store/relayer/actions';
-import { getCurrencyPair, getOrderPriceSelected, getWeb3State } from '../../../store/selectors';
+import { 
+    getCurrencyPair,
+    getOrderPriceSelected,
+    getWeb3State,
+    getBaseToken,
+    getBaseTokenBalance,
+    getEthAccount,
+    getQuoteToken,
+    getQuoteTokenBalance,
+    getTotalEthBalance,
+    getUserOrders,
+    getMarkets
+} from '../../../store/selectors';
 import { themeDimensions } from '../../../themes/commons';
-import { getKnownTokens } from '../../../util/known_tokens';
+import { getKnownTokens, isWeth } from '../../../util/known_tokens';
 import { tokenSymbolToDisplayString } from '../../../util/tokens';
 import {
     ButtonIcons,
@@ -17,6 +30,10 @@ import {
     OrderType,
     StoreState,
     Web3State,
+    Token,
+    TokenBalance,
+    UIOrder,
+    Market
 } from '../../../util/types';
 import { BigNumberInput } from '../../common/big_number_input';
 import { Button } from '../../common/button';
@@ -30,6 +47,14 @@ interface StateProps {
     web3State: Web3State;
     currencyPair: CurrencyPair;
     orderPriceSelected: BigNumber | null;
+    baseToken: Token | null;
+    quoteToken: Token | null;
+    ethAccount: string;
+    baseTokenBalance: TokenBalance | null;
+    quoteTokenBalance: TokenBalance | null;
+    totalEthBalance: BigNumber;
+    orders: UIOrder[];
+    markets: Market[] | null;
 }
 
 interface DispatchProps {
@@ -169,19 +194,21 @@ const PercentContainer = styled.div`
 const PercentBox = styled.button`
     margin: 6px;
     background-color: transparent;
-    border-radius: 2px;
+    border-radius: 4px;
     border: 1px solid #fff;
     text-align: center;
     color: #fff;
     width: 25%;
     padding: 2px;
+    cursor: pointer;
 
     &:hover {
         border-color: #666;
     }
 
     &:active {
-        background-color: #0FEE90;
+        background-color: #fff;
+        color: #000;
     }
 `;
 
@@ -296,10 +323,10 @@ class BuySell extends React.Component<Props, State> {
                             </>
                         )}
                         <PercentContainer>
-                            <PercentBox>25%</PercentBox>
-                            <PercentBox>50%</PercentBox>
-                            <PercentBox>75%</PercentBox>
-                            <PercentBox>100%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>25%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>50%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>75%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>100%</PercentBox>
                         </PercentContainer>
                         <OrderDetailsContainer
                             orderType={orderType}
@@ -332,6 +359,59 @@ class BuySell extends React.Component<Props, State> {
     };
 
     public changeTab = (tab: OrderSide) => () => this.setState({ tab });
+
+    public updateMakerAmountbyPercent = (percent: number) => {
+        const {
+            baseToken,
+            quoteToken,
+            quoteTokenBalance,
+            baseTokenBalance,
+            totalEthBalance,
+            orders,
+            markets
+        } = this.props;
+        const { tab } = this.state;
+
+        if (baseToken && baseTokenBalance && quoteToken && quoteTokenBalance) {
+            let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
+            let quoteTokenBalanceAmount = quoteTokenBalance.balance;
+
+            orders && orders.map((cur: UIOrder) => {
+                if (cur.status === OrderStatus.Fillable) {
+                    if (cur.side === OrderSide.Sell) {
+                        baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
+                    }
+                    else {
+                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+            
+                        quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
+                    }
+                }
+            })
+
+            if (tab === OrderSide.Buy) {
+                let price = new BigNumber(0);
+
+                markets && markets.map((market: Market) => {
+                    if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
+                        price = market.price;
+                    }
+                })
+
+                if (!price.isZero()) {
+                    this.setState({
+                        makerAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95)).dividedBy(price)
+                    })
+                }
+            }
+            else {
+                this.setState({
+                    makerAmount: baseTokenBalanceAmount.multipliedBy(new BigNumber(percent))
+                })
+            }
+        }
+    }
 
     public updateMakerAmount = (newValue: BigNumber) => {
         this.setState({
@@ -412,6 +492,14 @@ const mapStateToProps = (state: StoreState): StateProps => {
         web3State: getWeb3State(state),
         currencyPair: getCurrencyPair(state),
         orderPriceSelected: getOrderPriceSelected(state),
+        baseToken: getBaseToken(state),
+        quoteToken: getQuoteToken(state),
+        ethAccount: getEthAccount(state),
+        quoteTokenBalance: getQuoteTokenBalance(state),
+        baseTokenBalance: getBaseTokenBalance(state),
+        totalEthBalance: getTotalEthBalance(state),
+        orders: getUserOrders(state),
+        markets: getMarkets(state),
     };
 };
 
