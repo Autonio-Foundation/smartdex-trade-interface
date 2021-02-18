@@ -324,9 +324,9 @@ class BuySell extends React.Component<Props, State> {
                         )}
                         <PercentContainer>
                             <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>25%</PercentBox>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>50%</PercentBox>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>75%</PercentBox>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>100%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.5)}>50%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.75)}>75%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(1)}>100%</PercentBox>
                         </PercentContainer>
                         <OrderDetailsContainer
                             orderType={orderType}
@@ -402,8 +402,9 @@ class BuySell extends React.Component<Props, State> {
                 })
 
                 if (!price.isZero()) {
+                    const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
                     this.setState({
-                        makerAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95)).dividedBy(price)
+                        makerAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95)).dividedBy(priceInQuoteBaseUnits)
                     })
                 }
             }
