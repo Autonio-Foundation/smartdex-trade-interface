@@ -1,4 +1,4 @@
-import { BigNumber, MetamaskSubprovider, signatureUtils } from '0x.js';
+import { BigNumber, MetamaskSubprovider, signatureUtils, OrderStatus } from '0x.js';
 import { createAction } from 'typesafe-actions';
 
 import { COLLECTIBLE_ADDRESS } from '../../common/constants';
@@ -26,7 +26,10 @@ import {
     ThunkCreator,
     Token,
     TokenBalance,
+    UIOrder,
+    Web3State
 } from '../../util/types';
+import { getUserOrdersAsUIOrders } from "../../services/orders";
 import * as selectors from '../selectors';
 
 export const setHasUnreadNotifications = createAction('ui/UNREAD_NOTIFICATIONS_set', resolve => {
@@ -298,9 +301,44 @@ export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNum
         const ethAccount = selectors.getEthAccount(state);
         const baseToken = selectors.getBaseToken(state) as Token;
         const quoteToken = selectors.getQuoteToken(state) as Token;
+        let baseTokenBalance = (selectors.getBaseTokenBalance(state) as TokenBalance).balance;
+        let quoteTokenBalance = (selectors.getQuoteTokenBalance(state) as TokenBalance).balance;
+        const web3State = selectors.getWeb3State(state) as Web3State;
+
         try {
             const web3Wrapper = await getWeb3Wrapper();
             const contractWrappers = await getContractWrappers();
+
+            const isWeb3DoneState = web3State === Web3State.Done;
+            // tslint:disable-next-line:prefer-conditional-expression
+            if (isWeb3DoneState) {
+                const myUIOrders = await getUserOrdersAsUIOrders(baseToken, quoteToken, ethAccount);
+                myUIOrders && myUIOrders.map((cur: UIOrder) => {
+                    if (cur.status === OrderStatus.Fillable) {
+                        if (cur.side === OrderSide.Sell) {
+                            baseTokenBalance = baseTokenBalance.minus(cur.size);
+                        }
+                        else {
+                            quoteTokenBalance = quoteTokenBalance.minus(cur.size.multipliedBy(cur.price));
+                        }    
+                    }    
+                })
+
+                console.log(baseTokenBalance, quoteTokenBalance);
+            }
+
+            if (side === OrderSide.Buy) {
+                // check quoteToken
+                if (quoteTokenBalance < amount.multipliedBy(price)) {
+                    throw new InsufficientTokenBalanceException(quoteToken.symbol);
+                }
+            }
+            else {
+                // check baseToken
+                if (baseTokenBalance < amount) {
+                    throw new InsufficientTokenBalanceException(baseToken.symbol);
+                }
+            }
 
             const order = await buildLimitOrder(
                 {
