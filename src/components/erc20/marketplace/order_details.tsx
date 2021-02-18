@@ -1,13 +1,14 @@
 import { BigNumber } from '0x.js';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { fetchTakerAndMakerFee } from '../../../store/relayer/actions';
 import { getOpenBuyOrders, getOpenSellOrders } from '../../../store/selectors';
-import { getKnownTokens, } from '../../../util/known_tokens';
+import { getKnownTokens } from '../../../util/known_tokens';
 import { buildMarketOrders, sumTakerAssetFillableOrders } from '../../../util/orders';
-import { tokenAmountInUnits, tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
+import { tokenAmountInUnits, tokenSymbolToDisplayString } from '../../../util/tokens';
 import { CurrencyPair, OrderSide, OrderType, StoreState, UIOrder } from '../../../util/types';
 
 const Row = styled.div`
@@ -146,8 +147,8 @@ class OrderDetails extends React.Component<Props, State> {
             const { quote, base } = currencyPair;
             const quoteToken = getKnownTokens().getTokenBySymbol(quote);
             const baseToken = getKnownTokens().getTokenBySymbol(base);
-            const priceInQuoteBaseUnits = unitsInTokenAmount(tokenPrice.toString(), quoteToken.decimals);
-            const baseTokenAmountInUnits = unitsInTokenAmount(tokenAmount.toString(), baseToken.decimals);
+            const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(tokenPrice, quoteToken.decimals);
+            const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(tokenAmount, baseToken.decimals);
             const quoteTokenAmount = baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits);
             const { makerFee } = await onFetchTakerAndMakerFee(tokenAmount, tokenPrice, orderSide);
             this.setState({
