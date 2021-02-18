@@ -395,7 +395,9 @@ class BuySell extends React.Component<Props, State> {
 
                 markets && markets.map((market: Market) => {
                     if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
-                        price = market.price;
+                        if (market.price) {
+                            price = market.price;
+                        }
                     }
                 })
 
