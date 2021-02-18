@@ -146,8 +146,8 @@ class OrderDetails extends React.Component<Props, State> {
             const { quote, base } = currencyPair;
             const quoteToken = getKnownTokens().getTokenBySymbol(quote);
             const baseToken = getKnownTokens().getTokenBySymbol(base);
-            const priceInQuoteBaseUnits = unitsInTokenAmount(tokenPrice, quoteToken.decimals);
-            const baseTokenAmountInUnits = unitsInTokenAmount(tokenAmount, baseToken.decimals);
+            const priceInQuoteBaseUnits = unitsInTokenAmount(tokenPrice.toString(), quoteToken.decimals);
+            const baseTokenAmountInUnits = unitsInTokenAmount(tokenAmount.toString(), baseToken.decimals);
             const quoteTokenAmount = baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits);
             const { makerFee } = await onFetchTakerAndMakerFee(tokenAmount, tokenPrice, orderSide);
             this.setState({

@@ -235,8 +235,8 @@ class WalletBalance extends React.Component<Props, State> {
                         baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
                     }
                     else {
-                        const priceInQuoteBaseUnits = unitsInTokenAmount(cur.price, quoteToken.decimals);
-                        const baseTokenAmountInUnits = unitsInTokenAmount(cur.size, baseToken.decimals);
+                        const priceInQuoteBaseUnits = unitsInTokenAmount(cur.price.toString(), quoteToken.decimals);
+                        const baseTokenAmountInUnits = unitsInTokenAmount(cur.size.toString(), baseToken.decimals);
             
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                     }    
