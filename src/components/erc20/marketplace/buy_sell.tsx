@@ -1,5 +1,4 @@
 import { BigNumber, OrderStatus } from '0x.js';
-import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -21,7 +20,7 @@ import {
 } from '../../../store/selectors';
 import { themeDimensions } from '../../../themes/commons';
 import { getKnownTokens, isWeth } from '../../../util/known_tokens';
-import { tokenSymbolToDisplayString, unitsInTokenAmount, tokenAmountInUnitsToBigNumber } from '../../../util/tokens';
+import { tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
 import {
     ButtonIcons,
     ButtonVariant,
@@ -382,8 +381,8 @@ class BuySell extends React.Component<Props, State> {
                         baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
                     }
                     else {
-                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
-                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+                        const priceInQuoteBaseUnits = unitsInTokenAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = unitsInTokenAmount(cur.size, baseToken.decimals);
             
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                     }

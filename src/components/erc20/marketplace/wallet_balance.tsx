@@ -1,5 +1,4 @@
 import { BigNumber, OrderStatus } from '0x.js';
-import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -19,7 +18,7 @@ import {
 } from '../../../store/selectors';
 import { errorsWallet } from '../../../util/error_messages';
 import { isWeth } from '../../../util/known_tokens';
-import { tokenAmountInUnits, tokenSymbolToDisplayString } from '../../../util/tokens';
+import { tokenAmountInUnits, tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
 import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State, UIOrder, OrderSide } from '../../../util/types';
 import { Button } from '../../common/button';
 import { Card } from '../../common/card';
@@ -236,8 +235,8 @@ class WalletBalance extends React.Component<Props, State> {
                         baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
                     }
                     else {
-                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
-                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+                        const priceInQuoteBaseUnits = unitsInTokenAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = unitsInTokenAmount(cur.size, baseToken.decimals);
             
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                     }    
