@@ -1,4 +1,5 @@
 import { BigNumber, OrderStatus } from '0x.js';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -381,8 +382,8 @@ class BuySell extends React.Component<Props, State> {
                         baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
                     }
                     else {
-                        const priceInQuoteBaseUnits = unitsInTokenAmount(cur.price.toString(), quoteToken.decimals);
-                        const baseTokenAmountInUnits = unitsInTokenAmount(cur.size.toString(), baseToken.decimals);
+                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
             
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                     }
@@ -408,9 +409,9 @@ class BuySell extends React.Component<Props, State> {
                 }
 
                 if (!price.isZero()) {
-                    const priceInQuoteBaseUnits = unitsInTokenAmount(price.toString(), quoteToken.decimals);
+                    const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
                     this.setState({
-                        makerAmount: unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits).toFixed(baseToken.decimals), baseToken.decimals)
+                        makerAmount: Web3Wrapper.toUnitAmount(new BigNumber(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits).toFixed(baseToken.decimals)), baseToken.decimals)
                     })
                 }
             }
