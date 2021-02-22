@@ -319,10 +319,14 @@ class MaticBridge extends React.Component<Props, State> {
             });    
             let txHash = await maticPoSClient.burnERC20(
                 currentToken.addresses[137],
-                amount.toString()
+                amount.toString(), {
+                    from: window.ethereum.selectedAddress
+                }
             )
             await maticPoSClient.exitERC20(
-                txHash
+                txHash, {
+                    from: window.ethereum.selectedAddress
+                }
             )
         }
 
