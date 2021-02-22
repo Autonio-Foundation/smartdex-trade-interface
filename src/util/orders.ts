@@ -273,15 +273,15 @@ export const estimateBuyMarketOrders = (
 
         if (filledAmount.plus(availableQuote).isGreaterThan(quoteAmount)) {
             const avAmount = quoteAmount.minus(filledAmount);
-            amount = amount.add(available.multipliedBy(avAmount).dividedBy(availableQuote));;
+            amount = amount.plus(available.multipliedBy(avAmount).dividedBy(availableQuote));;
             filledAmount = quoteAmount;
         } else {
-            amount = amount.add(available);
+            amount = amount.plus(available);
             filledAmount = filledAmount.plus(availableQuote);
         }
     }
 
-    return amount.integerValue(BigNumber.ROUND_CEIL);
+    return amount;
 };
 
 export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, baseTokenDecimal: number) => {

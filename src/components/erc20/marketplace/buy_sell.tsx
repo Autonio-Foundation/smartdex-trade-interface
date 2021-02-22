@@ -414,7 +414,7 @@ class BuySell extends React.Component<Props, State> {
                         orders: openSellOrders
                     });
                     this.setState({
-                        makerAmount: unitsInTokenAmount(amount.toString(), baseToken.decimals)
+                        makerAmount: unitsInTokenAmount(amount.toFixed(baseToken.decimals), baseToken.decimals)
                     })
                 }
 
