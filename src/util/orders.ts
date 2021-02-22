@@ -249,7 +249,7 @@ export const buildMarketOrders = (
 
 export const estimateBuyMarketOrders = (
     params: EstimateBuyMarketOrderParams
-): { amount: BigNumber; } => {
+): BigNumber => {
     const { quoteAmount, orders } = params;
     let amount = new BigNumber(0);
 
@@ -281,7 +281,7 @@ export const estimateBuyMarketOrders = (
         }
     }
 
-    return { amount: amount.integerValue(BigNumber.ROUND_CEIL) };
+    return amount.integerValue(BigNumber.ROUND_CEIL);
 };
 
 export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, baseTokenDecimal: number) => {
