@@ -17,10 +17,12 @@ import {
     getQuoteTokenBalance,
     getTotalEthBalance,
     getUserOrders,
-    getMarkets
+    getMarkets,
+    getOpenSellOrders
 } from '../../../store/selectors';
 import { themeDimensions } from '../../../themes/commons';
 import { getKnownTokens, isWeth } from '../../../util/known_tokens';
+import { estimateBuyMarketOrders } from '../../../util/orders';
 import { tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
 import {
     ButtonIcons,
@@ -55,6 +57,7 @@ interface StateProps {
     totalEthBalance: BigNumber;
     orders: UIOrder[];
     markets: Market[] | null;
+    openSellOrders: UIOrder[];
 }
 
 interface DispatchProps {
@@ -368,7 +371,8 @@ class BuySell extends React.Component<Props, State> {
             baseTokenBalance,
             totalEthBalance,
             orders,
-            markets
+            markets,
+            openSellOrders
         } = this.props;
         const { tab, orderType } = this.state;
 
@@ -396,24 +400,24 @@ class BuySell extends React.Component<Props, State> {
                 if (orderType === OrderType.Limit) {
                     if (this.state.price) {
                         price = this.state.price;
+                        if (!price.isZero()) {
+                            const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
+                            this.setState({
+                                makerAmount: unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(percent)).dividedBy(priceInQuoteBaseUnits).toFixed(baseToken.decimals), baseToken.decimals)
+                            })
+                        }
                     }
                 }
                 else {
-                    markets && markets.map((market: Market) => {
-                        if (market.currencyPair.base === baseToken.symbol && market.currencyPair.quote === quoteToken.symbol) {
-                            if (market.price) {
-                                price = market.price;
-                            }
-                        }
-                    })    
-                }
-
-                if (!price.isZero()) {
-                    const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
+                    const amount: BigNumber = estimateBuyMarketOrders({
+                        quoteAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(percent)),
+                        orders: openSellOrders
+                    });
                     this.setState({
-                        makerAmount: unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.95 * percent)).dividedBy(priceInQuoteBaseUnits).toFixed(baseToken.decimals), baseToken.decimals)
+                        makerAmount: unitsInTokenAmount(amount, baseToken.decimals);
                     })
                 }
+
             }
             else {
                 this.setState({
@@ -510,6 +514,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
         totalEthBalance: getTotalEthBalance(state),
         orders: getUserOrders(state),
         markets: getMarkets(state),
+        openSellOrders: getOpenSellOrders(state)
     };
 };
 

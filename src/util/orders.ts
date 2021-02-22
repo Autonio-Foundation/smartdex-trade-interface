@@ -41,6 +41,11 @@ interface BuildMarketOrderParams {
     orders: UIOrder[];
 }
 
+interface EstimateBuyMarketOrderParams {
+    quoteAmount: BigNumber;
+    orders: UIOrder[];
+}
+
 interface MatchLimitOrderParams {
     amount: BigNumber;
     price: BigNumber;
@@ -240,6 +245,43 @@ export const buildMarketOrders = (
 
     const roundedAmounts = amounts.map(a => a.integerValue(BigNumber.ROUND_CEIL));
     return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled };
+};
+
+export const estimateBuyMarketOrders = (
+    params: EstimateBuyMarketOrderParams
+): { amount: BigNumber; } => {
+    const { quoteAmount, orders } = params;
+    let amount = new BigNumber(0);
+
+    // sort orders from best to worse
+    const sortedOrders = orders.sort((a, b) => a.price.comparedTo(b.price));
+
+    const amounts: BigNumber[] = [];
+    let filledAmount = new BigNumber(0);
+    for (let i = 0; i < sortedOrders.length && filledAmount.isLessThan(quoteAmount); i++) {
+        const order = sortedOrders[i];
+
+        let available = order.size;
+        if (order.filled) {
+            available = order.size.minus(order.filled);
+        }
+
+        const makerTokenDecimals = getKnownTokens().getTokenByAssetData(order.rawOrder.makerAssetData).decimals;
+        const takerTokenDecimals = getKnownTokens().getTokenByAssetData(order.rawOrder.takerAssetData).decimals;
+        const buyAmount = tokenAmountInUnitsToBigNumber(available, makerTokenDecimals);
+        const availableQuote = unitsInTokenAmount(buyAmount.multipliedBy(order.price).toString(), takerTokenDecimals);
+
+        if (filledAmount.plus(availableQuote).isGreaterThan(quoteAmount)) {
+            const avAmount = quoteAmount.minus(filledAmount);
+            amount = amount.add(available.multipliedBy(avAmount).dividedBy(availableQuote));;
+            filledAmount = quoteAmount;
+        } else {
+            amount = amount.add(available);
+            filledAmount = filledAmount.plus(availableQuote);
+        }
+    }
+
+    return { amount: amount.integerValue(BigNumber.ROUND_CEIL) };
 };
 
 export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, baseTokenDecimal: number) => {

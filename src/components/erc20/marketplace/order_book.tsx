@@ -261,8 +261,6 @@ class OrderBookTable extends React.Component<Props> {
         let marketPrevPrice: number = 0;
         let priceRatio: number = 0.0;
 
-        console.log(sellOrders);
-
         if (markets !== null && markets.length > 0) {
             markets.forEach((market: any) => {
                 const isActive =
