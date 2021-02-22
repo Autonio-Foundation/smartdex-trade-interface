@@ -387,7 +387,7 @@ class BuySell extends React.Component<Props, State> {
                     }
                     else {
                         const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
-                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(new BigNumber(cur.size.toFixed(baseToken.decimals)), baseToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
             
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                     }
@@ -414,7 +414,7 @@ class BuySell extends React.Component<Props, State> {
                         orders: openSellOrders
                     });
                     this.setState({
-                        makerAmount
+                        makerAmount: new BigNumber(makerAmount.toFixed(2))
                     })
                 }
 
