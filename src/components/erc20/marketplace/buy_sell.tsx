@@ -409,12 +409,12 @@ class BuySell extends React.Component<Props, State> {
                     }
                 }
                 else {
-                    const amount: BigNumber = estimateBuyMarketOrders({
+                    const makerAmount: BigNumber = estimateBuyMarketOrders({
                         quoteAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(percent)),
                         orders: openSellOrders
                     });
                     this.setState({
-                        makerAmount: unitsInTokenAmount(amount.toFixed(baseToken.decimals), baseToken.decimals)
+                        makerAmount
                     })
                 }
 
