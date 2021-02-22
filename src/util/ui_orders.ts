@@ -154,5 +154,6 @@ export const mergeByPrice = (orders: UIOrder[]): OrderBookItem[] => {
                 price: order.price,
                 size: newSize,
             };
-        });
+        })
+        .sort((o1, o2) => o2.price.comparedTo(o1.price));
 };

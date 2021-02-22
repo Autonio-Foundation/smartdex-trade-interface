@@ -98,7 +98,7 @@ export const getOpenOrders = createSelector(
                 return orders;
             }
             default: {
-                return orders.filter(order => order.status === OrderStatus.Fillable).sort((o1, o2) => o2.price.comparedTo(o1.price));
+                return orders.filter(order => order.status === OrderStatus.Fillable);
             }
         }
     },
