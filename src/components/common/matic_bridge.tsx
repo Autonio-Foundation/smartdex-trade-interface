@@ -402,8 +402,8 @@ class MaticBridge extends React.Component<Props, State> {
                             </Row>
 
                             <Button
-                                // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
-                                disabled={true}
+                                disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
+                                // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
                                 onClick={this.submit}
                             >
