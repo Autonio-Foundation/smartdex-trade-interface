@@ -239,26 +239,21 @@ class MaticBridge extends React.Component<Props, State> {
             }
         
             maticWrapper.initialize();
+
+            console.log(maticWrapper);
     
             let maticBalance : {[k: string]: any} = {};
             let ethBalance : {[k: string]: any} = {};
     
             KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
-                let value = 0;
-                if (token.symbol === 'wmatic') {
-                    value = await window.ethereum.eth.getBalance(window.ethereum.selectedAddress);
-                    maticBalance[token.symbol] = value / Math.pow(10, token.decimals);
-                }
-                else {
-                    value = await maticWrapper.balanceOfERC20(
-                        window.ethereum.selectedAddress,
-                        token.addresses[137],
-                        {
-                            from: window.ethereum.selectedAddress,
-                        }
-                    )
-                    maticBalance[token.symbol] = value / Math.pow(10, token.decimals);    
-                }
+                let value = await maticWrapper.balanceOfERC20(
+                    window.ethereum.selectedAddress,
+                    token.symbol === 'wmatic' ? maticWrapper.network.Main.Contracts.Tokens.MaticToken : token.addresses[137],
+                    {
+                        from: window.ethereum.selectedAddress,
+                    }
+                )
+                maticBalance[token.symbol] = value / Math.pow(10, token.decimals);    
         
                 value = await maticWrapper.balanceOfERC20(
                     window.ethereum.selectedAddress,
