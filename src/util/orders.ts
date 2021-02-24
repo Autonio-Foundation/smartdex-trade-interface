@@ -242,18 +242,15 @@ export const buildMarketOrders = (
             const takerTokenDecimals = getKnownTokens().getTokenByAssetData(order.rawOrder.takerAssetData).decimals;
             const buyAmount = tokenAmountInUnitsToBigNumber(amounts[i], makerTokenDecimals);
             amounts[i] = unitsInTokenAmount(buyAmount.multipliedBy(order.price).toString(), takerTokenDecimals);
-            makerAmount = makerAmount.plus(buyAmount);
-            takerAmount = takerAmount.plus(buyAmount.multipliedBy(order.price));
         }
-        else {
-            makerAmount = makerAmount.plus(amounts[i]);
-            takerAmount = takerAmount.plus(amounts[i].dividedBy(order.price));
-        }
+
+        makerAmount = makerAmount.plus(amounts[i]);
+        takerAmount = takerAmount.plus(amounts[i].multipliedBy(order.price));
     }
     const canBeFilled = filledAmount.eq(amount);
 
     const roundedAmounts = amounts.map(a => a.integerValue(BigNumber.ROUND_CEIL));
-    return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled, averagePrice: makerAmount.dividedBy(takerAmount) };
+    return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled, averagePrice: takerAmount.dividedBy(makerAmount) };
 };
 
 export const estimateBuyMarketOrders = (

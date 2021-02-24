@@ -71,7 +71,7 @@ const CardBody = styled.div`
 const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const sideLabel = order.side ? 'Sell' : 'Buy';
 
-    const size = tokenAmountInUnits(order.amount, baseToken.decimals, baseToken.displayDecimals);
+    const size = tokenAmountInUnits(new BigNumber(order.amount.toString()), baseToken.decimals, baseToken.displayDecimals);
 
     const price = parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
