@@ -305,43 +305,39 @@ export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNum
         const quoteToken = selectors.getQuoteToken(state) as Token;
         let baseTokenBalance = (selectors.getBaseTokenBalance(state) as TokenBalance).balance;
         let quoteTokenBalance = (selectors.getQuoteTokenBalance(state) as TokenBalance).balance;
-        const web3State = selectors.getWeb3State(state) as Web3State;
 
         try {
             const web3Wrapper = await getWeb3Wrapper();
             const contractWrappers = await getContractWrappers();
 
-            const isWeb3DoneState = web3State === Web3State.Done;
-            // tslint:disable-next-line:prefer-conditional-expression
-            if (isWeb3DoneState) {
-                const myUIOrders = await getUserOrdersAsUIOrders(baseToken, quoteToken, ethAccount);
-                myUIOrders && myUIOrders.map((cur: UIOrder) => {
-                    if (cur.status === OrderStatus.Fillable) {
-                        if (cur.side === OrderSide.Sell) {
-                            baseTokenBalance = baseTokenBalance.minus(cur.size);
-                        }
-                        else {
-                            const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
-                            const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
-    
-                            quoteTokenBalance = quoteTokenBalance.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
-                        }    
-                    }    
-                })
+            const myUIOrders = await getUserOrdersAsUIOrders(baseToken, quoteToken, ethAccount);
+            myUIOrders && myUIOrders.map((cur: UIOrder) => {
+                if (cur.status === OrderStatus.Fillable) {
+                    if (cur.side === OrderSide.Sell) {
+                        baseTokenBalance = baseTokenBalance.minus(cur.size);
+                    }
+                    else {
+                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
 
-                console.log(baseTokenBalance, quoteTokenBalance);
-            }
+                        quoteTokenBalance = quoteTokenBalance.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
+                    }
+                }
+            })
 
             if (side === OrderSide.Buy) {
                 // check quoteToken
                 const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
                 const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(amount, baseToken.decimals);
+
+                console.log(quoteTokenBalance, baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                 if (quoteTokenBalance < baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits)) {
                     throw new InsufficientTokenBalanceException(quoteToken.symbol);
                 }
             }
             else {
                 // check baseToken
+                console.log(baseTokenBalance, amount);
                 if (baseTokenBalance < amount) {
                     throw new InsufficientTokenBalanceException(baseToken.symbol);
                 }
