@@ -312,7 +312,7 @@ export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: Order
         quote_token: quoteToken.symbol
     });
 
-    // console.log(requestBody);
+    console.log(requestBody);
 
     fetch(RELAYER_URL + '/market', {
         method: 'post',

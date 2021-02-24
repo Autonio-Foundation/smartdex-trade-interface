@@ -73,7 +73,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const size = tokenAmountInUnits(new BigNumber(order.amount.toString()), baseToken.decimals, baseToken.displayDecimals);
 
-    const price = parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+    const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
     return order.status === 'Executed' && (
         <TR key={index}>
