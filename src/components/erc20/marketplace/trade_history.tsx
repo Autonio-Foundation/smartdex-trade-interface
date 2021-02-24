@@ -75,7 +75,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
-    return order.status === 'Executed' && (
+    return (
         <TR key={index}>
             <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
