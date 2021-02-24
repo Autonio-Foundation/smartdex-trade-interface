@@ -210,15 +210,15 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
         const isBuy = side === OrderSide.Buy;
         const openSellOrders = getOpenSellOrders(state);
         const openBuyOrders = getOpenBuyOrders(state);
-        const { orders, amounts, canBeFilled } = buildMarketOrders(
+        const { orders, amounts, canBeFilled, averagePrice } = buildMarketOrders(
             {
                 amount,
                 orders: isBuy ? openSellOrders : openBuyOrders,
             },
             side,
         );
-
         // console.log(orders, amounts, canBeFilled);
+        console.log(averagePrice);
 
         if (canBeFilled) {
             const baseToken = getBaseToken(state) as Token;
@@ -275,6 +275,7 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                     buyOrders: openBuyOrders,
                     sellOrders: openSellOrders,
                     amount,
+                    averagePrice,
                     baseToken,
                     quoteToken
                 },

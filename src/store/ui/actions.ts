@@ -330,12 +330,14 @@ export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNum
                 const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
                 const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(amount, baseToken.decimals);
 
+                console.log(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits), quoteTokenBalance);
                 if (baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits).comparedTo(quoteTokenBalance)) {
                     throw new InsufficientTokenBalanceException(quoteToken.symbol);
                 }
             }
             else {
                 // check baseToken
+                console.log(amount, baseTokenBalance);
                 if (amount.comparedTo(baseTokenBalance)) {
                     throw new InsufficientTokenBalanceException(baseToken.symbol);
                 }

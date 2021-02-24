@@ -69,25 +69,11 @@ const CardBody = styled.div`
 `;
 
 const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
-    const baseTokenEncoded = assetDataUtils.encodeERC20AssetData(baseToken.address);
+    const sideLabel = order.side ? 'Sell' : 'Buy';
 
-    const sideLabel = order.takerAssetData === baseTokenEncoded ? 'Sell' : 'Buy'; //reversed
+    const size = tokenAmountInUnits(order.amount, baseToken.decimals, baseToken.displayDecimals);
 
-    const size = tokenAmountInUnits(sideLabel === 'Sell' ? new BigNumber(order.takerAssetAmount) : new BigNumber(order.makerAssetAmount), baseToken.decimals, baseToken.displayDecimals);
-
-    const makerAssetAddress = assetDataUtils.decodeERC20AssetData(order.makerAssetData).tokenAddress;
-    const makerAssetTokenDecimals = getKnownTokens().getTokenByAddress(makerAssetAddress).decimals;
-    const makerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.makerAssetAmount), makerAssetTokenDecimals);
-
-    const takerAssetAddress = assetDataUtils.decodeERC20AssetData(order.takerAssetData).tokenAddress;
-    const takerAssetTokenDecimals = getKnownTokens().getTokenByAddress(takerAssetAddress).decimals;
-    const takerAssetAmountInUnits = tokenAmountInUnitsToBigNumber(new BigNumber(order.takerAssetAmount), takerAssetTokenDecimals);
-    const priceV = sideLabel === 'Sell'
-        ? makerAssetAmountInUnits.div(takerAssetAmountInUnits)
-        : takerAssetAmountInUnits.div(makerAssetAmountInUnits);
-
-
-    const price = parseFloat(priceV.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
+    const price = parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
     return order.status === 'Executed' && (
         <TR key={index}>
@@ -124,7 +110,7 @@ class TradeHistory extends React.Component<Props, State> {
                 } else if (!overallHistory.length || !baseToken || !quoteToken) {
                     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
                 } else {
-                    // console.log(overallHistory);
+                    console.log(overallHistory);
                     content = (
                         <Table isResponsive={true}>
                             <THead>

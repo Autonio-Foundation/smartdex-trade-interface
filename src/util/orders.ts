@@ -57,6 +57,7 @@ interface CreateOHLVCDatasetParams {
     quoteToken: Token,
     buyOrders: UIOrder[];
     sellOrders: UIOrder[];
+    averagePrice: BigNumber;
     amount: BigNumber;
 }
 
@@ -202,7 +203,7 @@ export const matchLimitOrders = (params: MatchLimitOrderParams, side: OrderSide)
 export const buildMarketOrders = (
     params: BuildMarketOrderParams,
     side: OrderSide,
-): { orders: SignedOrder[]; amounts: BigNumber[]; canBeFilled: boolean } => {
+): { orders: SignedOrder[]; amounts: BigNumber[]; canBeFilled: boolean, averagePrice: BigNumber } => {
     const { amount, orders } = params;
 
     // sort orders from best to worse
@@ -217,6 +218,8 @@ export const buildMarketOrders = (
     const ordersToFill: SignedOrder[] = [];
     const amounts: BigNumber[] = [];
     let filledAmount = new BigNumber(0);
+    let makerAmount = new BigNumber(0);
+    let takerAmount = new BigNumber(0);
     for (let i = 0; i < sortedOrders.length && filledAmount.isLessThan(amount); i++) {
         const order = sortedOrders[i];
         ordersToFill.push(order.rawOrder);
@@ -239,12 +242,18 @@ export const buildMarketOrders = (
             const takerTokenDecimals = getKnownTokens().getTokenByAssetData(order.rawOrder.takerAssetData).decimals;
             const buyAmount = tokenAmountInUnitsToBigNumber(amounts[i], makerTokenDecimals);
             amounts[i] = unitsInTokenAmount(buyAmount.multipliedBy(order.price).toString(), takerTokenDecimals);
+            makerAmount = makerAmount.plus(buyAmount);
+            takerAmount = takerAmount.plus(buyAmount.multipliedBy(order.price));
+        }
+        else {
+            makerAmount = makerAmount.plus(amounts[i]);
+            takerAmount = takerAmount.plus(amounts[i].dividedBy(order.price));
         }
     }
     const canBeFilled = filledAmount.eq(amount);
 
     const roundedAmounts = amounts.map(a => a.integerValue(BigNumber.ROUND_CEIL));
-    return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled };
+    return { orders: ordersToFill, amounts: roundedAmounts, canBeFilled, averagePrice: makerAmount.dividedBy(takerAmount) };
 };
 
 export const estimateBuyMarketOrders = (
@@ -285,7 +294,7 @@ export const estimateBuyMarketOrders = (
 };
 
 export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: OrderSide, baseTokenDecimal: number) => {
-    const { amount, buyOrders, sellOrders, baseToken, quoteToken } = params;
+    const { amount, buyOrders, sellOrders, baseToken, quoteToken, averagePrice } = params;
 
     const sortedBuyOrders = buyOrders.sort((a, b) => {
         return b.price.comparedTo(a.price);
@@ -301,6 +310,7 @@ export const createOHLVCDataset = (params: CreateOHLVCDatasetParams, side: Order
         ask: sortedBuyOrders.length > 0 ? parseFloat(sortedBuyOrders[0].price.toString()) : 0,
         bid_vol: side === OrderSide.Buy ? parseFloat(amountDecimal) : 0,
         ask_vol: side === OrderSide.Buy ? 0 : parseFloat(amountDecimal),
+        average_price: parseFloat(averagePrice.toString()),
         base_token: baseToken.symbol,
         quote_token: quoteToken.symbol
     });
