@@ -365,14 +365,14 @@ class MaticBridge extends React.Component<Props, State> {
                 </MaticBridgeLink>
                 <Modal isOpen={isOpen} style={theme.modalTheme}>
                     <CloseModalButton onClick={this.handleCloseModel} />
-                    <ModalContent style={{color: '#fff', height: 450}}>
+                    <ModalContent style={{color: '#fff', height: 500, width: 420}}>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff', fontWeight: 'bold'}}>Deposit</DepositContent>
                             <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff', fontWeight: 'bold'}}>Withdraw</DepositContent>
                         </div>
                         <Content>
                             <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
-                            <p>Warning - Matic network is having issue with ledger device. Please don't use it till matic team solve this issue.</p>
+                            <p>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 20}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#0FEE90' : '#F91A4F'}} />
                                 <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit") }</span>
