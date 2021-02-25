@@ -386,6 +386,7 @@ class BuySell extends React.Component<Props, State> {
                         baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
                     }
                     else {
+                        console.log("curprice", cur.price);
                         const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
                         const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
             
@@ -400,9 +401,9 @@ class BuySell extends React.Component<Props, State> {
                 if (orderType === OrderType.Limit) {
                     if (this.state.price) {
                         price = this.state.price;
+                        console.log("price", price);
                         if (!price.isZero()) {
-                            const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
-                            const mkAmount = quoteTokenBalanceAmount.multipliedBy(new BigNumber(percent)).dividedBy(priceInQuoteBaseUnits);
+                            const mkAmount = quoteTokenBalanceAmount.multipliedBy(new BigNumber(percent)).dividedBy(price);
                             this.setState({
                                 makerAmount: new BigNumber(mkAmount.toFixed(0))
                             })
