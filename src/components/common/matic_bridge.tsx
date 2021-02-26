@@ -290,63 +290,94 @@ class MaticBridge extends React.Component<Props, State> {
 
     public submit = async () => {
         const { currentToken, amount, chainid } = this.state;
-        let maticWrapper : Matic;
 
         if (chainid === 1) {
-            maticWrapper = new Matic({
-                network: 'mainnet',
-                version: 'v1',
-                maticProvider: MATIC_PROVIDER,
-                parentProvider: window.ethereum,
-                parentDefaultOptions: { from: window.ethereum.selectedAddress },
-                maticDefaultOptions: { from: window.ethereum.selectedAddress }
-            });
-            const maticPoSClient = new MaticPOSClient({
-                network: 'mainnet',
-                version: 'v1',
-                maticProvider: MATIC_PROVIDER,
-                parentProvider: window.ethereum,
-                parentDefaultOptions: { from: window.ethereum.selectedAddress },
-                maticDefaultOptions: { from: window.ethereum.selectedAddress }
-            });
-            await maticPoSClient.approveERC20ForDeposit(
-                currentToken.symbol === 'wmatic' ? maticWrapper.network.Main.Contracts.Tokens.MaticToken : currentToken.addresses[1],
-                amount.toString()
-            )
-            await maticPoSClient.depositERC20ForUser(
-                currentToken.symbol === 'wmatic' ? maticWrapper.network.Main.Contracts.Tokens.MaticToken : currentToken.addresses[1],
-                window.ethereum.selectedAddress,
-                amount.toString()
-            )
+            if (currentToken.symbol === 'wmatic') {
+                const maticWrapper = new Matic({
+                    network: 'mainnet',
+                    version: 'v1',
+                    maticProvider: MATIC_PROVIDER,
+                    parentProvider: window.ethereum,
+                    parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                    maticDefaultOptions: { from: window.ethereum.selectedAddress }
+                });
+                console.log('Matic Deposit', maticWrapper.network.Main.Contracts.Tokens.MaticToken, window.ethereum.selectedAddress);
+                await maticWrapper.approveERC20TokensForDeposit(
+                    maticWrapper.network.Main.Contracts.Tokens.MaticToken,
+                    amount.toString()
+                )
+                await maticWrapper.depositERC20ForUser(
+                    maticWrapper.network.Main.Contracts.Tokens.MaticToken,
+                    window.ethereum.selectedAddress,
+                    amount.toString()
+                )    
+
+            }
+            else {
+                const maticPoSClient = new MaticPOSClient({
+                    network: 'mainnet',
+                    version: 'v1',
+                    maticProvider: MATIC_PROVIDER,
+                    parentProvider: window.ethereum,
+                    parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                    maticDefaultOptions: { from: window.ethereum.selectedAddress }
+                });
+                await maticPoSClient.approveERC20ForDeposit(
+                    currentToken.addresses[1],
+                    amount.toString()
+                )
+                await maticPoSClient.depositERC20ForUser(
+                    currentToken.addresses[1],
+                    window.ethereum.selectedAddress,
+                    amount.toString()
+                )    
+            }
         }
         else if (chainid === 137) {
-            maticWrapper = new Matic({
-                network: 'mainnet',
-                version: 'v1',
-                maticProvider: window.ethereum,
-                parentProvider: INFURA_PROVIDER,
-                parentDefaultOptions: { from: window.ethereum.selectedAddress },
-                maticDefaultOptions: { from: window.ethereum.selectedAddress }
-            });
-            const maticPoSClient = new MaticPOSClient({
-                network: 'mainnet',
-                version: 'v1',
-                maticProvider: window.ethereum,
-                parentProvider: INFURA_PROVIDER,
-                parentDefaultOptions: { from: window.ethereum.selectedAddress },
-                maticDefaultOptions: { from: window.ethereum.selectedAddress }
-            });    
-            let txHash = await maticPoSClient.burnERC20(
-                currentToken.symbol === 'wmatic' ? maticWrapper.network.Matic.Contracts.Tokens.MaticToken : currentToken.addresses[137],
-                amount.toString(), {
-                    from: window.ethereum.selectedAddress
-                }
-            )
-            await maticPoSClient.exitERC20(
-                txHash, {
-                    from: window.ethereum.selectedAddress
-                }
-            )
+            // if (currentToken.symbol === 'wmatic') {
+                const maticWrapper = new Matic({
+                    network: 'mainnet',
+                    version: 'v1',
+                    maticProvider: window.ethereum,
+                    parentProvider: INFURA_PROVIDER,
+                    parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                    maticDefaultOptions: { from: window.ethereum.selectedAddress }
+                });
+                console.log('Withdrawal', maticWrapper.network.Matic.Contracts.Tokens.MaticToken, window.ethereum.selectedAddress);
+                let txHash = await maticWrapper.startWithdraw(
+                    currentToken.symbol === 'wmatic' ? maticWrapper.network.Matic.Contracts.Tokens.MaticToken : currentToken.addresses[137],
+                    amount.toString(), {
+                        from: window.ethereum.selectedAddress
+                    }
+                );
+                await maticWrapper.withdraw(
+                    txHash, {
+                        from: window.ethereum.selectedAddress
+                    }
+                );
+            // }
+            // else {
+            //     const maticPoSClient = new MaticPOSClient({
+            //         network: 'mainnet',
+            //         version: 'v1',
+            //         maticProvider: window.ethereum,
+            //         parentProvider: INFURA_PROVIDER,
+            //         parentDefaultOptions: { from: window.ethereum.selectedAddress },
+            //         maticDefaultOptions: { from: window.ethereum.selectedAddress }
+            //     });    
+            //     let txHash = await maticPoSClient.burnERC20(
+            //         currentToken.addresses[137],
+            //         amount.toString(), {
+            //             from: window.ethereum.selectedAddress
+            //         }
+            //     );
+            //     console.log('Withdrawal', txHash, window.ethereum.selectedAddress);
+            //     await maticPoSClient.exitERC20(
+            //         txHash, {
+            //             from: window.ethereum.selectedAddress
+            //         }
+            //     );
+            // }
         }
 
         await this.updateBalances();
@@ -422,8 +453,8 @@ class MaticBridge extends React.Component<Props, State> {
                             </Row>
 
                             <Button
-                                // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
-                                disabled={true}
+                                disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
+                                // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
                                 onClick={this.submit}
                             >

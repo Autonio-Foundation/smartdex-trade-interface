@@ -110,7 +110,6 @@ class TradeHistory extends React.Component<Props, State> {
                 } else if (!overallHistory.length || !baseToken || !quoteToken) {
                     content = <EmptyContent alignAbsoluteCenter={true} text="There are no orders to show" />;
                 } else {
-                    console.log(overallHistory);
                     content = (
                         <Table isResponsive={true}>
                             <THead>
