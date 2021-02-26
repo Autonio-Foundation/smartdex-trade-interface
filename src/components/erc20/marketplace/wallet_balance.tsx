@@ -185,7 +185,7 @@ const getWallet = (web3State: Web3State) => {
 };
 
 const getWalletTitle = (web3State: Web3State) => {
-    let title = 'Wallet Balance';
+    let title = 'Total Balance';
 
     if (web3State === Web3State.NotInstalled) {
         title = 'No wallet found';
