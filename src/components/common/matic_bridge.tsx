@@ -58,9 +58,9 @@ const DepositContent = styled.div<{ active?: boolean }>`
     justify-content: center;
     cursor: pointer;
     font-weight: bold;
-    color: ${props => props.active ? '#ff0' : '#fff'};
+    color: ${props => props.active ? '#acca26' : '#fff'};
     border-radius: 35px;
-    background-color: ${props => props.active ? 'rgba(255, 255, 0, 0.1)' : 'transparent'};
+    background-color: ${props => props.active ? 'rgba(172, 202, 38, 0.1)' : 'transparent'};
 `;
 
 const FieldContainer = styled.div`
@@ -410,17 +410,17 @@ class MaticBridge extends React.Component<Props, State> {
                 <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
-                <Modal isOpen={isOpen} style={{...theme.modalTheme, borderRadius: 50}} onRequestClose={this.handleCloseModel}>
+                <Modal isOpen={isOpen} style={{...theme.modalTheme, borderRadius: '30px !important'}} onRequestClose={this.handleCloseModel}>
                     <ModalContent>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} active={isDeposit} >Deposit</DepositContent>
                             <DepositContent onClick={() => this.setState({isDeposit: false})} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
-                            <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
+                            <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
                             <p style={{color: 'yellow', marginTop: 20}}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 20}}>
-                                <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#0FEE90' : '#F91A4F'}} />
+                                <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ff0' : '#F91A4F'}} />
                                 <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit") }</span>
                             </div>
                             <FieldContainer>
@@ -472,6 +472,7 @@ class MaticBridge extends React.Component<Props, State> {
                                 // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
                                 // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
+                                style={{backgroundColor: '#acca26'}}
                                 onClick={this.submit}
                             >
                                 {isDeposit ? "DEPOSIT" : "WITHDRAW"}
