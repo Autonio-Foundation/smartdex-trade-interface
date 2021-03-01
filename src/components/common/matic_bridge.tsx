@@ -42,7 +42,7 @@ const ModalContent = styled.div`
     overflow: auto;
     width: 420px;
     height: 520px;
-    color: '#fff';
+    color: #fff;
 `;
 
 const DepositContent = styled.div<{ active?: boolean }>`
