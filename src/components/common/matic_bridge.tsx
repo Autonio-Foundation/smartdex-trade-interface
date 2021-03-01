@@ -41,7 +41,7 @@ const ModalContent = styled.div`
     min-height: 300px;
     overflow: auto;
     width: 420px;
-    height: 490px;
+    height: 480px;
     color: #fff;
 `;
 
@@ -51,9 +51,9 @@ const DepositContent = styled.div<{ active?: boolean }>`
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 0;
-    min-height: 70px;
+    min-height: 50px;
     width: 50%;
-    height: 70px;
+    height: 50px;
     text-align: center;
     justify-content: center;
     cursor: pointer;
@@ -416,7 +416,7 @@ class MaticBridge extends React.Component<Props, State> {
                         </div>
                         <Content>
                             <div><span style={{fontWeight: 'bold', fontSize: 18}}>Matic Bridge</span> <span style={{fontSize: 14, marginLeft: 4, color: '#aaa'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
-                            <p style={{color: 'yellow', marginTop: 20}}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
+                            <p style={{color: 'red', marginTop: 20}}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 10}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ff0' : '#F91A4F'}} />
                                 <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit") }</span>
@@ -468,10 +468,10 @@ class MaticBridge extends React.Component<Props, State> {
                                 // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
                                 // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
-                                style={{backgroundColor: '#acca26', borderRadius: 15}}
+                                style={{backgroundColor: '#acca26', borderRadius: 15, textTransform: 'capitalize'}}
                                 onClick={this.submit}
                             >
-                                {isDeposit ? "DEPOSIT" : "WITHDRAW"}
+                                {isDeposit ? "Deposit" : "Withdraw"}
                             </Button>
                         </Content>
                     </ModalContent>

@@ -62,7 +62,9 @@ socket.on('m', data => {
 				close: lastDailyBar.close,
 			};
 			console.log('[socket] Generate new bar', bar);	
+			subscriptionItem.lastDailyBar = bar;
 			subscriptionItem.handlers.forEach(handler => handler.callback(bar));
+			
 			nextDailyBarTime = nextOfNextDailyBarTime;
 			nextOfNextDailyBarTime = getNextDailyBarTime(nextOfNextDailyBarTime, subscriptionItem.resolution);
 		}
