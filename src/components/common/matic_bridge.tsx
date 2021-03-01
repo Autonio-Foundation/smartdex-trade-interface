@@ -65,7 +65,7 @@ const DepositContent = styled.div<{ active?: boolean }>`
 
 const FieldContainer = styled.div`
     height: ${themeDimensions.fieldHeight};
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     position: relative;
 `;
 
@@ -425,12 +425,12 @@ class MaticBridge extends React.Component<Props, State> {
                             <Dropdown
                                 style={{
                                     width: '100%',
-                                    marginBottom: 20
+                                    marginBottom: 10
                                 }}
                                 body={
                                     <>
                                     {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                        <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} />
+                                        <DropdownTextItem key={idx} style={{width: '100%', zIndex: 99}} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} />
                                     )}
                                     </>
                                 }
