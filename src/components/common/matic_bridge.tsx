@@ -41,7 +41,7 @@ const ModalContent = styled.div`
     min-height: 300px;
     overflow: auto;
     width: 420px;
-    height: 520px;
+    height: 500px;
     color: #fff;
 `;
 
@@ -408,7 +408,7 @@ class MaticBridge extends React.Component<Props, State> {
                 <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
-                <Modal isOpen={isOpen} style={{...theme.modalTheme, borderRadius: '30px !important'}} onRequestClose={this.handleCloseModel}>
+                <Modal isOpen={isOpen} style={theme.modalTheme} onRequestClose={this.handleCloseModel}>
                     <ModalContent>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} active={isDeposit} >Deposit</DepositContent>
