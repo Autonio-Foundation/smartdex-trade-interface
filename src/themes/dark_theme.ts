@@ -13,7 +13,7 @@ const modalThemeStyle: ThemeModalStyle = {
         maxHeight: '90%',
         minWidth: '350px',
         overflow: 'hidden',
-        padding: '16px',
+        padding: '0px',
         position: 'relative',
         right: 'auto',
         top: 'auto'

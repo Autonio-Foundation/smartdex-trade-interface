@@ -40,9 +40,11 @@ const ModalContent = styled.div`
     max-height: 100%;
     min-height: 300px;
     overflow: auto;
-    width: 420px;
-    height: 500px;
+    width: 452px;
+    height: 532px;
     color: #fff;
+    padding: 16px;
+    border-radius: 50px;
 `;
 
 const DepositContent = styled.div<{ active?: boolean }>`
