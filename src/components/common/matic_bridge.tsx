@@ -427,8 +427,8 @@ class MaticBridge extends React.Component<Props, State> {
                                     <>
                                     {KNOWN_TOKENS_META_DATA.map((token, idx) =>
                                         <DropdownTextItem key={idx} style={{width: '100%'}} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} 
-                                            value={isDeposit ? (ethBalance[currentToken.symbol] ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")
-                                            : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")} />
+                                            value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")
+                                            : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
                                     )}
                                     </>
                                 }
