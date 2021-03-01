@@ -415,7 +415,7 @@ class MaticBridge extends React.Component<Props, State> {
                             <DepositContent onClick={() => this.setState({isDeposit: false})} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
-                            <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
+                            <div><span style={{fontWeight: 'bold', fontSize: 18}}>Matic Bridge</span> <span style={{fontSize: 14, marginLeft: 4, color: '#aaa'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
                             <p style={{color: 'yellow', marginTop: 20}}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 20}}>
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ff0' : '#F91A4F'}} />
@@ -468,7 +468,7 @@ class MaticBridge extends React.Component<Props, State> {
                                 // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
                                 // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
-                                style={{backgroundColor: '#acca26'}}
+                                style={{backgroundColor: '#acca26', borderRadius: 15}}
                                 onClick={this.submit}
                             >
                                 {isDeposit ? "DEPOSIT" : "WITHDRAW"}
