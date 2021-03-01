@@ -8,7 +8,7 @@ import { MATIC_PROVIDER, INFURA_PROVIDER } from '../../common/constants';
 
 import { Theme } from '../../themes/commons';
 import { Dropdown, DropdownPositions } from './matic_bridge_dropdown';
-import { DropdownTextItem } from './dropdown_text_item';
+import { DropdownTextItem } from './matic_bridge_text_item';
 import { BigNumberInput } from './big_number_input';
 import { themeDimensions } from '../../themes/commons';
 import { ButtonVariant } from '../../util/types';
@@ -426,7 +426,9 @@ class MaticBridge extends React.Component<Props, State> {
                                 body={
                                     <>
                                     {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                        <DropdownTextItem key={idx} style={{width: '100%'}} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} />
+                                        <DropdownTextItem key={idx} style={{width: '100%'}} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} 
+                                            value={isDeposit ? (ethBalance[currentToken.symbol] ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")
+                                            : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")} />
                                     )}
                                     </>
                                 }
