@@ -97,7 +97,7 @@ const MaticBridgeLink = styled.a`
 
 const BigInputNumberStyled = styled<any>(BigNumberInput)`
     background-color: ${props => props.theme.componentsTheme.textInputBackgroundColor};
-    border-radius: ${themeDimensions.borderRadius};
+    border-radius: 15px;
     border: 1px solid ${props => props.theme.componentsTheme.textInputBorderColor};
     color: ${props => props.theme.componentsTheme.textInputTextColor};
     font-feature-settings: 'tnum' 1;
@@ -423,6 +423,27 @@ class MaticBridge extends React.Component<Props, State> {
                                 <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ff0' : '#F91A4F'}} />
                                 <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit") }</span>
                             </div>
+
+                            <Dropdown
+                                style={{
+                                    width: 120
+                                }}
+                                body={
+                                    <>
+                                    {KNOWN_TOKENS_META_DATA.map((token, idx) =>
+                                        <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} />
+                                    )}
+                                    </>
+                                }
+                                header={
+                                    <>
+                                        {TokenSymbolFormat(currentToken.symbol)}
+                                    </>
+                                }
+                                horizontalPosition={DropdownPositions.Right}
+                                shouldCloseDropdownOnClickOutside={true}
+                            />
+
                             <FieldContainer>
                                 <BigInputNumberStyled
                                     decimals={currentToken.decimals}
@@ -432,32 +453,10 @@ class MaticBridge extends React.Component<Props, State> {
                                     placeholder={'0.00'}
                                 />
                                 <TokenContainer>
-                                    <TokenText>
-                                        <Dropdown
-                                            style={{
-                                                width: 120
-                                            }}
-                                            body={
-                                                <>
-                                                {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                                    <DropdownTextItem key={idx} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} />
-                                                )}
-                                                </>
-                                            }
-                                            header={
-                                                <>
-                                                    {TokenSymbolFormat(currentToken.symbol)}
-                                                </>
-                                            }
-                                            horizontalPosition={DropdownPositions.Right}
-                                            shouldCloseDropdownOnClickOutside={true}
-                                        />
-                                    </TokenText>
+                                    <TokenText>Max. {isDeposit ? (ethBalance[currentToken.symbol] ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")
+                             : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")}</TokenText>
                                 </TokenContainer>
                             </FieldContainer>
-
-                            <div style={{marginBottom: 20}}>Max. {isDeposit ? (ethBalance[currentToken.symbol] ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")
-                             : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")} {TokenSymbolFormat(currentToken.symbol)}</div>
 
                             <LabelContainer>
                                 <MainLabel>Details</MainLabel>
