@@ -232,8 +232,7 @@ class WalletWethBalance extends React.PureComponent<Props, State> {
                 </Card>
                 {inDropdown ? null : (
                     <Note>
-                        wMATIC is used for trades on Smartdex
-                        <br />1 wMATIC = 1 MATIC
+                        1 wMATIC = 1 MATIC
                     </Note>
                 )}
             </>
