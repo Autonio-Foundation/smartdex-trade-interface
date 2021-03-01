@@ -42,7 +42,6 @@ const ModalContent = styled.div`
     overflow: auto;
     width: 420px;
     height: 520px;
-    border-radius: 50px;
     color: '#fff';
 `;
 
@@ -61,7 +60,7 @@ const DepositContent = styled.div<{ active?: boolean }>`
     font-weight: bold;
     color: ${props => props.active ? '#ff0' : '#fff'};
     border-radius: 35px;
-    background-color: ${props => props.active ? 'rgba(255, 255, 0, 0.2)' : 'transparent'};
+    background-color: ${props => props.active ? 'rgba(255, 255, 0, 0.1)' : 'transparent'};
 `;
 
 const FieldContainer = styled.div`
@@ -411,7 +410,7 @@ class MaticBridge extends React.Component<Props, State> {
                 <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
-                <Modal isOpen={isOpen} style={theme.modalTheme} onRequestClose={this.handleCloseModel}>
+                <Modal isOpen={isOpen} style={{...theme.modalTheme, borderRadius: 50}} onRequestClose={this.handleCloseModel}>
                     <ModalContent>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} active={isDeposit} >Deposit</DepositContent>
