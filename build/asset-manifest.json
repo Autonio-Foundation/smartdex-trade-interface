@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.d05136fa.chunk.css",
-    "main.js": "/static/js/main.3ce20ab0.chunk.js",
+    "main.css": "/static/css/main.de9ea833.chunk.css",
+    "main.js": "/static/js/main.5510b8dd.chunk.js",
     "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
     "static/css/2.97edab10.chunk.css": "/static/css/2.97edab10.chunk.css",
     "static/js/2.abc695c1.chunk.js": "/static/js/2.abc695c1.chunk.js",
     "index.html": "/index.html",
-    "precache-manifest.a6b00d5106c1ba0933890aa2eeb6861b.js": "/precache-manifest.a6b00d5106c1ba0933890aa2eeb6861b.js",
+    "precache-manifest.69ecbb7debc914823083f911662efeb8.js": "/precache-manifest.69ecbb7debc914823083f911662efeb8.js",
     "service-worker.js": "/service-worker.js",
     "static/media/erc20_logo.a7e0e191.svg": "/static/media/erc20_logo.a7e0e191.svg",
     "static/media/erc721_logo.c85884b4.svg": "/static/media/erc721_logo.c85884b4.svg",
