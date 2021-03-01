@@ -53,9 +53,9 @@ socket.on('m', data => {
 	let bar;
 	if (tradeTime >= nextDailyBarTime) {
 		let nextOfNextDailyBarTime = getNextDailyBarTime(nextDailyBarTime, subscriptionItem.resolution);
-		while (tradeTime >= nextOfNextDailyBarTime) {
+		while (tradeTime > nextOfNextDailyBarTime) {
 			bar = {
-				time: nextDailyBarTime,
+				time: nextOfNextDailyBarTime,
 				open: lastDailyBar.close,
 				high: lastDailyBar.close,
 				low: lastDailyBar.close,
