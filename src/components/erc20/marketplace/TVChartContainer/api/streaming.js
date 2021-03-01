@@ -30,6 +30,7 @@ socket.on('m', data => {
 		tradeTimeStr,
 		,
 		tradePriceStr,
+		tradeVolumeStr
 	] = data.split('~');
 
 	if (parseInt(eventTypeStr) !== 0) {
@@ -38,6 +39,7 @@ socket.on('m', data => {
 	}
 	const tradePrice = parseFloat(tradePriceStr);
 	const tradeTime = parseInt(tradeTimeStr);
+	const tradeVolume = parseFloat(tradeVolumeStr);
 	const channelString = `0~${exchange}~${fromSymbol}~${toSymbol}`;
 	const subscriptionItem = channelToSubscription.get(channelString);
 	if (subscriptionItem === undefined) {
@@ -60,11 +62,12 @@ socket.on('m', data => {
 				high: lastDailyBar.close,
 				low: lastDailyBar.close,
 				close: lastDailyBar.close,
+				volume: 0
 			};
 			console.log('[socket] Generate new bar', bar);	
 			subscriptionItem.lastDailyBar = bar;
 			subscriptionItem.handlers.forEach(handler => handler.callback(bar));
-			
+
 			nextDailyBarTime = nextOfNextDailyBarTime;
 			nextOfNextDailyBarTime = getNextDailyBarTime(nextOfNextDailyBarTime, subscriptionItem.resolution);
 		}
@@ -74,6 +77,7 @@ socket.on('m', data => {
 			high: tradePrice,
 			low: tradePrice,
 			close: tradePrice,
+			volume: tradeVolume
 		};
 		console.log('[socket] Generate new bar', bar);	
 		subscriptionItem.lastDailyBar = bar;
@@ -85,6 +89,7 @@ socket.on('m', data => {
 			high: Math.max(lastDailyBar.high, tradePrice),
 			low: Math.min(lastDailyBar.low, tradePrice),
 			close: tradePrice,
+			volume: lastDailyBar.volume + tradeVolume
 		};
 		console.log('[socket] Update the latest bar by price', tradePrice);
 		subscriptionItem.lastDailyBar = bar;
