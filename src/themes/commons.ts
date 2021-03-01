@@ -106,6 +106,7 @@ export interface ThemeModalStyle {
         position: string;
         right: string;
         top: string;
+        borderRadius: string;
     };
     overlay: {
         alignItems: string;

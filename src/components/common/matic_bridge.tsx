@@ -408,7 +408,7 @@ class MaticBridge extends React.Component<Props, State> {
                 <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
-                <Modal isOpen={isOpen} style={{content: {...theme.modalTheme.content, borderRadius: '30px !important'}}} onRequestClose={this.handleCloseModel}>
+                <Modal isOpen={isOpen} style={theme.modalTheme} onRequestClose={this.handleCloseModel}>
                     <ModalContent>
                         <div style={{display: 'flex', width: '100%'}}>
                             <DepositContent onClick={() => this.setState({isDeposit: true})} active={isDeposit} >Deposit</DepositContent>
