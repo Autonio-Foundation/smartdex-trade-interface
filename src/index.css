@@ -38,7 +38,3 @@ code {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-
-:global(.ReactModal__Content--after-open) {
-    border-radius: 30px im !important;
-}
