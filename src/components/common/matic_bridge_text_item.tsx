@@ -7,6 +7,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
     active?: boolean;
     onClick?: any;
     text: string;
+    value: string;
 }
 
 export const DropdownTextItemWrapper = styled.div<{ active?: boolean }>`
