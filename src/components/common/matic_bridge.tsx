@@ -7,8 +7,6 @@ import { MaticPOSClient } from '@maticnetwork/maticjs';
 import { MATIC_PROVIDER, INFURA_PROVIDER } from '../../common/constants';
 
 import { Theme } from '../../themes/commons';
-import { CloseModalButton } from './icons/close_modal_button';
-import { ModalContent, Title, ModalText } from './steps_modal/steps_common';
 import { Dropdown, DropdownPositions } from './dropdown';
 import { DropdownTextItem } from './dropdown_text_item';
 import { BigNumberInput } from './big_number_input';
@@ -33,7 +31,22 @@ interface State {
     isDeposit: boolean;
 }
 
-const DepositContent = styled.div`
+const ModalContent = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    max-height: 100%;
+    min-height: 300px;
+    overflow: auto;
+    width: 420px;
+    height: 520px;
+    border-radius: 50px;
+    color: '#fff';
+`;
+
+const DepositContent = styled.div<{ active?: boolean }>`
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -45,6 +58,10 @@ const DepositContent = styled.div`
     text-align: center;
     justify-content: center;
     cursor: pointer;
+    font-weight: bold;
+    color: ${props => props.active ? '#ff0' : '#fff'};
+    border-radius: 35px;
+    background-color: ${props => props.active ? 'rgba(255, 255, 0, 0.2)' : 'transparent'};
 `;
 
 const FieldContainer = styled.div`
@@ -394,12 +411,11 @@ class MaticBridge extends React.Component<Props, State> {
                 <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
                     Matic Bridge
                 </MaticBridgeLink>
-                <Modal isOpen={isOpen} style={theme.modalTheme}>
-                    <CloseModalButton onClick={this.handleCloseModel} />
-                    <ModalContent style={{color: '#fff', height: 520, width: 420}}>
+                <Modal isOpen={isOpen} style={theme.modalTheme} onRequestClose={this.handleCloseModel}>
+                    <ModalContent>
                         <div style={{display: 'flex', width: '100%'}}>
-                            <DepositContent onClick={() => this.setState({isDeposit: true})} style={{color: isDeposit ? '#0FEE90' : '#fff', fontWeight: 'bold'}}>Deposit</DepositContent>
-                            <DepositContent onClick={() => this.setState({isDeposit: false})} style={{color: !isDeposit ? '#F91A4F' : '#fff', fontWeight: 'bold'}}>Withdraw</DepositContent>
+                            <DepositContent onClick={() => this.setState({isDeposit: true})} active={isDeposit} >Deposit</DepositContent>
+                            <DepositContent onClick={() => this.setState({isDeposit: false})} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
                             <div><span style={{fontWeight: 'bold'}}>Matic Bridge</span> <span style={{fontSize: 11, marginLeft: 4, color: isDeposit ? '#0FEE90' : '#F91A4F'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
