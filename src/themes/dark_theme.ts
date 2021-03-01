@@ -3,7 +3,7 @@ import { DefaultTheme } from './default_theme';
 
 const modalThemeStyle: ThemeModalStyle = {
     content: {
-        backgroundColor: '#061324',
+        backgroundColor: '#1a1f28',
         borderColor: '#000',
         bottom: 'auto',
         display: 'flex',
