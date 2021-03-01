@@ -107,7 +107,6 @@ const BigInputNumberStyled = styled<any>(BigNumberInput)`
     padding-right: 60px;
     position: absolute;
     width: 100%;
-    z-index: 1;
 `;
 
 const TokenContainer = styled.div`
@@ -116,7 +115,6 @@ const TokenContainer = styled.div`
     right: 14px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 12;
 `;
 
 const TokenText = styled.span`
@@ -426,7 +424,8 @@ class MaticBridge extends React.Component<Props, State> {
 
                             <Dropdown
                                 style={{
-                                    width: 120
+                                    width: '100%',
+                                    marginBottom: 20
                                 }}
                                 body={
                                     <>
@@ -437,10 +436,10 @@ class MaticBridge extends React.Component<Props, State> {
                                 }
                                 header={
                                     <>
-                                        {TokenSymbolFormat(currentToken.symbol)}
+                                        &#9660; {TokenSymbolFormat(currentToken.symbol)}
                                     </>
                                 }
-                                horizontalPosition={DropdownPositions.Right}
+                                horizontalPosition={DropdownPositions.Left}
                                 shouldCloseDropdownOnClickOutside={true}
                             />
 

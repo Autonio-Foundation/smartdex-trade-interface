@@ -266,7 +266,7 @@ class TVChartContainerComponent extends React.Component {
               $(".chartBox").removeClass("loading");
             });
           }
-        }, 500);
+        }, 1000);
       }
     );
   }
