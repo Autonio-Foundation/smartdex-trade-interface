@@ -19,6 +19,8 @@ interface Props extends HTMLAttributes<HTMLDivElement>, DropdownWrapperBodyProps
 
 const DropdownWrapper = styled.div`
     position: relative;
+    width: 100%;
+    margin-bottom: 10px;
 `;
 
 const DropdownWrapperHeader = styled.div`
@@ -30,6 +32,7 @@ const DropdownWrapperBody = styled.div<DropdownWrapperBodyProps>`
     position: absolute;
     top: calc(100% + 15px);
     z-index: 99;
+    width: 100%;
 
     ${props => (props.horizontalPosition === DropdownPositions.Left ? 'left: 0;' : '')}
 
