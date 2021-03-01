@@ -52,14 +52,30 @@ socket.on('m', data => {
 
 	let bar;
 	if (tradeTime >= nextDailyBarTime) {
+		let nextOfNextDailyBarTime = getNextDailyBarTime(nextDailyBarTime, subscriptionItem.resolution);
+		while (tradeTime >= nextOfNextDailyBarTime) {
+			bar = {
+				time: nextDailyBarTime,
+				open: lastDailyBar.close,
+				high: lastDailyBar.close,
+				low: lastDailyBar.close,
+				close: lastDailyBar.close,
+			};
+			console.log('[socket] Generate new bar', bar);	
+			subscriptionItem.handlers.forEach(handler => handler.callback(bar));
+			nextOfNextDailyBarTime = getNextDailyBarTime(nextOfNextDailyBarTime, subscriptionItem.resolution);
+		}
 		bar = {
-			time: nextDailyBarTime,
-			open: tradePrice,
+			time: nextOfNextDailyBarTime,
+			open: lastDailyBar.close,
 			high: tradePrice,
 			low: tradePrice,
 			close: tradePrice,
 		};
-		console.log('[socket] Generate new bar', bar);
+		console.log('[socket] Generate new bar', bar);	
+		subscriptionItem.lastDailyBar = bar;
+		// send data to every subscriber of that symbol
+		subscriptionItem.handlers.forEach(handler => handler.callback(bar));
 	} else {
 		bar = {
 			...lastDailyBar,
@@ -68,11 +84,10 @@ socket.on('m', data => {
 			close: tradePrice,
 		};
 		console.log('[socket] Update the latest bar by price', tradePrice);
+		subscriptionItem.lastDailyBar = bar;
+		// send data to every subscriber of that symbol
+		subscriptionItem.handlers.forEach(handler => handler.callback(bar));
 	}
-	subscriptionItem.lastDailyBar = bar;
-
-	// send data to every subscriber of that symbol
-	subscriptionItem.handlers.forEach(handler => handler.callback(bar));
 });
 
 function getNextDailyBarTime(barTime, resolution) {
