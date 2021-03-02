@@ -54,7 +54,7 @@ const darkThemeColors: ThemeProperties = {
     darkBlue: '#002979',
     darkGray: '#474747',
     darkerGray: '#666',
-    dropdownBackgroundColor: '#0C1F3D',
+    dropdownBackgroundColor: '#0e151f',
     dropdownBorderColor: '#000',
     dropdownTextColor: '#fff',
     errorButtonBackground: '#FF6534',

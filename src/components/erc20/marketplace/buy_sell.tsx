@@ -192,6 +192,7 @@ const TokenText = styled.span`
 const PercentContainer = styled.div`
     display: flex;
     width: 100%;
+    margin-bottom: 10px;
 `;
 
 const PercentBox = styled.button`
