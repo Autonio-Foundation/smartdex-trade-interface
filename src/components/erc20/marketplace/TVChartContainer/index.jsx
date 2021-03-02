@@ -18,7 +18,7 @@ class TVChartContainerComponent extends React.Component {
     super(props);
     this.state = {
       symbol: "",
-      interval: "15",
+      interval: "240",
       containerId: "tv_chart_container",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
