@@ -75,13 +75,14 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
-    console.log(order);
+    const time = new Date();
+    time.setTime(order.dt * 1000);
 
     return (
         <TR key={index}>
+            <SideTD styles={{ textAlign: 'right', tabular: true }} side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{price}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
-            <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{price}</SideTD>
-            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{0}</CustomTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{time.toTimeString().slice(0, 8)}</CustomTD>
         </TR>
     );
 };
@@ -116,8 +117,8 @@ class TradeHistory extends React.Component<Props, State> {
                         <Table isResponsive={true}>
                             <THead>
                                 <TR>
-                                    <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                     <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                    <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                     <TH>Time</TH>
                                     <TH>&nbsp;</TH>
                                 </TR>
