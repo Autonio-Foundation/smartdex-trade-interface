@@ -418,7 +418,7 @@ class MaticBridge extends React.Component<Props, State> {
                             <div><span style={{fontWeight: 'bold', fontSize: 18}}>Matic Bridge</span> <span style={{fontSize: 14, marginLeft: 4, color: '#aaa'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
                             <p style={{color: 'red', marginTop: 20}}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
                             <div style={{display: 'flex', marginBottom: 26, marginTop: 10}}>
-                                <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ff0' : '#F91A4F'}} />
+                                <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#acca26' : '#F91A4F'}} />
                                 <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit") }</span>
                             </div>
 
@@ -468,7 +468,7 @@ class MaticBridge extends React.Component<Props, State> {
                                 // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
                                 // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
-                                style={{backgroundColor: '#acca26', borderRadius: 15, textTransform: 'capitalize'}}
+                                style={{backgroundColor: '#acca26', textTransform: 'capitalize'}}
                                 onClick={this.submit}
                             >
                                 {isDeposit ? "Deposit" : "Withdraw"}

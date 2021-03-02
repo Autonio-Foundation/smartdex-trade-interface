@@ -57,7 +57,7 @@ const Value = styled.span`
 const WalletStatusBadge = styled.div<{ web3State?: Web3State }>`
     background-color: ${props =>
         props.web3State === Web3State.Done
-            ? props.theme.componentsTheme.green
+            ? '#acca26'
             : props.theme.componentsTheme.errorButtonBackground};
     border-radius: 50%;
     height: 8px;

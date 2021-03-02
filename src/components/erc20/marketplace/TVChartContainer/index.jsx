@@ -28,7 +28,7 @@ class TVChartContainerComponent extends React.Component {
       fullscreen: false,
       autosize: true,
       studiesOverrides: {},
-      backColor: "#011625",
+      backColor: "#030C18",
       borderColor: "#0a2133"
     };
     this.widget = undefined;
