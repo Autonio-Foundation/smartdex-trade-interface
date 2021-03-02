@@ -76,7 +76,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
     const time = new Date();
-    time.setTime(order.dt * 1000);
+    time.setTime(order.dt);
 
     return (
         <TR key={index}>
