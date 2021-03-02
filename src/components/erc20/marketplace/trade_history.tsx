@@ -75,11 +75,13 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
+    console.log(order);
+
     return (
         <TR key={index}>
-            <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{sideLabel}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
-            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{price}</CustomTD>
+            <SideTD side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{price}</SideTD>
+            <CustomTD styles={{ textAlign: 'right', tabular: true }}>{0}</CustomTD>
         </TR>
     );
 };
@@ -114,9 +116,9 @@ class TradeHistory extends React.Component<Props, State> {
                         <Table isResponsive={true}>
                             <THead>
                                 <TR>
-                                    <TH>Side</TH>
                                     <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                     <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                    <TH>Time</TH>
                                     <TH>&nbsp;</TH>
                                 </TR>
                             </THead>
@@ -132,7 +134,7 @@ class TradeHistory extends React.Component<Props, State> {
             <CardWrapper style={{maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)'}}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{color: '#0FEE90'}}>Recent Trades</span>
+                        <span style={{color: '#fff'}}>Recent Trades</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>
