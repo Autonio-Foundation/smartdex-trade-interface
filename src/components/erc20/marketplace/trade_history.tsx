@@ -80,7 +80,7 @@ const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
 
     return (
         <TR key={index}>
-            <SideTD styles={{ textAlign: 'right', tabular: true }} side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{price}</SideTD>
+            <SideTD styles={{ textAlign: 'left', tabular: true }} side={sideLabel === 'Buy' ? OrderSide.Buy : OrderSide.Sell}>{price}</SideTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{size}</CustomTD>
             <CustomTD styles={{ textAlign: 'right', tabular: true }}>{time.toTimeString().slice(0, 8)}</CustomTD>
         </TR>
@@ -117,7 +117,7 @@ class TradeHistory extends React.Component<Props, State> {
                         <Table isResponsive={true}>
                             <THead>
                                 <TR>
-                                    <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
+                                    <TH styles={{ textAlign: 'left' }}>Price ({quoteToken.symbol})</TH>
                                     <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                     <TH>Time</TH>
                                     <TH>&nbsp;</TH>
