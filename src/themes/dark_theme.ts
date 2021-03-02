@@ -29,7 +29,7 @@ const modalThemeStyle: ThemeModalStyle = {
 };
 
 const darkThemeColors: ThemeProperties = {
-    background: 'linear-gradient(112.45deg, #0B213E 0%, #061324 100%), #0E1B2C',
+    background: '#191D27',
     backgroundERC721: '#000',
     borderColor: '#5A5A5A',
     boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
@@ -46,8 +46,8 @@ const darkThemeColors: ThemeProperties = {
     buttonTertiaryBackgroundColor: '#F6851B',
     buttonTextColor: '#fff',
     cardImageBackgroundColor: '#EBF0F5',
-    cardBackgroundColor: '#061324',
-    cardBorderColor: '#061324',
+    cardBackgroundColor: '#030C18',
+    cardBorderColor: '#030C18',
     cardTitleColor: '#fff',
     cardTitleOwnerColor: '#3CB34F',
     chartColor: '#00AE99',
@@ -110,8 +110,8 @@ const darkThemeColors: ThemeProperties = {
     thColor: '#B9B9B9',
     tooltipBackgroundColor: '#000',
     tooltipTextColor: '#fff',
-    topbarBackgroundColor: '#061324',
-    topbarBorderColor: '#061324',
+    topbarBackgroundColor: '#030C18',
+    topbarBorderColor: '#030C18',
     topbarSeparatorColor: '#5A5A5A',
 };
 
