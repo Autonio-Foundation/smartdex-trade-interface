@@ -35,7 +35,9 @@ const TokenIconContainer = (props: Props) => {
     const fallBack = <Label>{symbol && symbol.toUpperCase()}</Label>;
     const Icon =
         // tslint:disable-next-line:jsx-no-lambda
-        icon ? <ReactSVG style={{width: 28}} src={icon as string} fallback={() => fallBack} /> : fallBack;
+        icon ? <ReactSVG beforeInjection={(svg: any) => {
+            svg.setAttribute('style', 'width: 28px; height: 28px;');
+          }} src={icon as string} fallback={() => fallBack} /> : fallBack;
     return (
         <IconContainer color={primaryColor || theme.componentsTheme.gray} {...restProps}>
             {Icon}
