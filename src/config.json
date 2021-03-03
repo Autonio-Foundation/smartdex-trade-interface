@@ -6,7 +6,7 @@
         {
             "symbol": "niox",
             "name": "Autonio",
-            "primaryColor": "#333333",
+            "primaryColor": "#fff",
             "icon": "assets/icons/niox.svg",
             "addresses": {
                 "1": "0xc813ea5e3b48bebeedb796ab42a30c5599b01740",
