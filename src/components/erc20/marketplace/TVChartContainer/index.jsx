@@ -129,7 +129,7 @@ class TVChartContainerComponent extends React.Component {
           overrides: {
             "symbolWatermarkProperties.color": "rgba(0,0,0, 0)",
             "paneProperties.background": this.state.backColor,
-            "paneProperties.vertGridProperties.color": '#1a3143',
+            "paneProperties.vertGridProperties.color": this.state.backColor,
             "paneProperties.horzGridProperties.color": '#1a3143',
             "paneProperties.crossHairProperties.color": "#DDDDDD",
             "paneProperties.crossHairProperties.style": 2,
