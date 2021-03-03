@@ -23,7 +23,7 @@
             "symbol": "wmatic",
             "name": "Wrapped Matic",
             "primaryColor": "#3333ff",
-            "icon": "assets/icons/matic.svg",
+            "icon": "assets/icons/matic.png",
             "addresses": {
                 "1": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
                 "3": "0xc778417e063141139fce010982780140aa0cd5ab",
