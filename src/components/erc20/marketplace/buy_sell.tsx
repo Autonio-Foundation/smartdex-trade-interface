@@ -422,7 +422,7 @@ class BuySell extends React.Component<Props, State> {
             }
             else {
                 this.setState({
-                    makerAmount: new BigNumber(baseTokenBalanceAmount.multipliedBy(new BigNumber(0.999 * percent)).toFixed(baseToken.displayDecimals))
+                    makerAmount: new BigNumber(baseTokenBalanceAmount.multipliedBy(new BigNumber(0.9999 * percent)).toFixed(baseToken.displayDecimals))
                 })
             }
         }
