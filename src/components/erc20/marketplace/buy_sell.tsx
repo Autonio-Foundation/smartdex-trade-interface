@@ -404,7 +404,7 @@ class BuySell extends React.Component<Props, State> {
                         if (!price.isZero()) {
                             const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
                             this.setState({
-                                makerAmount: new BigNumber(unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.999999 * percent)).toFixed(0), baseToken.decimals).dividedBy(priceInQuoteBaseUnits).toFixed(0))
+                                makerAmount: new BigNumber(unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.999 * percent)).toFixed(0), baseToken.decimals).dividedBy(priceInQuoteBaseUnits).toFixed(0))
                             })
                         }
                     }
@@ -415,14 +415,14 @@ class BuySell extends React.Component<Props, State> {
                         orders: openSellOrders
                     });
                     this.setState({
-                        makerAmount: new BigNumber(makerAmount.toFixed(0))
+                        makerAmount: new BigNumber(makerAmount.multipliedBy(new BigNumber(0.999)).toFixed(0))
                     })
                 }
 
             }
             else {
                 this.setState({
-                    makerAmount: new BigNumber(baseTokenBalanceAmount.multipliedBy(new BigNumber(0.999999 * percent)).toFixed(baseToken.displayDecimals))
+                    makerAmount: new BigNumber(baseTokenBalanceAmount.multipliedBy(new BigNumber(0.999 * percent)).toFixed(baseToken.displayDecimals))
                 })
             }
         }
