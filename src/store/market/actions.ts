@@ -10,7 +10,7 @@ import { getRelayer } from '../../services/relayer';
 import { getKnownTokens } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
 import { CurrencyPair, Market, StoreState, ThunkCreator, Token } from '../../util/types';
-import { getOrderbookAndUserOrders } from '../actions';
+import { getOrderbookAndUserOrders, setUserOrders, setOverallHistory, setOrders } from '../actions';
 
 const logger = getLogger('Market::Actions');
 
@@ -51,6 +51,10 @@ export const changeMarket: ThunkCreator = (currencyPair: CurrencyPair) => {
         );
         dispatch(setCurrencyPair(currencyPair));
         // tslint:disable-next-line:no-floating-promises
+        dispatch(setUserOrders([]));
+        dispatch(setOrders([]));
+        dispatch(setOverallHistory([]));
+
         dispatch(getOrderbookAndUserOrders());
 
         const state = getState() as StoreState;

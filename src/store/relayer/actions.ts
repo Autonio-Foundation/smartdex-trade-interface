@@ -91,7 +91,6 @@ export const getUserOrders: ThunkCreator = () => {
             const isWeb3DoneState = web3State === Web3State.Done;
             // tslint:disable-next-line:prefer-conditional-expression
             if (isWeb3DoneState) {
-                dispatch(setUserOrders([]));
                 const myUIOrders = await getUserOrdersAsUIOrders(baseToken, quoteToken, ethAccount);
                 dispatch(setUserOrders(myUIOrders));
             }
