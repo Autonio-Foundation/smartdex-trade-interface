@@ -18,13 +18,13 @@ interface StateProps {
 
 type Props = StateProps & OwnProps;
 
-const connectToWallet = () => {
-    alert('connect to another wallet');
-};
+// const connectToWallet = () => {
+//     alert('connect to another wallet');
+// };
 
-const goToURL = () => {
-    alert('go to url');
-};
+// const goToURL = () => {
+//     alert('go to url');
+// };
 
 const DropdownItems = styled(CardBase)`
     box-shadow: ${props => props.theme.componentsTheme.boxShadow};
@@ -41,8 +41,8 @@ class WalletConnectionContent extends React.PureComponent<Props> {
                 <CopyToClipboard text={ethAccount ? ethAccount : ''}>
                     <DropdownTextItem text="Copy Address to Clipboard" />
                 </CopyToClipboard>
-                <DropdownTextItem onClick={connectToWallet} text="Connect a different Wallet" />
-                <DropdownTextItem onClick={goToURL} text="Manage Account" />
+                {/* <DropdownTextItem onClick={connectToWallet} text="Connect a different Wallet" />
+                <DropdownTextItem onClick={goToURL} text="Manage Account" /> */}
             </DropdownItems>
         );
 
