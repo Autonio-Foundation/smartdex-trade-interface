@@ -89,7 +89,7 @@ class BaseStepModalCM extends React.Component<Props, State> {
         const retry = () => this._retry();
         let content;
         let bodyText;
-        let footer = this.props.showPartialProgress ? null : <ModalStatusTextLight>{}</ModalStatusTextLight>;
+        let footer = this.props.showPartialProgress ? null : <ModalStatusTextLight>{ }</ModalStatusTextLight>;
         switch (status) {
             case StepStatus.Loading:
                 content = <StepStatusLoading />;
@@ -200,7 +200,7 @@ class BaseStepModalCM extends React.Component<Props, State> {
 }
 
 const BaseStepModal = connect(
-        null,
-        { reset: stepsModalReset },
-    )(BaseStepModalCM);
+    null,
+    { reset: stepsModalReset },
+)(BaseStepModalCM);
 export { BaseStepModal };

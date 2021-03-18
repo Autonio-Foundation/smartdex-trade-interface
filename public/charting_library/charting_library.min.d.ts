@@ -85,7 +85,7 @@ export interface IWatchedValueReadonly<T> {
     unsubscribe(callback?: ((value: T) => void) | null): void;
     spawn(): IWatchedValueReadonlySpawn<T>;
 }
-export interface IWatchedValueReadonlySpawn<T> extends IWatchedValueReadonly<T>, IDestroyable {}
+export interface IWatchedValueReadonlySpawn<T> extends IWatchedValueReadonly<T>, IDestroyable { }
 export declare type WatchedValueCallback<T> = (value: T) => void;
 export interface IWatchedValue<T> extends IWatchedValueReadonly<T> {
     value(): T;
@@ -378,7 +378,7 @@ export interface Brackets {
     stopLoss?: number;
     takeProfit?: number;
 }
-export interface DefaultContextMenuActionsParams {}
+export interface DefaultContextMenuActionsParams { }
 export interface DefaultDropdownActionsParams {
     showFloatingToolbar?: boolean;
     showDOM?: boolean;
@@ -1513,7 +1513,7 @@ export interface IChartingLibraryWidget {
     setLayout(layout: LayoutType): void;
 }
 export interface ChartingLibraryWidgetConstructor {
-    new (options: ChartingLibraryWidgetOptions | TradingTerminalWidgetOptions): IChartingLibraryWidget;
+    new(options: ChartingLibraryWidgetOptions | TradingTerminalWidgetOptions): IChartingLibraryWidget;
 }
 export declare function version(): string;
 export declare function onready(callback: () => void): void;

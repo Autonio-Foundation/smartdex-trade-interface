@@ -89,7 +89,7 @@ interface ErrorCardStyledProps {
     cursor?: string;
 }
 
-const ErrorCardStyled = styled(ErrorCard)<ErrorCardStyledProps>`
+const ErrorCardStyled = styled(ErrorCard) <ErrorCardStyledProps>`
     cursor: ${props => props.cursor};
     position: absolute;
     top: 50%;
@@ -238,12 +238,12 @@ class WalletBalance extends React.Component<Props, State> {
                     else {
                         const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
                         const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
-            
+
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
-                    }    
+                    }
                 }
             })
-            
+
             const baseBalanceString = tokenAmountInUnits(
                 baseTokenBalanceAmount,
                 baseToken.decimals,

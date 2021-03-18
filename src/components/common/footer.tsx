@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { GIT_COMMIT } from '../../common/constants';
 import { themeDimensions } from '../../themes/commons';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {}
+interface Props extends HTMLAttributes<HTMLDivElement> { }
 
 const FooterWrapper = styled.div`
     align-items: center;
