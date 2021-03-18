@@ -8,8 +8,9 @@ import 'sanitize.css';
 
 import { DEFAULT_BASE_PATH, ERC20_APP_BASE_PATH, ERC721_APP_BASE_PATH, LOGGER_ID } from './common/constants';
 import { AppContainer } from './components/app';
-import { Erc20App } from './components/erc20/erc20_app';
-import { Erc721App } from './components/erc721/erc721_app';
+// import { Erc20App } from './components/erc20/erc20_app';
+// import { Erc721App } from './components/erc721/erc721_app';
+import { MaintenancePage } from './components/maintenance';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { history, store } from './store';
@@ -27,9 +28,13 @@ const Web3WrappedApp = (
         <ConnectedRouter history={history}>
             <AppContainer>
                 <Switch>
-                    <Route path={ERC20_APP_BASE_PATH} component={Erc20App} />
+                    <Route
+                        path="/"
+                        component={MaintenancePage}
+                    />
+                    {/* <Route path={ERC20_APP_BASE_PATH} component={Erc20App} />
                     <Route path={ERC721_APP_BASE_PATH} component={Erc721App} />
-                    <Route component={RedirectToHome} />
+                    <Route component={RedirectToHome} /> */}
                 </Switch>
             </AppContainer>
         </ConnectedRouter>
