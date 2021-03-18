@@ -27,7 +27,7 @@ export const Erc721App = () => {
     return (
         <ThemeProvider theme={themeColor}>
             <GeneralLayoutERC721 toolbar={toolbar}>
-                <AdBlockDetector />
+                {/* <AdBlockDetector /> */}
                 <CollectibleSellModal />
                 <CheckMetamaskStateModalContainer />
                 <Switch>

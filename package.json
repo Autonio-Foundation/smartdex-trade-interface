@@ -7,10 +7,13 @@
         "@0x/connect": "^5.0.12",
         "@0x/order-utils": "^8.2.3",
         "@0x/web3-wrapper": "^6.0.6",
+        "@maticnetwork/maticjs": "^2.0.28",
+        "@maticnetwork/metamask-provider": "^0.0.1",
         "@types/async-retry": "^1.4.1",
         "@types/recharts": "^1.1.16",
         "async-retry": "^1.2.3",
         "async-sema": "^3.0.0",
+        "axios": "^0.21.0",
         "connected-react-router": "^6.2.2",
         "history": "^4.7.2",
         "http-proxy-middleware": "^0.19.1",
@@ -35,6 +38,7 @@
         "request-promise": "^4.2.6",
         "reselect": "^4.0.0",
         "sanitize.css": "^8.0.0",
+        "socket.io-client": "^3.0.4",
         "styled-components": "^4.1.3",
         "typesafe-actions": "^3.0.0"
     },
@@ -51,12 +55,6 @@
     },
     "eslintConfig": {
         "extends": "react-app"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run prettier-check",
-            "pre-push": "npm run lint && npm run test-once"
-        }
     },
     "jest": {
         "collectCoverageFrom": [

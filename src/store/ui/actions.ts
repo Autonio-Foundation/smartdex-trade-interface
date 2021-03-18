@@ -1,4 +1,5 @@
-import { BigNumber, MetamaskSubprovider, signatureUtils } from '0x.js';
+import { BigNumber, MetamaskSubprovider, signatureUtils, OrderStatus } from '0x.js';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import { createAction } from 'typesafe-actions';
 
 import { COLLECTIBLE_ADDRESS } from '../../common/constants';
@@ -6,7 +7,7 @@ import { InsufficientOrdersAmountException } from '../../exceptions/insufficient
 import { InsufficientTokenBalanceException } from '../../exceptions/insufficient_token_balance_exception';
 import { SignedOrderException } from '../../exceptions/signed_order_exception';
 import { isWeth } from '../../util/known_tokens';
-import { buildLimitOrder, buildMarketOrders, isDutchAuction } from '../../util/orders';
+import { buildLimitOrder, buildMarketOrders, matchLimitOrders, isDutchAuction } from '../../util/orders';
 import {
     createBasicBuyCollectibleSteps,
     createBuySellLimitSteps,
@@ -26,7 +27,11 @@ import {
     ThunkCreator,
     Token,
     TokenBalance,
+    UIOrder,
+    Web3State
 } from '../../util/types';
+import { unitsInTokenAmount } from "../../util/tokens";
+import { getUserOrdersAsUIOrders } from "../../services/orders";
 import * as selectors from '../selectors';
 
 export const setHasUnreadNotifications = createAction('ui/UNREAD_NOTIFICATIONS_set', resolve => {
@@ -213,20 +218,20 @@ export const startBuySellMarketSteps: ThunkCreator = (amount: BigNumber, side: O
 
         if (side === OrderSide.Sell) {
             // When selling, user should have enough BASE Token
-            if (baseTokenBalance && baseTokenBalance.balance.isLessThan(totalFilledAmount)) {
+            const ifEthAndWethNotEnoughBalance =
+                isWeth(baseToken.symbol) && totalEthBalance.isLessThan(totalFilledAmount);
+            const ifOtherBaseTokenAndNotEnoughBalance =
+                !isWeth(baseToken.symbol) &&
+                baseTokenBalance &&
+                baseTokenBalance.balance.isLessThan(totalFilledAmount);
+            if (ifEthAndWethNotEnoughBalance || ifOtherBaseTokenAndNotEnoughBalance) {
                 throw new InsufficientTokenBalanceException(baseToken.symbol);
             }
         } else {
             // When buying and
             // if quote token is weth, should have enough ETH + WETH balance, or
             // if quote token is not weth, should have enough quote token balance
-            const ifEthAndWethNotEnoughBalance =
-                isWeth(quoteToken.symbol) && totalEthBalance.isLessThan(totalFilledAmount);
-            const ifOtherQuoteTokenAndNotEnoughBalance =
-                !isWeth(quoteToken.symbol) &&
-                quoteTokenBalance &&
-                quoteTokenBalance.balance.isLessThan(totalFilledAmount);
-            if (ifEthAndWethNotEnoughBalance || ifOtherQuoteTokenAndNotEnoughBalance) {
+            if (quoteTokenBalance && quoteTokenBalance.balance.isLessThan(totalFilledAmount)) {
                 throw new InsufficientTokenBalanceException(quoteToken.symbol);
             }
         }
@@ -267,15 +272,74 @@ const getLockTokenStep = (token: Token): StepToggleTokenLock => {
     };
 };
 
+export const matchOrderbook: ThunkCreator<{ filledAmount: BigNumber }> = (
+    amount: BigNumber,
+    price: BigNumber,
+    side: OrderSide,
+) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const isBuy = side === OrderSide.Buy;
+        const allOrders = isBuy ? selectors.getOpenSellOrders(state) : selectors.getOpenBuyOrders(state);
+        try {
+            const { filledAmount } = matchLimitOrders(
+                {
+                    amount,
+                    price,
+                    orders: allOrders,
+                },
+                side,
+            );
+            return { filledAmount };
+        } catch (error) {
+            throw new SignedOrderException(error.message);
+        }
+    };
+};
+
 export const createSignedOrder: ThunkCreator = (amount: BigNumber, price: BigNumber, side: OrderSide) => {
     return async (dispatch, getState, { getContractWrappers, getWeb3Wrapper }) => {
         const state = getState();
         const ethAccount = selectors.getEthAccount(state);
         const baseToken = selectors.getBaseToken(state) as Token;
         const quoteToken = selectors.getQuoteToken(state) as Token;
+        let baseTokenBalance = (selectors.getBaseTokenBalance(state) as TokenBalance).balance;
+        let quoteTokenBalance = (selectors.getQuoteTokenBalance(state) as TokenBalance).balance;
+
         try {
             const web3Wrapper = await getWeb3Wrapper();
             const contractWrappers = await getContractWrappers();
+
+            const myUIOrders = await getUserOrdersAsUIOrders(baseToken, quoteToken, ethAccount);
+            myUIOrders && myUIOrders.map((cur: UIOrder) => {
+                if (cur.status === OrderStatus.Fillable) {
+                    if (cur.side === OrderSide.Sell) {
+                        baseTokenBalance = baseTokenBalance.minus(cur.size);
+                    }
+                    else {
+                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+
+                        quoteTokenBalance = quoteTokenBalance.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
+                    }
+                }
+            })
+
+            if (side === OrderSide.Buy) {
+                // check quoteToken
+                const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
+                const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(amount, baseToken.decimals);
+
+                if (baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits).comparedTo(quoteTokenBalance) == 1) {
+                    throw new InsufficientTokenBalanceException(quoteToken.symbol);
+                }
+            }
+            else {
+                // check baseToken
+                if (amount.comparedTo(baseTokenBalance) == 1) {
+                    throw new InsufficientTokenBalanceException(baseToken.symbol);
+                }
+            }
 
             const order = await buildLimitOrder(
                 {

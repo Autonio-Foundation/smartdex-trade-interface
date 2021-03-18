@@ -12,6 +12,7 @@ import { NotificationsDropdownContainer } from '../../../components/notification
 import { goToHome, goToWallet } from '../../../store/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
 import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
+import { MaticBridgeContainer } from '../../common/matic_bridge';
 
 import { MarketsDropdownContainer } from './markets_dropdown';
 
@@ -75,13 +76,14 @@ const ToolbarContent = (props: Props) => {
         props.onGoToHome();
     };
     const generalConfig = Config.getConfig().general;
-    const logo = <LogoSVGStyled />;
+    // const logo = <LogoSVGStyled />;
+    const logo = null;
     const startContent = (
         <>
             <LogoHeader
                 image={logo}
                 onClick={handleLogoClick}
-                text='Autonio Smartdex'
+                text="smartdex"
                 textColor={props.theme.componentsTheme.logoERC20TextColor}
             />
             <MarketsDropdownHeader shouldCloseDropdownBodyOnClick={false} />
@@ -92,8 +94,10 @@ const ToolbarContent = (props: Props) => {
         e.preventDefault();
         props.onGoToWallet();
     };
+
     const endContent = (
         <>
+            <MaticBridgeContainer />
             <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
                 My Wallet
             </MyWalletLink>

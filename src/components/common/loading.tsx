@@ -21,7 +21,7 @@ const LoadingContainer = styled.div<Props>`
 `;
 
 LoadingContainer.defaultProps = {
-    minHeight: '200px',
+    minHeight: '100%',
 };
 
 const CenteredLoading = styled(Loading)`

@@ -37,7 +37,7 @@ export class KnownTokens {
         if (!token) {
             // If it's not on the tokens list, we check if it's an wETH token
             // TODO - Maybe the this._tokens could be refactored to also have wETH inside
-            token = this._wethToken.address === address ? this._wethToken : undefined;
+            token = this._wethToken.address.toLowerCase() === addressInLowerCase ? this._wethToken : undefined;
         }
         if (!token) {
             throw new Error(`Token with address ${address} not found in known tokens`);
@@ -108,8 +108,8 @@ export const getColorBySymbol = (symbol: string): string => {
     return token.primaryColor;
 };
 
-export const isZrx = (token: string): boolean => {
-    return token === 'zrx';
+export const isNiox = (token: string): boolean => {
+    return token === 'niox';
 };
 
 export const isWeth = (token: string): boolean => {

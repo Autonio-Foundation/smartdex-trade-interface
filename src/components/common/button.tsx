@@ -47,7 +47,7 @@ const StyledButton = styled.button<{ variant?: ButtonVariant }>`
             : ''}
 
     align-items: center;
-    border-radius: ${themeDimensions.borderRadius};
+    border-radius: 15px;
     border: none;
     color: ${props => props.theme.componentsTheme.buttonTextColor};
     cursor: pointer;

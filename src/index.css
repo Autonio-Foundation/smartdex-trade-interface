@@ -1,13 +1,14 @@
 @import url('https://rsms.me/inter/inter.css');
 @import url('https://rsms.me/inter/inter-ui.css');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
 
 html {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Work Sans', sans-serif;
 }
 
 @supports (font-variation-settings: normal) {
     html {
-        font-family: 'Inter var', sans-serif;
+        font-family: 'Work Sans', sans-serif;
     }
 }
 
@@ -19,4 +20,21 @@ html,
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+  
+::-webkit-scrollbar-track {
+    background: rgba(240, 240, 240, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

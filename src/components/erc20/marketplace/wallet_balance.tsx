@@ -1,4 +1,5 @@
-import { BigNumber } from '0x.js';
+import { BigNumber, OrderStatus } from '0x.js';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -14,11 +15,12 @@ import {
     getQuoteTokenBalance,
     getTotalEthBalance,
     getWeb3State,
+    getUserOrders
 } from '../../../store/selectors';
 import { errorsWallet } from '../../../util/error_messages';
 import { isWeth } from '../../../util/known_tokens';
-import { tokenAmountInUnits, tokenSymbolToDisplayString } from '../../../util/tokens';
-import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State } from '../../../util/types';
+import { tokenAmountInUnits, tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
+import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State, UIOrder, OrderSide } from '../../../util/types';
 import { Button } from '../../common/button';
 import { Card } from '../../common/card';
 import { ErrorCard, ErrorIcons, FontSize } from '../../common/error_card';
@@ -55,7 +57,7 @@ const Value = styled.span`
 const WalletStatusBadge = styled.div<{ web3State?: Web3State }>`
     background-color: ${props =>
         props.web3State === Web3State.Done
-            ? props.theme.componentsTheme.green
+            ? '#acca26'
             : props.theme.componentsTheme.errorButtonBackground};
     border-radius: 50%;
     height: 8px;
@@ -87,7 +89,7 @@ interface ErrorCardStyledProps {
     cursor?: string;
 }
 
-const ErrorCardStyled = styled(ErrorCard)<ErrorCardStyledProps>`
+const ErrorCardStyled = styled(ErrorCard) <ErrorCardStyledProps>`
     cursor: ${props => props.cursor};
     position: absolute;
     top: 50%;
@@ -139,6 +141,7 @@ interface StateProps {
     baseTokenBalance: TokenBalance | null;
     quoteTokenBalance: TokenBalance | null;
     totalEthBalance: BigNumber;
+    orders: UIOrder[];
 }
 
 interface DispatchProps {
@@ -182,7 +185,7 @@ const getWallet = (web3State: Web3State) => {
 };
 
 const getWalletTitle = (web3State: Web3State) => {
-    let title = 'Wallet Balance';
+    let title = 'Total Balance';
 
     if (web3State === Web3State.NotInstalled) {
         title = 'No wallet found';
@@ -209,45 +212,65 @@ class WalletBalance extends React.Component<Props, State> {
         );
     };
 
-    private readonly _getWalletContent = () => {
+    private _getWalletContent = () => {
         let content: any = null;
         const {
             web3State,
             currencyPair,
             onConnectWallet,
+            baseToken,
             quoteToken,
             quoteTokenBalance,
             baseTokenBalance,
             totalEthBalance,
+            orders
         } = this.props;
 
-        if (quoteToken && baseTokenBalance && quoteTokenBalance) {
-            const quoteTokenBalanceAmount = isWeth(quoteToken.symbol) ? totalEthBalance : quoteTokenBalance.balance;
+        if (baseToken && baseTokenBalance && quoteToken && quoteTokenBalance) {
+            let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
+            let quoteTokenBalanceAmount = quoteTokenBalance.balance;
+
+            orders && orders.map((cur: UIOrder) => {
+                if (cur.status === OrderStatus.Fillable) {
+                    if (cur.side === OrderSide.Sell) {
+                        baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
+                    }
+                    else {
+                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+
+                        quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
+                    }
+                }
+            })
+
+            const baseBalanceString = tokenAmountInUnits(
+                baseTokenBalanceAmount,
+                baseToken.decimals,
+                baseToken.displayDecimals,
+            );
             const quoteBalanceString = tokenAmountInUnits(
                 quoteTokenBalanceAmount,
-                quoteToken.decimals,
-                quoteToken.displayDecimals,
+                quoteTokenBalance.token.decimals,
+                quoteTokenBalance.token.displayDecimals,
             );
-            const baseBalanceString = tokenAmountInUnits(
-                baseTokenBalance.balance,
-                baseTokenBalance.token.decimals,
-                baseTokenBalance.token.displayDecimals,
-            );
-            const toolTip = isWeth(quoteToken.symbol) ? (
+            const toolTip = isWeth(baseToken.symbol) ? (
                 <TooltipStyled description="Showing MATIC + wMATIC balance" iconType={IconType.Fill} />
             ) : null;
-            const quoteTokenLabel = isWeth(quoteToken.symbol) ? 'MATIC' : tokenSymbolToDisplayString(currencyPair.quote);
+            const baseTokenLabel = isWeth(baseToken.symbol)
+                ? 'MATIC'
+                : tokenSymbolToDisplayString(currencyPair.base);
             content = (
                 <>
                     <LabelWrapper>
-                        <Label>{tokenSymbolToDisplayString(currencyPair.base)}</Label>
+                        <Label>
+                            {baseTokenLabel}
+                            {toolTip}
+                        </Label>
                         <Value>{baseBalanceString}</Value>
                     </LabelWrapper>
                     <LabelWrapper>
-                        <Label>
-                            {quoteTokenLabel}
-                            {toolTip}
-                        </Label>
+                        <Label>{tokenSymbolToDisplayString(currencyPair.quote)}</Label>
                         <Value>{quoteBalanceString}</Value>
                     </LabelWrapper>
                 </>
@@ -339,6 +362,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
         quoteTokenBalance: getQuoteTokenBalance(state),
         baseTokenBalance: getBaseTokenBalance(state),
         totalEthBalance: getTotalEthBalance(state),
+        orders: getUserOrders(state),
     };
 };
 

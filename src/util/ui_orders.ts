@@ -23,7 +23,7 @@ export const ordersToUIOrders = (
 };
 
 // The user does not have web3 and the order info could not be retrieved from the contract
-const ordersToUIOrdersWithoutOrderInfo = (orders: SignedOrder[], baseToken: Token): UIOrder[] => {
+export const ordersToUIOrdersWithoutOrderInfo = (orders: SignedOrder[], baseToken: Token): UIOrder[] => {
     const baseTokenEncoded = assetDataUtils.encodeERC20AssetData(baseToken.address);
 
     return orders.map((order, i) => {
@@ -67,15 +67,14 @@ const filterUIOrders = (orders: UIOrder[]): UIOrder[] => {
 };
 
 // The user has web3 and the order info could be retrieved from the contract
-const ordersToUIOrdersWithOrdersInfo = (
+export const ordersToUIOrdersWithOrdersInfo = (
     orders: SignedOrder[],
     orderAndTraderInfos: OrderAndTraderInfo[],
     baseToken: Token,
 ): UIOrder[] => {
     if (orderAndTraderInfos.length !== orders.length) {
         throw new Error(
-            `AssertionError: Orders info length does not match orders length: ${orderAndTraderInfos.length} !== ${
-                orders.length
+            `AssertionError: Orders info length does not match orders length: ${orderAndTraderInfos.length} !== ${orders.length
             }`,
         );
     }
@@ -154,5 +153,6 @@ export const mergeByPrice = (orders: UIOrder[]): OrderBookItem[] => {
                 price: order.price,
                 size: newSize,
             };
-        });
+        })
+        .sort((o1, o2) => o2.price.comparedTo(o1.price));
 };

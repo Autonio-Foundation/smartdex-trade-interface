@@ -19,7 +19,7 @@ export enum Network {
     Rinkeby = 4,
     Kovan = 42,
     Ganache = 50,
-    Matic = 80001
+    Matic = 137,
 }
 
 export interface Token {
@@ -64,6 +64,7 @@ export interface BlockchainState {
 
 export interface RelayerState {
     readonly orders: UIOrder[];
+    readonly overallHistory: any[];
     readonly userOrders: UIOrder[];
 }
 
@@ -208,6 +209,7 @@ export interface CurrencyPair {
 export interface Market {
     currencyPair: CurrencyPair;
     price: BigNumber | null;
+    prevPrice: number | null;
 }
 
 export enum NotificationKind {

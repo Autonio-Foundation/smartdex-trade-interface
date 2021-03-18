@@ -8,7 +8,7 @@ import { Token } from '../util/types';
 
 export class Relayer {
     private readonly _client: HttpClient;
-    private readonly _rateLimit: () => Promise<void>;
+    public readonly _rateLimit: () => Promise<void>;
 
     constructor(client: HttpClient, options: { rps: number }) {
         this._client = client;

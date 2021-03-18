@@ -6,6 +6,7 @@ import { RootAction } from '../reducers';
 
 const initialRelayerState: RelayerState = {
     orders: [],
+    overallHistory: [],
     userOrders: [],
 };
 
@@ -13,6 +14,8 @@ export function relayer(state: RelayerState = initialRelayerState, action: RootA
     switch (action.type) {
         case getType(actions.setOrders):
             return { ...state, orders: action.payload };
+        case getType(actions.setOverallHistory):
+            return { ...state, overallHistory: action.payload };
         case getType(actions.setUserOrders):
             return { ...state, userOrders: action.payload };
         case getType(actions.initializeRelayerData):

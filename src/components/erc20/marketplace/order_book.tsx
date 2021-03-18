@@ -16,11 +16,13 @@ import {
     getSpreadInPercentage,
     getUserOrders,
     getWeb3State,
+    getMarkets,
+    getCurrencyPair
 } from '../../../store/selectors';
 import { setOrderPriceSelected } from '../../../store/ui/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
 import { tokenAmountInUnits } from '../../../util/tokens';
-import { OrderBook, OrderBookItem, OrderSide, StoreState, Token, UIOrder, Web3State } from '../../../util/types';
+import { OrderBook, OrderBookItem, OrderSide, StoreState, Token, UIOrder, Web3State, Market, CurrencyPair } from '../../../util/types';
 import { Card } from '../../common/card';
 import { EmptyContent } from '../../common/empty_content';
 import { LoadingWrapper } from '../../common/loading';
@@ -44,6 +46,8 @@ interface StateProps {
     web3State?: Web3State;
     absoluteSpread: BigNumber;
     percentageSpread: BigNumber;
+    markets: Market[] | null;
+    currencyPair: CurrencyPair;
 }
 
 interface OwnProps {
@@ -56,7 +60,8 @@ const OrderbookCard = styled(Card)`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    max-height: 100%;
+    max-height: 592px;
+    height: 592px;
 
     > div:first-child {
         flex-grow: 0;
@@ -240,7 +245,7 @@ class OrderBookTable extends React.Component<Props> {
     }
 
     public render = () => {
-        const { orderBook, baseToken, quoteToken, web3State, theme, absoluteSpread, percentageSpread } = this.props;
+        const { orderBook, baseToken, quoteToken, web3State, theme, absoluteSpread, percentageSpread, currencyPair, markets } = this.props;
         const { sellOrders, buyOrders, mySizeOrders } = orderBook;
         const mySizeSellArray = mySizeOrders.filter((order: { side: OrderSide }) => {
             return order.side === OrderSide.Sell;
@@ -251,6 +256,29 @@ class OrderBookTable extends React.Component<Props> {
         const getColor = (order: OrderBookItem): string => {
             return order.side === OrderSide.Buy ? theme.componentsTheme.green : theme.componentsTheme.red;
         };
+
+        let marketPrice: number = 0;
+        let marketPrevPrice: number = 0;
+        let priceRatio: number = 0.0;
+
+        if (markets !== null && markets.length > 0) {
+            markets.forEach((market: any) => {
+                const isActive =
+                    market.currencyPair.base === currencyPair.base &&
+                    market.currencyPair.quote === currencyPair.quote;
+                if (isActive) {
+                    if (market.price) {
+                        marketPrice = parseFloat(market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH));
+                    }
+                    if (market.prevPrice) {
+                        marketPrevPrice = market.prevPrice;
+                    }
+                }
+            })
+        }
+        if (marketPrice > 0 && marketPrevPrice > 0) {
+            priceRatio = (marketPrice - marketPrevPrice) * 100 / marketPrevPrice;
+        }
 
         let content: React.ReactNode;
 
@@ -302,11 +330,12 @@ class OrderBookTable extends React.Component<Props> {
                                 ))}
                             </TopItems>
                             <GridRowSpreadContainer ref={this._spreadRowScrollable}>
-                                <CustomTDTitle as="div" styles={customTDTitleStyles}>
-                                    Spread
-                                </CustomTDTitle>
+                                <CustomTD as="div" styles={customTDTitleStyles}>
+                                    24H <span style={{ color: priceRatio === 0 ? '#fff' : (priceRatio > 0 ? '#0FEE90' : '#F91A4F') }}>{priceRatio.toFixed(2)}%</span>
+                                </CustomTD>
                                 <CustomTD as="div" styles={customTDStyles}>
-                                    {spreadAbsFixed}
+                                    {/* {spreadAbsFixed} */}
+                                    SPREAD
                                 </CustomTD>
                                 <CustomTDLast as="div" styles={customTDLastStyles}>
                                     {spreadPercentFixed}%
@@ -415,6 +444,8 @@ const mapStateToProps = (state: StoreState): StateProps => {
         web3State: getWeb3State(state),
         absoluteSpread: getSpread(state),
         percentageSpread: getSpreadInPercentage(state),
+        markets: getMarkets(state),
+        currencyPair: getCurrencyPair(state),
     };
 };
 

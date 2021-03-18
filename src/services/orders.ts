@@ -10,6 +10,8 @@ import { getContractWrappers } from './contract_wrappers';
 import { getRelayer } from './relayer';
 import { getWeb3Wrapper } from './web3_wrapper';
 
+import { RELAYER_URL } from '../common/constants';
+
 const logger = getLogger('Services::Orders');
 
 const getAllOrders = async (baseToken: Token, quoteToken: Token, makerAddresses: string[] | null) => {
@@ -29,6 +31,35 @@ const getAllOrders = async (baseToken: Token, quoteToken: Token, makerAddresses:
         return makerAddresses.includes(orderMakerAddress);
     });
     return filteredOrders;
+};
+
+const getAllOrderHistory = async (baseToken: Token, quoteToken: Token) => {
+    const relayer = getRelayer();
+
+    let recordsToReturn: SignedOrder[] = [];
+
+    let hasMorePages = true;
+    let page = 1;
+
+    while (hasMorePages) {
+        await relayer._rateLimit();
+        const params = {
+            base_token: baseToken.symbol,
+            quote_token: quoteToken.symbol,
+            page: page.toString()
+        };
+        const { total, records, perPage } = await (await fetch(RELAYER_URL + '/overallhistory?' + new URLSearchParams(params))).json();
+
+        const recordsMapped = records.map((apiOrder: any) => {
+            return apiOrder.order;
+        });
+        recordsToReturn = [...recordsToReturn, ...recordsMapped];
+
+        page += 1;
+        const lastPage = Math.ceil(total / perPage);
+        hasMorePages = page <= lastPage;
+    }
+    return recordsToReturn;
 };
 
 export const getAllOrdersAsUIOrders = async (baseToken: Token, quoteToken: Token, makerAddresses: string[] | null) => {
@@ -53,6 +84,14 @@ export const getAllOrdersAsUIOrdersWithoutOrdersInfo = async (
 ) => {
     const orders: SignedOrder[] = await getAllOrders(baseToken, quoteToken, makerAddresses);
     return ordersToUIOrders(orders, baseToken);
+};
+
+export const getOverallOrders = async (
+    baseToken: Token,
+    quoteToken: Token
+) => {
+    const orders: any[] = await getAllOrderHistory(baseToken, quoteToken);
+    return orders;
 };
 
 export const getUserOrders = (baseToken: Token, quoteToken: Token, ethAccount: string) => {

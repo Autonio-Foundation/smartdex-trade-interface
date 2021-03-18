@@ -1,14 +1,29 @@
-import { BigNumber } from '0x.js';
+import { BigNumber, OrderStatus } from '0x.js';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { initWallet, startBuySellLimitSteps, startBuySellMarketSteps } from '../../../store/actions';
 import { fetchTakerAndMakerFee } from '../../../store/relayer/actions';
-import { getCurrencyPair, getOrderPriceSelected, getWeb3State } from '../../../store/selectors';
+import {
+    getCurrencyPair,
+    getOrderPriceSelected,
+    getWeb3State,
+    getBaseToken,
+    getBaseTokenBalance,
+    getEthAccount,
+    getQuoteToken,
+    getQuoteTokenBalance,
+    getTotalEthBalance,
+    getUserOrders,
+    getMarkets,
+    getOpenSellOrders
+} from '../../../store/selectors';
 import { themeDimensions } from '../../../themes/commons';
-import { getKnownTokens } from '../../../util/known_tokens';
-import { tokenSymbolToDisplayString } from '../../../util/tokens';
+import { getKnownTokens, isWeth } from '../../../util/known_tokens';
+import { estimateBuyMarketOrders } from '../../../util/orders';
+import { tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
 import {
     ButtonIcons,
     ButtonVariant,
@@ -17,6 +32,10 @@ import {
     OrderType,
     StoreState,
     Web3State,
+    Token,
+    TokenBalance,
+    UIOrder,
+    Market
 } from '../../../util/types';
 import { BigNumberInput } from '../../common/big_number_input';
 import { Button } from '../../common/button';
@@ -30,6 +49,15 @@ interface StateProps {
     web3State: Web3State;
     currencyPair: CurrencyPair;
     orderPriceSelected: BigNumber | null;
+    baseToken: Token | null;
+    quoteToken: Token | null;
+    ethAccount: string;
+    baseTokenBalance: TokenBalance | null;
+    quoteTokenBalance: TokenBalance | null;
+    totalEthBalance: BigNumber;
+    orders: UIOrder[];
+    markets: Market[] | null;
+    openSellOrders: UIOrder[];
 }
 
 interface DispatchProps {
@@ -161,6 +189,33 @@ const TokenText = styled.span`
     text-align: right;
 `;
 
+const PercentContainer = styled.div`
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+`;
+
+const PercentBox = styled.button`
+    margin: 6px;
+    background-color: transparent;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    text-align: center;
+    color: #fff;
+    width: 25%;
+    padding: 2px;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #666;
+    }
+
+    &:active {
+        background-color: #fff;
+        color: #000;
+    }
+`;
+
 const BigInputNumberTokenLabel = (props: { tokenSymbol: string }) => (
     <TokenContainer>
         <TokenText>{tokenSymbolToDisplayString(props.tokenSymbol)}</TokenText>
@@ -262,6 +317,7 @@ class BuySell extends React.Component<Props, State> {
                                     <BigInputNumberStyled
                                         decimals={0}
                                         min={new BigNumber(0)}
+                                        valueFixedDecimals={7}
                                         onChange={this.updatePrice}
                                         value={price}
                                         placeholder={'0.00'}
@@ -270,6 +326,12 @@ class BuySell extends React.Component<Props, State> {
                                 </FieldContainer>
                             </>
                         )}
+                        <PercentContainer>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>25%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.5)}>50%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.75)}>75%</PercentBox>
+                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(1)}>100%</PercentBox>
+                        </PercentContainer>
                         <OrderDetailsContainer
                             orderType={orderType}
                             orderSide={tab}
@@ -285,8 +347,8 @@ class BuySell extends React.Component<Props, State> {
                                 error && error.btnMsg
                                     ? ButtonVariant.Error
                                     : tab === OrderSide.Buy
-                                    ? ButtonVariant.Buy
-                                    : ButtonVariant.Sell
+                                        ? ButtonVariant.Buy
+                                        : ButtonVariant.Sell
                             }
                         >
                             {btnText}
@@ -301,6 +363,70 @@ class BuySell extends React.Component<Props, State> {
     };
 
     public changeTab = (tab: OrderSide) => () => this.setState({ tab });
+
+    public updateMakerAmountbyPercent = (percent: number) => {
+        const {
+            baseToken,
+            quoteToken,
+            quoteTokenBalance,
+            baseTokenBalance,
+            totalEthBalance,
+            orders,
+            markets,
+            openSellOrders
+        } = this.props;
+        const { tab, orderType } = this.state;
+
+        if (baseToken && baseTokenBalance && quoteToken && quoteTokenBalance) {
+            let baseTokenBalanceAmount = isWeth(baseToken.symbol) ? totalEthBalance : baseTokenBalance.balance;
+            let quoteTokenBalanceAmount = quoteTokenBalance.balance;
+
+            orders && orders.map((cur: UIOrder) => {
+                if (cur.status === OrderStatus.Fillable) {
+                    if (cur.side === OrderSide.Sell) {
+                        baseTokenBalanceAmount = baseTokenBalanceAmount.minus(cur.size);
+                    }
+                    else {
+                        const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
+                        const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
+
+                        quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
+                    }
+                }
+            })
+
+            if (tab === OrderSide.Buy) {
+                let price = new BigNumber(0);
+
+                if (orderType === OrderType.Limit) {
+                    if (this.state.price) {
+                        price = this.state.price;
+                        if (!price.isZero()) {
+                            const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(price, quoteToken.decimals);
+                            this.setState({
+                                makerAmount: new BigNumber(unitsInTokenAmount(quoteTokenBalanceAmount.multipliedBy(new BigNumber(0.999 * percent)).toFixed(0), baseToken.decimals).dividedBy(priceInQuoteBaseUnits).toFixed(0))
+                            })
+                        }
+                    }
+                }
+                else {
+                    const makerAmount: BigNumber = estimateBuyMarketOrders({
+                        quoteAmount: quoteTokenBalanceAmount.multipliedBy(new BigNumber(percent)),
+                        orders: openSellOrders
+                    });
+                    this.setState({
+                        makerAmount: new BigNumber(makerAmount.multipliedBy(new BigNumber(0.999)).toFixed(0))
+                    })
+                }
+
+            }
+            else {
+                this.setState({
+                    makerAmount: new BigNumber(baseTokenBalanceAmount.multipliedBy(new BigNumber(0.9999 * percent)).toFixed(baseToken.displayDecimals))
+                })
+            }
+        }
+    }
 
     public updateMakerAmount = (newValue: BigNumber) => {
         this.setState({
@@ -381,6 +507,15 @@ const mapStateToProps = (state: StoreState): StateProps => {
         web3State: getWeb3State(state),
         currencyPair: getCurrencyPair(state),
         orderPriceSelected: getOrderPriceSelected(state),
+        baseToken: getBaseToken(state),
+        quoteToken: getQuoteToken(state),
+        ethAccount: getEthAccount(state),
+        quoteTokenBalance: getQuoteTokenBalance(state),
+        baseTokenBalance: getBaseTokenBalance(state),
+        totalEthBalance: getTotalEthBalance(state),
+        orders: getUserOrders(state),
+        markets: getMarkets(state),
+        openSellOrders: getOpenSellOrders(state)
     };
 };
 

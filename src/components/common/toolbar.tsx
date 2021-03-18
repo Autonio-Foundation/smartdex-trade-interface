@@ -6,6 +6,7 @@ import { getWeb3State } from '../../store/selectors';
 import { themeBreakPoints, themeDimensions } from '../../themes/commons';
 import { errorsWallet } from '../../util/error_messages';
 import { StoreState, Web3State } from '../../util/types';
+import { MaticBridgeContainer } from './matic_bridge';
 
 import { ErrorCard, ErrorIcons, FontSize } from './error_card';
 
@@ -100,7 +101,10 @@ const Toolbar = (props: Props) => {
                 return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLoading} icon={ErrorIcons.Metamask} />;
             case Web3State.Error:
                 return (
-                    <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
+                    <>
+                        <MaticBridgeContainer />
+                        <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
+                    </>
                 );
             case Web3State.Done:
                 return (

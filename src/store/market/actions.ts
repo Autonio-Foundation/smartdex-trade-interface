@@ -3,14 +3,14 @@ import { push } from 'connected-react-router';
 import queryString from 'query-string';
 import { createAction } from 'typesafe-actions';
 
-import { ERC20_APP_BASE_PATH } from '../../common/constants';
+import { ERC20_APP_BASE_PATH, RELAYER_URL } from '../../common/constants';
 import { availableMarkets } from '../../common/markets';
 import { getMarketPriceEther } from '../../services/markets';
 import { getRelayer } from '../../services/relayer';
 import { getKnownTokens } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
 import { CurrencyPair, Market, StoreState, ThunkCreator, Token } from '../../util/types';
-import { getOrderbookAndUserOrders } from '../actions';
+import { getOrderbookAndUserOrders, setUserOrders, setOverallHistory, setOrders } from '../actions';
 
 const logger = getLogger('Market::Actions');
 
@@ -51,6 +51,10 @@ export const changeMarket: ThunkCreator = (currencyPair: CurrencyPair) => {
         );
         dispatch(setCurrencyPair(currencyPair));
         // tslint:disable-next-line:no-floating-promises
+        dispatch(setUserOrders([]));
+        dispatch(setOrders([]));
+        dispatch(setOverallHistory([]));
+
         dispatch(getOrderbookAndUserOrders());
 
         const state = getState() as StoreState;
@@ -82,10 +86,17 @@ export const fetchMarkets: ThunkCreator = () => {
                     const quoteToken = knownTokens.getTokenBySymbol(availableMarket.quote);
 
                     const price = await relayer.getCurrencyPairPriceAsync(baseToken, quoteToken);
+                    const params = {
+                        base_token: baseToken.symbol,
+                        quote_token: quoteToken.symbol,
+                    };
+
+                    var response = await (await fetch(RELAYER_URL + '/prev-market?' + new URLSearchParams(params))).json();
 
                     return {
                         currencyPair: availableMarket,
                         price,
+                        prevPrice: response.prevPrice
                     };
                 } catch (err) {
                     logger.error(

@@ -25,6 +25,7 @@ export const getConvertBalanceState = (state: StoreState) => state.blockchain.co
 export const getWethBalance = (state: StoreState) =>
     state.blockchain.wethTokenBalance ? state.blockchain.wethTokenBalance.balance : new BigNumber(0);
 export const getOrders = (state: StoreState) => state.relayer.orders;
+export const getOverallHistory = (state: StoreState) => state.relayer.overallHistory;
 export const getUserOrders = (state: StoreState) => state.relayer.userOrders;
 export const getOrderPriceSelected = (state: StoreState) => state.ui.orderPriceSelected;
 export const getNotifications = (state: StoreState) => state.ui.notifications;

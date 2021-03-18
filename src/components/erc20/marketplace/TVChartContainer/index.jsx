@@ -1,7 +1,9 @@
 import * as React from "react";
 // import "./index.css";
+import { connect } from 'react-redux';
 import Datafeed from "./api/";
 import * as $ from "jquery";
+import { getBaseToken, getQuoteToken } from '../../../../store/selectors';
 
 function getLanguageFromURL() {
   const regex = new RegExp("[\\?&]lang=([^&#]*)");
@@ -11,12 +13,12 @@ function getLanguageFromURL() {
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-export class TVChartContainer extends React.Component {
+class TVChartContainerComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       symbol: "",
-      interval: "15",
+      interval: "240",
       containerId: "tv_chart_container",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
@@ -26,7 +28,7 @@ export class TVChartContainer extends React.Component {
       fullscreen: false,
       autosize: true,
       studiesOverrides: {},
-      backColor: "#011625",
+      backColor: "#030C18",
       borderColor: "#0a2133"
     };
     this.widget = undefined;
@@ -64,13 +66,15 @@ export class TVChartContainer extends React.Component {
 
   componentDidMount() {
     // this.componentWillReceiveProps(this.props);
+    // var width = document.getElementById(this.state.containerId).offsetWidth;
     let inter = setInterval(() => {
       if (this.state.symbol !== "") {
         clearInterval(inter);
         const widgetOptions = {
           autosize: true,
           fullscreen: false,
-          height: "100%",
+          // height: 530,
+          // width: width,
           symbol: this.state.symbol,
           interval: this.state.interval,
           container_id: "tv_chart_container",
@@ -112,29 +116,28 @@ export class TVChartContainer extends React.Component {
             "header_saveload",
             //"header_screenshot",
             //"header_fullscreen_button",
-            "timeframes_toolbar",
+            // "timeframes_toolbar",
             "use_localstorage_for_settings",
-            "display_market_status"
+            // "display_market_status"
           ],
           enabled_features: [
             //"move_logo_to_main_pane",
             //"study_templates",
-            "side_toolbar_in_fullscreen_mode",
-            "hide_left_toolbar_by_default"
+            "side_toolbar_in_fullscreen_mode"
           ],
 
           overrides: {
             "symbolWatermarkProperties.color": "rgba(0,0,0, 0)",
             "paneProperties.background": this.state.backColor,
             "paneProperties.vertGridProperties.color": this.state.backColor,
-            "paneProperties.horzGridProperties.color": this.state.backColor,
+            "paneProperties.horzGridProperties.color": '#1a3143',
             "paneProperties.crossHairProperties.color": "#DDDDDD",
             "paneProperties.crossHairProperties.style": 2,
-            "mainSeriesProperties.style": 9,
+            "mainSeriesProperties.style": 1,
             "mainSeriesProperties.showCountdown": false,
             "scalesProperties.showSeriesLastValue": true,
             "mainSeriesProperties.visible": false,
-            "mainSeriesProperties.showPriceLine": false,
+            "mainSeriesProperties.showPriceLine": true,
             "mainSeriesProperties.priceLineWidth": 1,
             "mainSeriesProperties.lockScale": false,
             "mainSeriesProperties.minTick": "default",
@@ -238,14 +241,16 @@ export class TVChartContainer extends React.Component {
         this.widget.onChartReady(() => {
           // console.log("Chart has loaded!");
           $(".chartBox").removeClass("loading");
+          // console.log(this.widget);
+          // console.log(this.widget.chart());
         });
       }
     }, 100);
   }
 
   async componentWillReceiveProps(nextProps) {
-    let base = 'derc20';
-    let asset = 'weth';
+    let base = nextProps.baseToken.symbol.toUpperCase();
+    let asset = nextProps.quoteToken.symbol.toUpperCase();
     // let base = nextProps.props.props.params.base.toUpperCase();
     // let asset = nextProps.props.props.params.asset.toUpperCase();
     this.setState(
@@ -257,11 +262,11 @@ export class TVChartContainer extends React.Component {
           if (this.widget !== undefined) {
             clearInterval(inter);
             this.widget.onChartReady(() => {
-              this.widget.chart().setSymbol(this.state.symbol, () => {});
+              this.widget.chart().setSymbol(this.state.symbol, () => { });
               $(".chartBox").removeClass("loading");
             });
           }
-        }, 500);
+        }, 1000);
       }
     );
   }
@@ -271,8 +276,17 @@ export class TVChartContainer extends React.Component {
       <div
         id={this.state.containerId}
         className={"TVChartContainer"}
-        style={{ height: "200%", overflow: "hidden", borderRadius: "5px" }}
+        style={{ minHeight: '530px', height: '530px', overflow: "hidden", borderRadius: "5px" }}
       />
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    baseToken: getBaseToken(state),
+    quoteToken: getQuoteToken(state),
+  };
+};
+
+export const TVChartContainer = connect(mapStateToProps)(TVChartContainerComponent);

@@ -15,15 +15,15 @@ const LogoLink = styled.a<any>`
     cursor: pointer;
     display: flex;
     height: 33px;
-    font-family: 'Inter var', sans-serif;
+    font-family: 'Work Sans', sans-serif;
     text-decoration: none;
 `;
 
 const LogoText = styled.h1<{ textColor?: string }>`
-    color: ${props => props.textColor};
+    color: #acca26;
     display: none;
-    font-size: 18px;
-    font-weight: 500;
+    // font-size: 26px;
+    font-weight: 600;
     margin-left: 10px;
     text-decoration: none;
 

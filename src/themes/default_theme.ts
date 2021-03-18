@@ -16,6 +16,7 @@ const modalThemeStyle: ThemeModalStyle = {
         position: 'relative',
         right: 'auto',
         top: 'auto',
+        borderRadius: '30px'
     },
     overlay: {
         alignItems: 'center',

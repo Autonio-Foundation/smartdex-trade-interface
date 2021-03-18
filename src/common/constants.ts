@@ -8,6 +8,10 @@ export const DEFAULT_BASE_PATH = process.env.REACT_APP_DEFAULT_BASE_PATH || ERC2
 
 export const RELAYER_URL = process.env.REACT_APP_RELAYER_URL || 'http://localhost:3001/api/v2';
 
+// export const MATIC_PROVIDER = 'https://rpc-mainnet.maticvigil.com/v1/f46f4c047e8ca0e4b09795bf04115ada0fa5c889';
+export const MATIC_PROVIDER = 'https://rpc-mainnet.matic.network';
+export const INFURA_PROVIDER = 'https://mainnet.infura.io/v3/21cae5088ccc40b199bc7352155d7c92';
+
 export const TX_DEFAULTS = {
     gasLimit: 1000000,
     shouldValidate: true,

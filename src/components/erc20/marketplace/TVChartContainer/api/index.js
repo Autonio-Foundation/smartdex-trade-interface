@@ -1,4 +1,10 @@
 import historyProvider from "./historyProvider";
+import {
+	subscribeOnStream,
+	unsubscribeFromStream,
+} from './streaming.js';
+
+const lastBarsCache = new Map();
 
 const supportedResolutions = [
   "1",
@@ -41,16 +47,16 @@ export default {
       session: "24x7",
       timezone: "Etc/UTC",
       ticker: symbolName,
-      exchange: "Autonio Smartdex",
-      pricescale: 100000000,
+      exchange: "Smartdex",
+      pricescale: 100000,
       has_intraday: true,
       supported_resolution: supportedResolutions,
       volume_precision: 8
     };
 
-    if (split_data[1].match(/USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
-      symbol_stub.pricescale = 100;
-    }
+    // if (split_data[1].match(/USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
+    //   symbol_stub.pricescale = 100;
+    // }
     setTimeout(function() {
       onSymbolResolvedCallback(symbol_stub);
       // console.log("Resolving that symbol....", symbol_stub);
@@ -74,6 +80,7 @@ export default {
       .getBars(symbolInfo, resolution, from, to, firstDataRequest)
       .then(bars => {
         if (bars.length) {
+          lastBarsCache.set(symbolInfo.full_name, bars[bars.length - 1]);
           onHistoryCallback(bars, { noData: false });
         } else {
           onHistoryCallback(bars, { noData: true });
@@ -92,9 +99,20 @@ export default {
     onResetCacheNeededCallback
   ) => {
     // console.log("=====subscribeBars runnning");
+    console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
+		subscribeOnStream(
+			symbolInfo,
+			resolution,
+			onRealtimeCallback,
+			subscribeUID,
+			onResetCacheNeededCallback,
+			lastBarsCache.get(symbolInfo.full_name),
+		);
   },
   unsubscribeBars: subscriberUID => {
     // console.log("=====unsubscribeBars running");
+    console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
+		unsubscribeFromStream(subscriberUID);
   },
   calculateHistoryDepth: (resolution, resolutionBack, intervalBack) => {
     //optional

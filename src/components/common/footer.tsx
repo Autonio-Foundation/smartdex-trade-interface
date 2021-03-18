@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { GIT_COMMIT } from '../../common/constants';
 import { themeDimensions } from '../../themes/commons';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {}
+interface Props extends HTMLAttributes<HTMLDivElement> { }
 
 const FooterWrapper = styled.div`
     align-items: center;
@@ -84,9 +84,7 @@ const poweredBySVG = () => {
 export const Footer: React.FC<Props> = props => {
     return (
         <FooterWrapper title={GIT_COMMIT} {...props}>
-            <a href="https://autonio.foundation" target="_blank" rel="noopener noreferrer">
-              
-            </a>
+            <a href="https://autonio.foundation" target="_blank" rel="noopener noreferrer" />
         </FooterWrapper>
     );
 };

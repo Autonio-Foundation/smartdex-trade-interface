@@ -10,11 +10,13 @@ import {
     getAllOrdersAsUIOrders,
     getAllOrdersAsUIOrdersWithoutOrdersInfo,
     getUserOrdersAsUIOrders,
+    getOverallOrders
 } from '../../services/orders';
+import { RELAYER_URL } from '../../common/constants';
 import { getRelayer } from '../../services/relayer';
 import { isWeth } from '../../util/known_tokens';
 import { getLogger } from '../../util/logger';
-import { buildLimitOrder, buildMarketOrders, sumTakerAssetFillableOrders } from '../../util/orders';
+import { buildLimitOrder, buildMarketOrders, sumTakerAssetFillableOrders, createOHLVCDataset } from '../../util/orders';
 import { getTransactionOptions } from '../../util/transactions';
 import { NotificationKind, OrderSide, RelayerState, ThunkCreator, Token, UIOrder, Web3State } from '../../util/types';
 import { updateTokenBalances } from '../blockchain/actions';
@@ -42,6 +44,10 @@ export const setOrders = createAction('relayer/ORDERS_set', resolve => {
     return (orders: UIOrder[]) => resolve(orders);
 });
 
+export const setOverallHistory = createAction('relayer/OVERALLORDERHISTORY_set', resolve => {
+    return (orders: any[]) => resolve(orders);
+});
+
 export const setUserOrders = createAction('relayer/USER_ORDERS_set', resolve => {
     return (orders: UIOrder[]) => resolve(orders);
 });
@@ -62,7 +68,9 @@ export const getAllOrders: ThunkCreator = () => {
             } else {
                 uiOrders = await getAllOrdersAsUIOrders(baseToken, quoteToken, makerAddresses);
             }
+            let overall = await getOverallOrders(baseToken, quoteToken);
             dispatch(setOrders(uiOrders));
+            dispatch(setOverallHistory(overall));
         } catch (err) {
             logger.error(`getAllOrders: fetch orders from the relayer failed.`, err);
         }
@@ -94,7 +102,10 @@ export const cancelOrder: ThunkCreator = (order: UIOrder) => {
     return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
+        const quoteToken = getQuoteToken(state) as Token;
         const gasPrice = getGasPriceInWei(state);
+
+        // console.log(baseToken, quoteToken, order);
 
         const tx = cancelSignedOrder(order.rawOrder, gasPrice);
 
@@ -137,6 +148,8 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
     return async (dispatch, getState) => {
         const state = getState();
         const baseToken = getBaseToken(state) as Token;
+        const quoteToken = getQuoteToken(state) as Token;
+
         try {
             const submitResult = await getRelayer().submitOrderAsync(signedOrder);
 
@@ -162,6 +175,29 @@ export const submitLimitOrder: ThunkCreator = (signedOrder: SignedOrder, amount:
     };
 };
 
+
+export const getOrderHistory: ThunkCreator<Promise<Array<any>>> = () => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const baseToken = getBaseToken(state) as Token;
+        const quoteToken = getQuoteToken(state) as Token;
+        const ethAccount = getEthAccount(state);
+        const params = {
+            base_token: baseToken.symbol,
+            quote_token: quoteToken.symbol,
+            address: ethAccount
+        };
+
+        let res: any[];
+
+        var response = await (await fetch(RELAYER_URL + '/orderhistory?' + new URLSearchParams(params))).json();
+
+        res = response;
+
+        return res;
+    }
+}
+
 export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInReturn: BigNumber }>> = (
     amount: BigNumber,
     side: OrderSide,
@@ -172,14 +208,17 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
         const gasPrice = getGasPriceInWei(state);
 
         const isBuy = side === OrderSide.Buy;
-        const allOrders = isBuy ? getOpenSellOrders(state) : getOpenBuyOrders(state);
-        const { orders, amounts, canBeFilled } = buildMarketOrders(
+        const openSellOrders = getOpenSellOrders(state);
+        const openBuyOrders = getOpenBuyOrders(state);
+        const { orders, amounts, canBeFilled, averagePrice } = buildMarketOrders(
             {
                 amount,
-                orders: allOrders,
+                orders: isBuy ? openSellOrders : openBuyOrders,
             },
             side,
         );
+        // console.log(orders, amounts, canBeFilled);
+        console.log(averagePrice);
 
         if (canBeFilled) {
             const baseToken = getBaseToken(state) as Token;
@@ -192,37 +231,36 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
                 return total.plus(currentValue);
             }, new BigNumber(0));
             const isEthBalanceEnough = ethBalance.isGreaterThan(ethAmountRequired);
-            const isMarketBuyForwarder = isBuy && isWeth(quoteToken.symbol) && isEthBalanceEnough;
+            const isMarketSellForwarder = !isBuy && isWeth(baseToken.symbol) && isEthBalanceEnough;
 
             let txHash;
-            if (isMarketBuyForwarder) {
-                txHash = await contractWrappers.forwarder.marketBuyOrdersWithEthAsync(
+            // if (isMarketSellForwarder) {
+            //     txHash = await contractWrappers.forwarder.marketSellOrdersWithEthAsync(
+            //         orders,
+            //         ethAccount,
+            //         amount,
+            //         [],
+            //         0,
+            //         FEE_RECIPIENT,
+            //         getTransactionOptions(gasPrice),
+            //     );
+            // } else {
+            if (isBuy) {
+                txHash = await contractWrappers.exchange.marketBuyOrdersAsync(
                     orders,
                     amount,
                     ethAccount,
-                    ethAmountRequired,
-                    [],
-                    AFFILIATE_FEE_PERCENTAGE,
-                    FEE_RECIPIENT,
                     getTransactionOptions(gasPrice),
                 );
             } else {
-                if (isBuy) {
-                    txHash = await contractWrappers.exchange.marketBuyOrdersAsync(
-                        orders,
-                        amount,
-                        ethAccount,
-                        getTransactionOptions(gasPrice),
-                    );
-                } else {
-                    txHash = await contractWrappers.exchange.marketSellOrdersAsync(
-                        orders,
-                        amount,
-                        ethAccount,
-                        getTransactionOptions(gasPrice),
-                    );
-                }
+                txHash = await contractWrappers.exchange.marketSellOrdersAsync(
+                    orders,
+                    amount,
+                    ethAccount,
+                    getTransactionOptions(gasPrice),
+                );
             }
+            // }
 
             const web3Wrapper = await getWeb3Wrapper();
             const tx = web3Wrapper.awaitTransactionSuccessAsync(txHash);
@@ -231,6 +269,20 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             dispatch(getOrderbookAndUserOrders());
             // tslint:disable-next-line:no-floating-promises
             dispatch(updateTokenBalances());
+
+            createOHLVCDataset(
+                {
+                    buyOrders: openBuyOrders,
+                    sellOrders: openSellOrders,
+                    amount,
+                    averagePrice,
+                    baseToken,
+                    quoteToken
+                },
+                side,
+                baseToken.decimals,
+            );
+
             dispatch(
                 addNotifications([
                     {

@@ -30,7 +30,8 @@ const Button = styled.button`
     margin-left: auto;
     outline: 0;
     padding: 0;
-    width: 25px;
+    width: 50px;
+    color: #999;
 
     &:hover {
         cursor: pointer;
@@ -50,7 +51,7 @@ class CancelOrderButton extends React.Component<Props, State> {
         const { isLoading } = this.state;
         return (
             <Button title="Cancel order" type="button" disabled={isLoading} onClick={this._cancelOrder}>
-                <CloseIcon />
+                Cancel
             </Button>
         );
     };

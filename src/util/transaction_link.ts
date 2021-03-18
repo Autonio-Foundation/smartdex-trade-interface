@@ -6,6 +6,7 @@ const ETHERSCAN_TRANSACTION_URL: { [key: number]: string } = {
     [Network.Rinkeby]: 'https://rinkeby.etherscan.io/tx/',
     [Network.Kovan]: 'https://kovan.etherscan.io/tx/',
     [Network.Ganache]: 'https://etherscan.io/tx/',
+    [Network.Matic]: 'https://explorer-mainnet.maticvigil.com/tx/',
 };
 
 export const getTransactionLink = (hash: string): string => {

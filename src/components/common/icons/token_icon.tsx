@@ -17,9 +17,9 @@ const IconContainer = styled.div<{ color: string; isInline?: boolean }>`
     background-color: ${props => (props.color ? props.color : 'transparent')};
     border-radius: 50%;
     display: ${props => (props.isInline ? 'inline-flex' : 'flex')};
-    height: 26px;
+    height: 30px;
     justify-content: center;
-    width: 26px;
+    width: 30px;
 `;
 
 const Label = styled.label`
@@ -35,7 +35,9 @@ const TokenIconContainer = (props: Props) => {
     const fallBack = <Label>{symbol && symbol.toUpperCase()}</Label>;
     const Icon =
         // tslint:disable-next-line:jsx-no-lambda
-        icon ? <ReactSVG src={icon as string} fallback={() => fallBack} /> : fallBack;
+        icon ? <ReactSVG beforeInjection={(svg: any) => {
+            svg.setAttribute('style', 'width: 28px; height: 28px; margin-top: -2px;');
+        }} src={icon as string} fallback={() => fallBack} /> : fallBack;
     return (
         <IconContainer color={primaryColor || theme.componentsTheme.gray} {...restProps}>
             {Icon}
