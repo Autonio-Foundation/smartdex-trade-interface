@@ -10,7 +10,7 @@ import { WalletConnectionStatusContainer } from '../../account/wallet_connection
 import { CardBase } from '../../common/card_base';
 import { DropdownTextItem } from '../../common/dropdown_text_item';
 
-interface OwnProps extends HTMLAttributes<HTMLSpanElement> {}
+interface OwnProps extends HTMLAttributes<HTMLSpanElement> { }
 
 interface StateProps {
     ethAccount: string;

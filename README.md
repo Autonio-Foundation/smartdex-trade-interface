@@ -9,8 +9,9 @@ This is a frontend of Autonio Smartdex built in React.js, deployed on matic netw
 Clone this repository and install its dependencies:
 
 ```
-git clone https://gitlab.com/autonio/smartdex-front-end
-
+git clone git@github.com:0xProject/0x-launch-kit-frontend.git
+cd 0x-launch-kit-frontend
+yarn
 ```
 
 ### Using an existing relayer

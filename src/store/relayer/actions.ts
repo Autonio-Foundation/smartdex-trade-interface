@@ -245,21 +245,21 @@ export const submitMarketOrder: ThunkCreator<Promise<{ txHash: string; amountInR
             //         getTransactionOptions(gasPrice),
             //     );
             // } else {
-                if (isBuy) {
-                    txHash = await contractWrappers.exchange.marketBuyOrdersAsync(
-                        orders,
-                        amount,
-                        ethAccount,
-                        getTransactionOptions(gasPrice),
-                    );
-                } else {
-                    txHash = await contractWrappers.exchange.marketSellOrdersAsync(
-                        orders,
-                        amount,
-                        ethAccount,
-                        getTransactionOptions(gasPrice),
-                    );
-                }
+            if (isBuy) {
+                txHash = await contractWrappers.exchange.marketBuyOrdersAsync(
+                    orders,
+                    amount,
+                    ethAccount,
+                    getTransactionOptions(gasPrice),
+                );
+            } else {
+                txHash = await contractWrappers.exchange.marketSellOrdersAsync(
+                    orders,
+                    amount,
+                    ethAccount,
+                    getTransactionOptions(gasPrice),
+                );
+            }
             // }
 
             const web3Wrapper = await getWeb3Wrapper();

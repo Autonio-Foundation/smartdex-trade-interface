@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { initWallet, startBuySellLimitSteps, startBuySellMarketSteps } from '../../../store/actions';
 import { fetchTakerAndMakerFee } from '../../../store/relayer/actions';
-import { 
+import {
     getCurrencyPair,
     getOrderPriceSelected,
     getWeb3State,
@@ -347,8 +347,8 @@ class BuySell extends React.Component<Props, State> {
                                 error && error.btnMsg
                                     ? ButtonVariant.Error
                                     : tab === OrderSide.Buy
-                                    ? ButtonVariant.Buy
-                                    : ButtonVariant.Sell
+                                        ? ButtonVariant.Buy
+                                        : ButtonVariant.Sell
                             }
                         >
                             {btnText}
@@ -389,7 +389,7 @@ class BuySell extends React.Component<Props, State> {
                     else {
                         const priceInQuoteBaseUnits = Web3Wrapper.toBaseUnitAmount(cur.price, quoteToken.decimals);
                         const baseTokenAmountInUnits = Web3Wrapper.toUnitAmount(cur.size, baseToken.decimals);
-            
+
                         quoteTokenBalanceAmount = quoteTokenBalanceAmount.minus(baseTokenAmountInUnits.multipliedBy(priceInQuoteBaseUnits));
                     }
                 }

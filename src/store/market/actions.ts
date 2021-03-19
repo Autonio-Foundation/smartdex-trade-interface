@@ -90,7 +90,7 @@ export const fetchMarkets: ThunkCreator = () => {
                         base_token: baseToken.symbol,
                         quote_token: quoteToken.symbol,
                     };
-            
+
                     var response = await (await fetch(RELAYER_URL + '/prev-market?' + new URLSearchParams(params))).json();
 
                     return {

@@ -32,9 +32,9 @@ export const createBuySellLimitSteps = (
     unlockBaseOrQuoteTokenStep =
         side === OrderSide.Buy
             ? // If it's a buy -> the quote token has to be unlocked
-              getUnlockTokenStepIfNeeded(quoteToken, tokenBalances, wethTokenBalance)
+            getUnlockTokenStepIfNeeded(quoteToken, tokenBalances, wethTokenBalance)
             : // If it's a sell -> the base token has to be unlocked
-              getUnlockTokenStepIfNeeded(baseToken, tokenBalances, wethTokenBalance);
+            getUnlockTokenStepIfNeeded(baseToken, tokenBalances, wethTokenBalance);
 
     if (unlockBaseOrQuoteTokenStep) {
         buySellLimitFlow.push(unlockBaseOrQuoteTokenStep);

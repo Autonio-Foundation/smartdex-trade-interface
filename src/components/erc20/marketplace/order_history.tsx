@@ -32,7 +32,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-const SideTD = styled(CustomTD)<{ side: OrderSide }>`
+const SideTD = styled(CustomTD) <{ side: OrderSide }>`
     color: ${props =>
         props.side === OrderSide.Buy ? props.theme.componentsTheme.green : props.theme.componentsTheme.red};
 `;
@@ -89,7 +89,7 @@ const orderToRow = (order: UIOrder, index: number, baseToken: Token) => {
     let status = '--';
     let isOrderFillable = false;
     let datetime = new Date(parseInt(order.rawOrder.salt.toString()));
-    let dateStr = `${pad_with_zeroes(datetime.getMonth()+1, 2)}-${pad_with_zeroes(datetime.getDate(), 2)} ${pad_with_zeroes(datetime.getHours(), 2)}:${pad_with_zeroes(datetime.getMinutes(), 2)}:${pad_with_zeroes(datetime.getSeconds(), 2)}`
+    let dateStr = `${pad_with_zeroes(datetime.getMonth() + 1, 2)}-${pad_with_zeroes(datetime.getDate(), 2)} ${pad_with_zeroes(datetime.getHours(), 2)}:${pad_with_zeroes(datetime.getMinutes(), 2)}:${pad_with_zeroes(datetime.getSeconds(), 2)}`
 
     const filled = order.filled
         ? tokenAmountInUnits(order.filled, baseToken.decimals, baseToken.displayDecimals)
@@ -121,7 +121,7 @@ const orderHistoryToRow = (order: UIOrder, index: number, baseToken: Token) => {
     const size = tokenAmountInUnits(order.size, baseToken.decimals, baseToken.displayDecimals);
 
     let datetime = new Date(parseInt(order.rawOrder.salt.toString()));
-    let dateStr = `${pad_with_zeroes(datetime.getMonth()+1, 2)}-${pad_with_zeroes(datetime.getDate(), 2)} ${pad_with_zeroes(datetime.getHours(), 2)}:${pad_with_zeroes(datetime.getMinutes(), 2)}:${pad_with_zeroes(datetime.getSeconds(), 2)}`
+    let dateStr = `${pad_with_zeroes(datetime.getMonth() + 1, 2)}-${pad_with_zeroes(datetime.getDate(), 2)} ${pad_with_zeroes(datetime.getHours(), 2)}:${pad_with_zeroes(datetime.getMinutes(), 2)}:${pad_with_zeroes(datetime.getSeconds(), 2)}`
 
     const price = parseFloat(order.price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
 
@@ -166,12 +166,12 @@ class OrderHistory extends React.Component<Props, State> {
             myhistory && myhistory.map((cur: any, idx: number) => {
                 cur.status = ht[idx].status;
             })
-            this.setState({myhistory});
+            this.setState({ myhistory });
         }
     }
 
     public onSelectTab = (tabIdx: number) => {
-        this.setState({selectedTabs: tabIdx});
+        this.setState({ selectedTabs: tabIdx });
     }
 
     public render = () => {
@@ -234,11 +234,11 @@ class OrderHistory extends React.Component<Props, State> {
         }
 
         return (
-            <CardWrapper style={{maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)'}}>
+            <CardWrapper style={{ maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)' }}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{color: selectedTabs === 0 ? '#0FEE90' : '#999', cursor: 'pointer'}} onClick={() => this.onSelectTab(0)}>Open Orders</span>
-                        <span style={{marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#999', cursor: 'pointer'}} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
+                        <span style={{ color: selectedTabs === 0 ? '#0FEE90' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(0)}>Open Orders</span>
+                        <span style={{ marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>

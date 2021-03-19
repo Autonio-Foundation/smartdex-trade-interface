@@ -264,8 +264,8 @@ class OrderBookTable extends React.Component<Props> {
         if (markets !== null && markets.length > 0) {
             markets.forEach((market: any) => {
                 const isActive =
-                market.currencyPair.base === currencyPair.base &&
-                market.currencyPair.quote === currencyPair.quote;
+                    market.currencyPair.base === currencyPair.base &&
+                    market.currencyPair.quote === currencyPair.quote;
                 if (isActive) {
                     if (market.price) {
                         marketPrice = parseFloat(market.price.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH));
@@ -274,7 +274,7 @@ class OrderBookTable extends React.Component<Props> {
                         marketPrevPrice = market.prevPrice;
                     }
                 }
-            })    
+            })
         }
         if (marketPrice > 0 && marketPrevPrice > 0) {
             priceRatio = (marketPrice - marketPrevPrice) * 100 / marketPrevPrice;
@@ -331,7 +331,7 @@ class OrderBookTable extends React.Component<Props> {
                             </TopItems>
                             <GridRowSpreadContainer ref={this._spreadRowScrollable}>
                                 <CustomTD as="div" styles={customTDTitleStyles}>
-                                    24H <span style={{color: priceRatio === 0 ? '#fff' : (priceRatio > 0 ? '#0FEE90': '#F91A4F')}}>{priceRatio.toFixed(2)}%</span>
+                                    24H <span style={{ color: priceRatio === 0 ? '#fff' : (priceRatio > 0 ? '#0FEE90' : '#F91A4F') }}>{priceRatio.toFixed(2)}%</span>
                                 </CustomTD>
                                 <CustomTD as="div" styles={customTDStyles}>
                                     {/* {spreadAbsFixed} */}

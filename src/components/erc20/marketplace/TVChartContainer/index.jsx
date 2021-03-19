@@ -262,7 +262,7 @@ class TVChartContainerComponent extends React.Component {
           if (this.widget !== undefined) {
             clearInterval(inter);
             this.widget.onChartReady(() => {
-              this.widget.chart().setSymbol(this.state.symbol, () => {});
+              this.widget.chart().setSymbol(this.state.symbol, () => { });
               $(".chartBox").removeClass("loading");
             });
           }
@@ -284,8 +284,8 @@ class TVChartContainerComponent extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-      baseToken: getBaseToken(state),
-      quoteToken: getQuoteToken(state),
+    baseToken: getBaseToken(state),
+    quoteToken: getQuoteToken(state),
   };
 };
 
