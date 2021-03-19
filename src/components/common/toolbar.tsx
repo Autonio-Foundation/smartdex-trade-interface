@@ -9,6 +9,7 @@ import { StoreState, Web3State } from '../../util/types';
 import { MaticBridgeContainer } from './matic_bridge';
 
 import { ErrorCard, ErrorIcons, FontSize } from './error_card';
+import { NetworkSwitchButton } from './network_switch_btn';
 
 interface OwnProps {
     centerContent?: React.ReactNode;
@@ -103,7 +104,7 @@ const Toolbar = (props: Props) => {
                 return (
                     <>
                         <MaticBridgeContainer />
-                        <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmWrongNetwork} icon={ErrorIcons.Warning} />
+                        <NetworkSwitchButton fontSize={FontSize.Large} />
                     </>
                 );
             case Web3State.Done:
