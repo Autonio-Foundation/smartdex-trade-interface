@@ -28,11 +28,11 @@ const Web3WrappedApp = (
         <ConnectedRouter history={history}>
             <AppContainer>
                 <Switch>
-                    <Route
+                    {/* <Route
                         exact
                         path="/"
                         component={MaintenancePage}
-                    />
+                    /> */}
                     <Route path={ERC20_APP_BASE_PATH} component={Erc20App} />
                     <Route path={ERC721_APP_BASE_PATH} component={Erc721App} />
                     <Route component={RedirectToHome} />
