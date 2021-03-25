@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import { NavLink } from 'react-router-dom';
 import styled, { withTheme } from 'styled-components';
 
-import { ReactComponent as LogoSvg } from '../../../assets/icons/erc20_logo.svg';
-import { Config } from '../../../common/config';
-import { UI_GENERAL_TITLE } from '../../../common/constants';
-import { Logo } from '../../../components/common/logo';
+import Logo from '../../../assets/images/logo.svg';
 import { separatorTopbar, ToolbarContainer } from '../../../components/common/toolbar';
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
 import { goToHome, goToWallet } from '../../../store/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
+import { ExternalLink } from '../../../themes/components';
 import { MaticBridgeContainer } from '../../common/matic_bridge';
+import { Row, RowFixed } from '../../common/row';
 import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
 
+const activeClassName = 'ACTIVE';
 
 interface DispatchProps {
     onGoToHome: () => any;
@@ -41,25 +41,104 @@ const MyWalletLink = styled.a`
     ${separatorTopbar}
 `;
 
-const LogoHeader = styled(Logo)`
-    ${separatorTopbar}
-`;
-
-const LogoSVGStyled = styled(LogoSvg)`
-    path {
-        fill: ${props => props.theme.componentsTheme.logoERC20Color};
-    }
-`;
-
 const WalletDropdown = styled(WalletConnectionContentContainer)`
     display: none;
-
     @media (min-width: ${themeBreakPoints.sm}) {
         align-items: center;
         display: flex;
-
         ${separatorTopbar}
     }
+`;
+
+const HeaderRow = styled(RowFixed)`
+    @media (max-width: ${themeBreakPoints.md}) {
+        width: 100%;
+    }
+`;
+
+const Title = styled.a`
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
+    justify-self: flex-start;
+    margin-right: 12px;
+    @media (max-width: ${themeBreakPoints.sm}) {
+        justify-self: center;
+    };
+    :hover {
+        cursor: pointer;
+    }
+`;
+
+const UniIcon = styled.div`
+  transition: transform 0.3s ease;
+  :hover {
+    transform: rotate(-5deg);
+  }
+`;
+
+const HeaderLinks = styled(Row)`
+    justify-content: center;
+    @media (max-width: ${themeBreakPoints.md}) {
+        padding: 1rem 0 1rem 1rem;
+        justify-content: flex-end;
+    };
+`;
+
+const StyledNavLink = styled(NavLink).attrs({
+    activeClassName,
+})`
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: left;
+    border-radius: 3rem;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    width: fit-content;
+    margin: 0 12px;
+    font-weight: 500;
+    color: #C3C5CB;
+
+    &.${activeClassName} {
+        border-radius: 12px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+    :hover,
+    :focus {
+        color: #E6E6E6;
+    }
+  `;
+
+const StyledExternalLink = styled(ExternalLink).attrs({
+    activeClassName,
+}) <{ isActive?: boolean }>`
+    align-items: left;
+    // display: none
+    border-radius: 3rem;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    width: fit-content;
+    margin: 0 12px;
+    font-weight: 500;
+    color: #C3C5CB;
+
+    &.${activeClassName} {
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    :hover,
+    :focus {
+        color: #E6E6E6;
+        color: #ffffff;
+    }
+    @media (max-width: ${themeBreakPoints.sm}) {
+        display: none;
+    };
 `;
 
 const ToolbarContent = (props: Props) => {
@@ -67,17 +146,48 @@ const ToolbarContent = (props: Props) => {
         e.preventDefault();
         props.onGoToHome();
     };
-    const generalConfig = Config.getConfig().general;
-    // const logo = <LogoSVGStyled />;
-    const logo = null;
+
     const startContent = (
         <>
-            <LogoHeader
-                image={logo}
-                onClick={handleLogoClick}
-                text="smartdex"
-                textColor={props.theme.componentsTheme.logoERC20TextColor}
-            />
+            <HeaderRow>
+                <Title href=".">
+                    <UniIcon>
+                        <img width={'100px'} src={Logo} alt="logo" onClick={handleLogoClick} />
+                    </UniIcon>
+                </Title>
+                <HeaderLinks>
+                    <StyledExternalLink
+                        id={`swap-nav-link`}
+                        href={'https://swap.smartdex.app/#/swap'}
+                    >
+                        Swap
+                    </StyledExternalLink>
+                    <StyledNavLink
+                        id={`trade-nav-link`}
+                        to={'/'}
+                    >
+                        Trade
+                    </StyledNavLink>
+                    <StyledExternalLink
+                        id={`pool-nav-link`}
+                        href={'https://swap.smartdex.app/#/pool'}
+                    >
+                        Pool
+                    </StyledExternalLink>
+                    <StyledExternalLink
+                        id={`stake-nav-link`}
+                        href={'https://swap.smartdex.app/#/niox'}
+                    >
+                        Farm
+                    </StyledExternalLink>
+                    <StyledExternalLink
+                        id={`stake-nav-link`}
+                        href={'https://info.smartdex.app'}
+                    >
+                        Charts
+                    </StyledExternalLink>
+                </HeaderLinks>
+            </HeaderRow>
         </>
     );
 
