@@ -11,10 +11,9 @@ import { separatorTopbar, ToolbarContainer } from '../../../components/common/to
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
 import { goToHome, goToWallet } from '../../../store/actions';
 import { Theme, themeBreakPoints } from '../../../themes/commons';
-import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
 import { MaticBridgeContainer } from '../../common/matic_bridge';
+import { WalletConnectionContentContainer } from '../account/wallet_connection_content';
 
-import { MarketsDropdownContainer } from './markets_dropdown';
 
 interface DispatchProps {
     onGoToHome: () => any;
@@ -52,13 +51,6 @@ const LogoSVGStyled = styled(LogoSvg)`
     }
 `;
 
-const MarketsDropdownHeader = styled<any>(MarketsDropdownContainer)`
-    align-items: center;
-    display: flex;
-
-    ${separatorTopbar}
-`;
-
 const WalletDropdown = styled(WalletConnectionContentContainer)`
     display: none;
 
@@ -86,7 +78,6 @@ const ToolbarContent = (props: Props) => {
                 text="smartdex"
                 textColor={props.theme.componentsTheme.logoERC20TextColor}
             />
-            <MarketsDropdownHeader shouldCloseDropdownBodyOnClick={false} />
         </>
     );
 
