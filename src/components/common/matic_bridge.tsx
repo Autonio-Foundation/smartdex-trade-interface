@@ -202,6 +202,11 @@ const BridgeButton = styled(Button)`
     border-radius: 12px;
 `;
 
+const RoundedButton = styled(Button)`
+    border-radius: 16px;
+    height: 50px;
+`;
+
 function TokenSymbolFormat(symbol: string) {
     return symbol === 'wmatic' ? 'MATIC' : symbol.toUpperCase()
 }
@@ -412,9 +417,6 @@ class MaticBridge extends React.Component<Props, State> {
 
         return (
             <>
-                {/* <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
-                    Deposit
-                </MaticBridgeLink> */}
                 <BridgeButton
                     onClick={this.handleOpenModal}
                     variant={ButtonVariant.Bridge}
@@ -476,7 +478,7 @@ class MaticBridge extends React.Component<Props, State> {
                                 <Value>{tokenAmountInUnits(amount, currentToken.decimals)} {TokenSymbolFormat(currentToken.symbol)}</Value>
                             </Row>
 
-                            <Button
+                            <RoundedButton
                                 disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit)}
                                 // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
                                 // disabled={true}
@@ -485,7 +487,7 @@ class MaticBridge extends React.Component<Props, State> {
                                 onClick={this.submit}
                             >
                                 {isDeposit ? "Deposit" : "Withdraw"}
-                            </Button>
+                            </RoundedButton>
                         </Content>
                     </ModalContent>
                 </Modal>
