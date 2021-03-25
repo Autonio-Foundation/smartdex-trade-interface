@@ -45,7 +45,7 @@ export const ExternalLink = (props: Props) => {
       if (target === '_blank' || event.ctrlKey || event.metaKey) {
         ReactGA.outboundLink({ label: href || '/' }, () => {
           console.debug('Fired outbound link event', href);
-        })
+        });
       } else {
         event.preventDefault();
         // send a ReactGA event and then trigger a location change
