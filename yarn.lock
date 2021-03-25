@@ -27,7 +27,7 @@
   resolved "https://registry.npmjs.org/@0x/abi-gen-wrappers/-/abi-gen-wrappers-5.0.1.tgz#c3683fc7e6cc71033ab1cc8a7e616743f321583a"
   dependencies:
     "@0x/base-contract" "^5.1.1"
-    "@0x/contract-addresses" "^3.0.1"
+    "@0x/contract-addresses" "file:../0x-monorepo-matic/packages/contract-addresses"
     "@0x/contract-artifacts" "^2.0.1"
 
 "@0x/abi-gen-wrappers@^5.0.3":
@@ -35,7 +35,7 @@
   resolved "https://registry.yarnpkg.com/@0x/abi-gen-wrappers/-/abi-gen-wrappers-5.0.3.tgz#ef8ebf0519cd643fdf5b205f4079f6c083694b98"
   dependencies:
     "@0x/base-contract" "^5.1.2"
-    "@0x/contract-addresses" "^3.0.2"
+    "@0x/contract-addresses" "file:../0x-monorepo-matic/packages/contract-addresses"
     "@0x/contract-artifacts" "^2.0.2"
 
 "@0x/assert@^2.0.10":
@@ -110,10 +110,8 @@
     uuid "^3.3.2"
     websocket "^1.0.26"
 
-"@0x/contract-addresses@^3.0.1", "@0x/contract-addresses@^3.0.2":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@0x/contract-addresses/-/contract-addresses-3.2.0.tgz#606307696d9622764220a34e9d4638b899093eec"
-  integrity sha512-jCVEOgXPa3his4h2qm+O7tn9A2r8UJDgSzDhqhk+za237XxFc2No8TnnMP6qjew3l9ElNM1L+exZHxSd06xB/w==
+"@0x/contract-addresses@file:../0x-monorepo-matic/packages/contract-addresses":
+  version "3.1.0"
   dependencies:
     lodash "^4.17.11"
 
@@ -131,7 +129,7 @@
   dependencies:
     "@0x/abi-gen-wrappers" "^5.0.1"
     "@0x/assert" "^2.1.0"
-    "@0x/contract-addresses" "^3.0.1"
+    "@0x/contract-addresses" "file:../0x-monorepo-matic/packages/contract-addresses"
     "@0x/contract-artifacts" "^2.0.1"
     "@0x/json-schemas" "^3.0.11"
     "@0x/order-utils" "^8.2.1"
@@ -198,7 +196,7 @@
     "@0x/abi-gen-wrappers" "^5.0.1"
     "@0x/assert" "^2.1.0"
     "@0x/base-contract" "^5.1.1"
-    "@0x/contract-addresses" "^3.0.1"
+    "@0x/contract-addresses" "file:../0x-monorepo-matic/packages/contract-addresses"
     "@0x/contract-artifacts" "^2.0.1"
     "@0x/json-schemas" "^3.0.11"
     "@0x/types" "^2.4.0"
@@ -220,7 +218,7 @@
     "@0x/abi-gen-wrappers" "^5.0.3"
     "@0x/assert" "^2.1.1"
     "@0x/base-contract" "^5.1.2"
-    "@0x/contract-addresses" "^3.0.2"
+    "@0x/contract-addresses" "file:../0x-monorepo-matic/packages/contract-addresses"
     "@0x/contract-artifacts" "^2.0.2"
     "@0x/json-schemas" "^3.1.11"
     "@0x/types" "^2.4.1"
@@ -242,7 +240,7 @@
     "@0x/abi-gen-wrappers" "^5.0.1"
     "@0x/assert" "^2.1.0"
     "@0x/base-contract" "^5.1.1"
-    "@0x/contract-addresses" "^3.0.1"
+    "@0x/contract-addresses" "file:../0x-monorepo-matic/packages/contract-addresses"
     "@0x/contract-artifacts" "^2.0.1"
     "@0x/contract-wrappers" "^9.1.6"
     "@0x/fill-scenarios" "^3.0.12"
