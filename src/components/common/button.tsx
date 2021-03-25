@@ -45,9 +45,17 @@ const StyledButton = styled.button<{ variant?: ButtonVariant }>`
         props.variant && props.variant === ButtonVariant.Buy
             ? `background-color: ${props.theme.componentsTheme.buttonBuyBackgroundColor};`
             : ''}
+    ${props =>
+        props.variant && props.variant === ButtonVariant.Wallet
+            ? `background-color: ${props.theme.componentsTheme.buttonWalletBackgroundColor};`
+            : ''}
+    ${props =>
+        props.variant && props.variant === ButtonVariant.Bridge
+            ? `background-color: ${props.theme.componentsTheme.buttonBridgeBackgroundColor};`
+            : ''}
 
     align-items: center;
-    border-radius: 15px;
+    border-radius: 4px;
     border: none;
     color: ${props => props.theme.componentsTheme.buttonTextColor};
     cursor: pointer;

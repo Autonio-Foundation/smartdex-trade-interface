@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { METAMASK_EXTENSION_URL } from '../../../common/constants';
-import { initWallet } from '../../../store/actions';
+import { initWallet, goToWallet } from '../../../store/actions';
 import {
     getBaseToken,
     getBaseTokenBalance,
@@ -57,7 +57,7 @@ const Value = styled.span`
 const WalletStatusBadge = styled.div<{ web3State?: Web3State }>`
     background-color: ${props =>
         props.web3State === Web3State.Done
-            ? '#acca26'
+            ? '#ACCA27'
             : props.theme.componentsTheme.errorButtonBackground};
     border-radius: 50%;
     height: 8px;
@@ -132,6 +132,11 @@ const ButtonStyled = styled(Button)`
     width: 100%;
 `;
 
+const WalletButton = styled(Button)`
+    width: 100%;
+    margin-top: 28px;
+`;
+
 interface StateProps {
     web3State: Web3State;
     currencyPair: CurrencyPair;
@@ -146,6 +151,7 @@ interface StateProps {
 
 interface DispatchProps {
     onConnectWallet: () => any;
+    goToWallet: () => any;
 }
 
 type Props = StateProps & DispatchProps;
@@ -185,7 +191,7 @@ const getWallet = (web3State: Web3State) => {
 };
 
 const getWalletTitle = (web3State: Web3State) => {
-    let title = 'Total Balance';
+    let title = 'Wallet Balance';
 
     if (web3State === Web3State.NotInstalled) {
         title = 'No wallet found';
@@ -204,7 +210,12 @@ const openMetamaskExtensionUrl = () => {
 class WalletBalance extends React.Component<Props, State> {
     public render = () => {
         const { web3State } = this.props;
-        const walletContent = this._getWalletContent();
+
+        const onManageWallet = () => {
+            this.props.goToWallet();
+        };
+
+        const walletContent = this._getWalletContent(onManageWallet);
         return (
             <Card title={getWalletTitle(web3State)} action={getWallet(web3State)} minHeightBody={'0px'}>
                 {walletContent}
@@ -212,7 +223,7 @@ class WalletBalance extends React.Component<Props, State> {
         );
     };
 
-    private _getWalletContent = () => {
+    private _getWalletContent = (onManageWallet: Function) => {
         let content: any = null;
         const {
             web3State,
@@ -260,6 +271,11 @@ class WalletBalance extends React.Component<Props, State> {
             const baseTokenLabel = isWeth(baseToken.symbol)
                 ? 'MATIC'
                 : tokenSymbolToDisplayString(currencyPair.base);
+            const handleManageWalletClick: React.EventHandler<React.MouseEvent> = e => {
+                e.preventDefault();
+                onManageWallet();
+            };
+
             content = (
                 <>
                     <LabelWrapper>
@@ -273,6 +289,12 @@ class WalletBalance extends React.Component<Props, State> {
                         <Label>{tokenSymbolToDisplayString(currencyPair.quote)}</Label>
                         <Value>{quoteBalanceString}</Value>
                     </LabelWrapper>
+                    <WalletButton
+                        onClick={handleManageWalletClick}
+                        variant={ButtonVariant.Wallet}
+                    >
+                        Manage Wallet
+                    </WalletButton>
                 </>
             );
         }
@@ -369,6 +391,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         onConnectWallet: () => dispatch(initWallet()),
+        goToWallet: () => dispatch(goToWallet()),
     };
 };
 

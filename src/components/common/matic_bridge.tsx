@@ -15,6 +15,7 @@ import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
 import { tokenAmountInUnits } from '../../util/tokens';
+
 import { separatorTopbar } from './toolbar';
 
 interface Props {
@@ -25,8 +26,8 @@ interface State {
     isOpen: boolean;
     currentToken: TokenMetaData;
     amount: BigNumber;
-    maticBalance: {[k: string]: any};
-    ethBalance: {[k: string]: any};
+    maticBalance: { [k: string]: any };
+    ethBalance: { [k: string]: any };
     chainid: number;
     isDeposit: boolean;
 }
@@ -58,7 +59,7 @@ const DepositContent = styled.div<{ active?: boolean }>`
     justify-content: center;
     cursor: pointer;
     font-weight: bold;
-    color: ${props => props.active ? '#acca26' : '#fff'};
+    color: ${props => props.active ? '#ACCA27' : '#fff'};
     border-radius: 35px;
     background-color: ${props => props.active ? 'rgba(172, 202, 38, 0.1)' : 'transparent'};
 `;
@@ -195,6 +196,17 @@ const CostLabel = styled(Label)`
 
 const MainLabel = styled(Label)``;
 
+const BridgeButton = styled(Button)`
+    margin-right: 21px;
+    height: 36px;
+    border-radius: 12px;
+`;
+
+const RoundedButton = styled(Button)`
+    border-radius: 16px;
+    height: 50px;
+`;
+
 function TokenSymbolFormat(symbol: string) {
     return symbol === 'wmatic' ? 'MATIC' : symbol.toUpperCase()
 }
@@ -218,7 +230,7 @@ class MaticBridge extends React.Component<Props, State> {
         try {
             let chainid = parseInt(await window.ethereum.request({ method: 'eth_chainId' }));
             console.log(chainid);
-            this.setState({ chainid });    
+            this.setState({ chainid });
         } catch (error) {
             console.log(error);
         }
@@ -226,7 +238,7 @@ class MaticBridge extends React.Component<Props, State> {
     };
 
     public updateBalances = async () => {
-        let maticWrapper : Matic;
+        let maticWrapper: Matic;
         const { chainid } = this.state;
 
         try {
@@ -249,16 +261,16 @@ class MaticBridge extends React.Component<Props, State> {
                     parentProvider: INFURA_PROVIDER,
                     parentDefaultOptions: { from: window.ethereum.selectedAddress },
                     maticDefaultOptions: { from: window.ethereum.selectedAddress }
-                });    
+                });
             }
-        
+
             maticWrapper.initialize();
 
             console.log(maticWrapper);
-    
-            let maticBalance : {[k: string]: any} = {};
-            let ethBalance : {[k: string]: any} = {};
-    
+
+            let maticBalance: { [k: string]: any } = {};
+            let ethBalance: { [k: string]: any } = {};
+
             KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
                 let value = await maticWrapper.balanceOfERC20(
                     window.ethereum.selectedAddress,
@@ -267,8 +279,8 @@ class MaticBridge extends React.Component<Props, State> {
                         from: window.ethereum.selectedAddress,
                     }
                 )
-                maticBalance[token.symbol] = value / Math.pow(10, token.decimals);    
-        
+                maticBalance[token.symbol] = value / Math.pow(10, token.decimals);
+
                 value = await maticWrapper.balanceOfERC20(
                     window.ethereum.selectedAddress,
                     token.symbol === 'wmatic' ? maticWrapper.network.Main.Contracts.Tokens.MaticToken : token.addresses[1],
@@ -277,10 +289,10 @@ class MaticBridge extends React.Component<Props, State> {
                         parent: true
                     }
                 )
-                ethBalance[token.symbol] = value / Math.pow(10, token.decimals);    
+                ethBalance[token.symbol] = value / Math.pow(10, token.decimals);
             })
-    
-            this.setState({maticBalance, ethBalance});
+
+            this.setState({ maticBalance, ethBalance });
         } catch (error) {
             console.log(error);
         }
@@ -288,12 +300,12 @@ class MaticBridge extends React.Component<Props, State> {
 
     public handleOpenModal = (ev: any) => {
         ev.preventDefault();
-        this.setState({isOpen: true});
+        this.setState({ isOpen: true });
     }
 
     public handleCloseModel = (ev: any) => {
         ev.preventDefault();
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     }
 
     public updateAmount = (newValue: BigNumber) => {
@@ -324,7 +336,7 @@ class MaticBridge extends React.Component<Props, State> {
                     maticWrapper.network.Main.Contracts.Tokens.MaticToken,
                     window.ethereum.selectedAddress,
                     amount.toString()
-                )    
+                )
 
             }
             else {
@@ -344,31 +356,31 @@ class MaticBridge extends React.Component<Props, State> {
                     currentToken.addresses[1],
                     window.ethereum.selectedAddress,
                     amount.toString()
-                )    
+                )
             }
         }
         else if (chainid === 137) {
             // if (currentToken.symbol === 'wmatic') {
-                const maticWrapper = new Matic({
-                    network: 'mainnet',
-                    version: 'v1',
-                    maticProvider: window.ethereum,
-                    parentProvider: INFURA_PROVIDER,
-                    parentDefaultOptions: { from: window.ethereum.selectedAddress },
-                    maticDefaultOptions: { from: window.ethereum.selectedAddress }
-                });
-                console.log('Withdrawal', maticWrapper.network.Matic.Contracts.Tokens.MaticToken, window.ethereum.selectedAddress);
-                let txHash = await maticWrapper.startWithdraw(
-                    currentToken.symbol === 'wmatic' ? maticWrapper.network.Matic.Contracts.Tokens.MaticToken : currentToken.addresses[137],
-                    amount.toString(), {
-                        from: window.ethereum.selectedAddress
-                    }
-                );
-                await maticWrapper.withdraw(
-                    txHash, {
-                        from: window.ethereum.selectedAddress
-                    }
-                );
+            const maticWrapper = new Matic({
+                network: 'mainnet',
+                version: 'v1',
+                maticProvider: window.ethereum,
+                parentProvider: INFURA_PROVIDER,
+                parentDefaultOptions: { from: window.ethereum.selectedAddress },
+                maticDefaultOptions: { from: window.ethereum.selectedAddress }
+            });
+            console.log('Withdrawal', maticWrapper.network.Matic.Contracts.Tokens.MaticToken, window.ethereum.selectedAddress);
+            let txHash = await maticWrapper.startWithdraw(
+                currentToken.symbol === 'wmatic' ? maticWrapper.network.Matic.Contracts.Tokens.MaticToken : currentToken.addresses[137],
+                amount.toString(), {
+                from: window.ethereum.selectedAddress
+            }
+            );
+            await maticWrapper.withdraw(
+                txHash, {
+                from: window.ethereum.selectedAddress
+            }
+            );
             // }
             // else {
             //     const maticPoSClient = new MaticPOSClient({
@@ -396,7 +408,7 @@ class MaticBridge extends React.Component<Props, State> {
 
         await this.updateBalances();
 
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     }
 
     public render = () => {
@@ -405,31 +417,34 @@ class MaticBridge extends React.Component<Props, State> {
 
         return (
             <>
-                <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
-                    Matic Bridge
-                </MaticBridgeLink>
+                <BridgeButton
+                    onClick={this.handleOpenModal}
+                    variant={ButtonVariant.Bridge}
+                >
+                    Deposit
+                </BridgeButton>
                 <Modal isOpen={isOpen} style={theme.modalTheme} onRequestClose={this.handleCloseModel}>
                     <ModalContent>
-                        <div style={{display: 'flex', width: '100%'}}>
-                            <DepositContent onClick={() => this.setState({isDeposit: true})} active={isDeposit} >Deposit</DepositContent>
-                            <DepositContent onClick={() => this.setState({isDeposit: false})} active={!isDeposit} >Withdraw</DepositContent>
+                        <div style={{ display: 'flex', width: '100%' }}>
+                            <DepositContent onClick={() => this.setState({ isDeposit: true })} active={isDeposit} >Deposit</DepositContent>
+                            <DepositContent onClick={() => this.setState({ isDeposit: false })} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
-                            <div><span style={{fontWeight: 'bold', fontSize: 18}}>Matic Bridge</span> <span style={{fontSize: 14, marginLeft: 4, color: '#aaa'}}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
-                            <p style={{color: 'red', marginTop: 20}}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
-                            <div style={{display: 'flex', marginBottom: 26, marginTop: 10}}>
-                                <DotDiv style={{backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#acca26' : '#F91A4F'}} />
-                                <span style={{fontSize: 14}}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit") }</span>
+                            <div><span style={{ fontWeight: 'bold', fontSize: 18 }}>Matic Bridge</span> <span style={{ fontSize: 14, marginLeft: 4, color: '#aaa' }}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
+                            <p style={{ color: 'red', marginTop: 20 }}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
+                            <div style={{ display: 'flex', marginBottom: 26, marginTop: 10 }}>
+                                <DotDiv style={{ backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ACCA27' : '#E81C34' }} />
+                                <span style={{ fontSize: 14 }}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit")}</span>
                             </div>
 
                             <Dropdown
                                 body={
                                     <>
-                                    {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                        <DropdownTextItem key={idx} style={{width: '100%'}} onClick={() => this.setState({currentToken: token})} text={TokenSymbolFormat(token.symbol)} 
-                                            value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")
-                                            : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
-                                    )}
+                                        {KNOWN_TOKENS_META_DATA.map((token, idx) =>
+                                            <DropdownTextItem key={idx} style={{ width: '100%' }} onClick={() => this.setState({ currentToken: token })} text={TokenSymbolFormat(token.symbol)}
+                                                value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")
+                                                    : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
+                                        )}
                                     </>
                                 }
                                 header={
@@ -451,7 +466,7 @@ class MaticBridge extends React.Component<Props, State> {
                                 />
                                 <TokenContainer>
                                     <TokenText>Max. {isDeposit ? (ethBalance[currentToken.symbol] ? ethBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")
-                             : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")}</TokenText>
+                                        : (maticBalance[currentToken.symbol] ? maticBalance[currentToken.symbol].toFixed(currentToken.displayDecimals) : "0.00")}</TokenText>
                                 </TokenContainer>
                             </FieldContainer>
 
@@ -463,16 +478,16 @@ class MaticBridge extends React.Component<Props, State> {
                                 <Value>{tokenAmountInUnits(amount, currentToken.decimals)} {TokenSymbolFormat(currentToken.symbol)}</Value>
                             </Row>
 
-                            <Button
+                            <RoundedButton
                                 disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit)}
                                 // disabled={amount.isZero() || (isDeposit && chainid !== 1) || (!isDeposit && chainid !== 137)}
                                 // disabled={true}
                                 variant={isDeposit ? ButtonVariant.Buy : ButtonVariant.Sell}
-                                style={{backgroundColor: '#acca26', textTransform: 'capitalize'}}
+                                style={{ backgroundColor: '#ACCA27', textTransform: 'capitalize' }}
                                 onClick={this.submit}
                             >
                                 {isDeposit ? "Deposit" : "Withdraw"}
-                            </Button>
+                            </RoundedButton>
                         </Content>
                     </ModalContent>
                 </Modal>

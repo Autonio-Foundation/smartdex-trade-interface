@@ -103,8 +103,10 @@ const Toolbar = (props: Props) => {
             case Web3State.Error:
                 return (
                     <>
-                        <MaticBridgeContainer />
-                        <NetworkSwitchButton fontSize={FontSize.Large} />
+                        <ToolbarEnd>
+                            <MaticBridgeContainer />
+                            <NetworkSwitchButton fontSize={FontSize.Large} />
+                        </ToolbarEnd>
                     </>
                 );
             case Web3State.Done:

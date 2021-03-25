@@ -322,6 +322,8 @@ export enum ButtonVariant {
     Secondary = 'secondary',
     Sell = 'sell',
     Tertiary = 'tertiary',
+    Wallet = 'wallet',
+    Bridge = 'bridge',
 }
 
 export enum ButtonIcons {

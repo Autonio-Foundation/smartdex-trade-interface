@@ -5,7 +5,7 @@ interface StatusProps {
 }
 
 export const WalletConnectionStatusDot = styled.div<StatusProps>`
-    background-color: ${props => (props.status ? '#acca26' : '#ccc')};
+    background-color: ${props => (props.status ? '#ACCA27' : '#ccc')};
     border-radius: 50%;
     height: 10px;
     width: 10px;
