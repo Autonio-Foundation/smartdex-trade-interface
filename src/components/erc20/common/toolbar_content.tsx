@@ -199,9 +199,6 @@ const ToolbarContent = (props: Props) => {
     const endContent = (
         <>
             <MaticBridgeContainer />
-            <MyWalletLink href="/my-wallet" onClick={handleMyWalletClick}>
-                My Wallet
-            </MyWalletLink>
             <WalletDropdown />
             <NotificationsDropdownContainer />
         </>

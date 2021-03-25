@@ -21,10 +21,11 @@ export enum FontSize {
 
 const SwitchButton = styled.button<ButtonProps>`
     align-items: center;
-    background-color: ${props => props.theme.componentsTheme.errorCardBackground};
-    border-radius: ${themeDimensions.borderRadius};
-    border: 1px solid ${props => props.theme.componentsTheme.errorCardBorder};
-    color: ${props => props.theme.componentsTheme.errorCardText};
+    background-color: rgba(172, 202, 39, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(172, 202, 39, 0.05);
+    color: #ACCA27;
+    height: 36px;
     display: flex;
     font-size: ${props => (props.fontSize === FontSize.Large ? '16px' : '14px')};
     line-height: 1.2;

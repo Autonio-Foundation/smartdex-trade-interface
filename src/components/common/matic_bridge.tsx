@@ -15,6 +15,7 @@ import { ButtonVariant } from '../../util/types';
 import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
 import { tokenAmountInUnits } from '../../util/tokens';
+
 import { separatorTopbar } from './toolbar';
 
 interface Props {
@@ -194,6 +195,12 @@ const CostLabel = styled(Label)`
 
 
 const MainLabel = styled(Label)``;
+
+const BridgeButton = styled(Button)`
+    margin-right: 21px;
+    height: 36px;
+    border-radius: 12px;
+`;
 
 function TokenSymbolFormat(symbol: string) {
     return symbol === 'wmatic' ? 'MATIC' : symbol.toUpperCase()
@@ -405,9 +412,15 @@ class MaticBridge extends React.Component<Props, State> {
 
         return (
             <>
-                <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
-                    Matic Bridge
-                </MaticBridgeLink>
+                {/* <MaticBridgeLink href="/" onClick={this.handleOpenModal}>
+                    Deposit
+                </MaticBridgeLink> */}
+                <BridgeButton
+                    onClick={this.handleOpenModal}
+                    variant={ButtonVariant.Bridge}
+                >
+                    Deposit
+                </BridgeButton>
                 <Modal isOpen={isOpen} style={theme.modalTheme} onRequestClose={this.handleCloseModel}>
                     <ModalContent>
                         <div style={{ display: 'flex', width: '100%' }}>

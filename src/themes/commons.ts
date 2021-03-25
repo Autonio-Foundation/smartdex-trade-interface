@@ -19,6 +19,8 @@ export interface ThemeProperties {
     buttonSecondaryBackgroundColor: string;
     buttonSellBackgroundColor: string;
     buttonTertiaryBackgroundColor: string;
+    buttonWalletBackgroundColor: string;
+    buttonBridgeBackgroundColor: string;
     buttonTextColor: string;
     cardImageBackgroundColor: string;
     cardBackgroundColor: string;
