@@ -237,8 +237,8 @@ class OrderHistory extends React.Component<Props, State> {
             <CardWrapper style={{ maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)' }}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{ color: selectedTabs === 0 ? '#0FEE90' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(0)}>Open Orders</span>
-                        <span style={{ marginLeft: 20, color: selectedTabs === 1 ? '#0FEE90' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
+                        <span style={{ color: selectedTabs === 0 ? '#1AD37A' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(0)}>Open Orders</span>
+                        <span style={{ marginLeft: 20, color: selectedTabs === 1 ? '#1AD37A' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>
