@@ -25,7 +25,7 @@ interface StateProps {
 
 type Props = StateProps;
 
-const SideTD = styled(CustomTD)<{ side: OrderSide }>`
+const SideTD = styled(CustomTD) <{ side: OrderSide }>`
     color: ${props =>
         props.side === OrderSide.Buy ? props.theme.componentsTheme.green : props.theme.componentsTheme.red};
 `;
@@ -63,15 +63,17 @@ const CardTitle = styled.h1`
 
 const CardBody = styled.div`
     margin: 0;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
     position: relative;
+    max-height: calc(100% - 55px);
+    overflow-y: auto;
 `;
 
 const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const sideLabel = order.side ? 'Buy' : 'Sell';
 
-    const size = order.amount ? parseFloat(order.amount.toString()).toFixed(baseToken.displayDecimals) : 0; 
+    const size = order.amount ? parseFloat(order.amount.toString()).toFixed(baseToken.displayDecimals) : 0;
 
     const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
@@ -132,10 +134,10 @@ class TradeHistory extends React.Component<Props, State> {
         }
 
         return (
-            <CardWrapper style={{maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)'}}>
+            <CardWrapper style={{ height: 'calc(100% - 670px)', maxHeight: 'calc(100% - 610px)', minHeight: '310px', position: 'relative' }}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{color: '#fff'}}>Recent Trades</span>
+                        <span style={{ color: '#fff' }}>Recent Trades</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>

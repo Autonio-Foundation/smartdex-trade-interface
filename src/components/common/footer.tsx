@@ -12,6 +12,7 @@ const FooterWrapper = styled.div`
     height: ${themeDimensions.footerHeight};
     justify-content: center;
     padding: 0 ${themeDimensions.horizontalPadding} ${themeDimensions.verticalPadding};
+    padding: 0;
 `;
 
 const poweredBySVG = () => {

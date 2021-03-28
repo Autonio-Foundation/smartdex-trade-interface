@@ -217,11 +217,11 @@ const PercentBox = styled.button`
 
 const TradeButton = styled(Button) <{ type: OrderSide }>`
     &:hover {
-        background:#159A5A;
         background: ${props => props.type === OrderSide.Buy ? '#159A5A' : '#C2172C'};
     }
     &:disabled {
         background: #1A1F28;
+        opacity: 0.35;
     }
 `;
 

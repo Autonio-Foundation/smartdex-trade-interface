@@ -200,6 +200,13 @@ const BridgeButton = styled(Button)`
     margin-right: 21px;
     height: 36px;
     border-radius: 12px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 34px;
+    background-color: #7C9632;
+    &:hover {
+        opacity: 0.65;
+    }
 `;
 
 const RoundedButton = styled(Button)`
@@ -419,7 +426,6 @@ class MaticBridge extends React.Component<Props, State> {
             <>
                 <BridgeButton
                     onClick={this.handleOpenModal}
-                    variant={ButtonVariant.Bridge}
                 >
                     Deposit
                 </BridgeButton>
