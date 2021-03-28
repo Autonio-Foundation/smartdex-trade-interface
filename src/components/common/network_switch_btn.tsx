@@ -21,19 +21,21 @@ export enum FontSize {
 
 const SwitchButton = styled.button<ButtonProps>`
     align-items: center;
-    background-color: rgba(172, 202, 39, 0.2);
     border-radius: 12px;
-    border: 1px solid rgba(172, 202, 39, 0.05);
+    background-color: rgba(172,202,39, 0.2);
+    border: 1px solid rgba(172,202,39, 0.05);
     color: #ACCA27;
     height: 36px;
     display: flex;
-    font-size: ${props => (props.fontSize === FontSize.Large ? '16px' : '14px')};
-    line-height: 1.2;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 34px;
     padding: 10px 15px;
     ${props => (props.textAlign === 'center' ? 'justify-content: center;' : '')}
     cursor: pointer;
     &:hover {
-        border-color: #666;
+       background-color: rgba(172,202,39, 0.1);
+       border: 1px solid rgba(172,202,39, 0.5);
     }
 
     &:active {

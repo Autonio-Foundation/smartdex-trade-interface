@@ -106,12 +106,11 @@ const TabButton = styled.div<{ isSelected: boolean; side: OrderSide }>`
     border-right-color: ${props => (props.isSelected ? props.theme.componentsTheme.cardBorderColor : 'transparent')};
     border-right-style: solid;
     border-right-width: 1px;
-    color: ${props =>
+    color: #ffffff;
+    opacity: ${props =>
         props.isSelected
-            ? props.side === OrderSide.Buy
-                ? props.theme.componentsTheme.green
-                : props.theme.componentsTheme.red
-            : props.theme.componentsTheme.textLight};
+            ? 1
+            : 0.65};
     cursor: ${props => (props.isSelected ? 'default' : 'pointer')};
     display: flex;
     font-weight: 600;
@@ -213,6 +212,16 @@ const PercentBox = styled.button`
     &:active {
         background-color: #fff;
         color: #000;
+    }
+`;
+
+const TradeButton = styled(Button) <{ type: OrderSide }>`
+    &:hover {
+        background:#159A5A;
+        background: ${props => props.type === OrderSide.Buy ? '#159A5A' : '#C2172C'};
+    }
+    &:disabled {
+        background: #1A1F28;
     }
 `;
 
@@ -339,10 +348,11 @@ class BuySell extends React.Component<Props, State> {
                             tokenPrice={price || new BigNumber(0)}
                             currencyPair={currencyPair}
                         />
-                        <Button
+                        <TradeButton
                             disabled={web3State !== Web3State.Done || orderTypeLimitIsEmpty || orderTypeMarketIsEmpty}
                             icon={error && error.btnMsg ? ButtonIcons.Warning : undefined}
                             onClick={this.submit}
+                            type={tab}
                             variant={
                                 error && error.btnMsg
                                     ? ButtonVariant.Error
@@ -352,7 +362,7 @@ class BuySell extends React.Component<Props, State> {
                             }
                         >
                             {btnText}
-                        </Button>
+                        </TradeButton>
                     </Content>
                 </BuySellWrapper>
                 {error && error.cardMsg ? (

@@ -39,14 +39,14 @@ export const separatorTopbar = css`
 
 const ToolbarWrapper = styled.div`
     align-items: center;
-    background: ${props => props.theme.componentsTheme.topbarBackgroundColor};
-    border-bottom: 1px solid ${props => props.theme.componentsTheme.topbarBorderColor};
+    background: transparent;
+    border: 1px solid rgba(255,255,255, 0.1);
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
     height: ${themeDimensions.toolbarHeight};
     justify-content: space-between;
-    padding: 0 ${themeDimensions.horizontalPadding};
+    padding: 18px ${themeDimensions.horizontalPadding};
     position: sticky;
     top: 0;
     z-index: 123;

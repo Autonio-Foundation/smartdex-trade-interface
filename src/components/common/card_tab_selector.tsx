@@ -22,9 +22,8 @@ const CardTabSelectorWrapper = styled.div`
 `;
 
 const CardTabSelectorItem = styled.span<ItemProps>`
-    color: ${props =>
-        props.active ? props.theme.componentsTheme.textColorCommon : props.theme.componentsTheme.lightGray};
     cursor: ${props => (props.active ? 'default' : 'pointer')};
+    opacity: ${props => (props.active ? 1 : 0.65)};
     user-select: none;
 `;
 

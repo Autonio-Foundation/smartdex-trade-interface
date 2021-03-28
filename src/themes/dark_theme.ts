@@ -29,7 +29,7 @@ const modalThemeStyle: ThemeModalStyle = {
 };
 
 const darkThemeColors: ThemeProperties = {
-    background: '#191D27',
+    background: 'radial-gradient(94.86% 94.86% at 50% -6.3%, #2F3641 0%, #151A22 100%)',
     backgroundERC721: '#000',
     borderColor: '#5A5A5A',
     boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
@@ -48,7 +48,7 @@ const darkThemeColors: ThemeProperties = {
     buttonBridgeBackgroundColor: '#7C9632',
     buttonTextColor: '#fff',
     cardImageBackgroundColor: '#EBF0F5',
-    cardBackgroundColor: '#030C18',
+    cardBackgroundColor: '#070C12',
     cardBorderColor: '#030C18',
     cardTitleColor: '#fff',
     cardTitleOwnerColor: '#3CB34F',
