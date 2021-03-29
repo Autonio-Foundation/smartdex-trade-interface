@@ -73,7 +73,9 @@ const CardBody = styled.div`
     min-height: 200px;
     overflow-x: auto;
     padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
-    position: relative;
+    position: relative;    
+    max-height: 200px;
+    overflow-y: auto;
 `;
 
 function pad_with_zeroes(number: number, length: number) {
@@ -204,7 +206,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Status</TH>
-                                        <TH>&nbsp;</TH>
+                                        {/* <TH>&nbsp;</TH> */}
                                     </TR>
                                 </THead>
                                 <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
@@ -221,7 +223,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Status</TH>
-                                        <TH>&nbsp;</TH>
+                                        {/* <TH>&nbsp;</TH> */}
                                     </TR>
                                 </THead>
                                 <tbody>{myhistory.map((order, index) => orderHistoryToRow(order, index, baseToken))}</tbody>

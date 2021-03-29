@@ -66,6 +66,8 @@ const OrderbookCard = styled(Card)`
     > div:first-child {
         flex-grow: 0;
         flex-shrink: 0;
+        border-bottom: 1px solid #2F3641;
+        padding: 10px 11px;
     }
 
     > div:nth-child(2) {
@@ -82,13 +84,14 @@ const OrderbookCard = styled(Card)`
 const GridRow = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 4px;
 `;
 
-const GridRowInner = styled(GridRow)`
+const GridRowInner = styled(GridRow) <{ type: OrderSide }>`
     background-color: 'transparent';
     cursor: pointer;
     &:hover {
-        background-color: ${props => props.theme.componentsTheme.rowOrderActive};
+        background: ${props => props.type === OrderSide.Sell ? 'rgba(232, 28, 52, 0.08)' : 'rgba(26,211,122, 0.08)'};
     }
 `;
 
@@ -200,6 +203,7 @@ class OrderToRow extends React.Component<OrderToRowProps> {
                 key={index}
                 onMouseEnter={this.hoverOn}
                 onMouseLeave={this.hoverOff}
+                type={order.side}
                 // tslint:disable-next-line jsx-no-lambda
                 onClick={() => this._setOrderPriceSelected(order.price)}
             >
@@ -290,9 +294,11 @@ class OrderBookTable extends React.Component<Props> {
             const mySizeHeader =
                 web3State !== Web3State.Locked && web3State !== Web3State.NotInstalled ? (
                     <THLast as="div" styles={{ textAlign: 'right', borderBottom: true }}>
-                        My Size
+                        Total
                     </THLast>
                 ) : null;
+
+            console.log('555--->', sellOrders)
 
             const spreadAbsFixed = absoluteSpread.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
             const spreadPercentFixed = percentageSpread.toFixed(UI_DECIMALS_DISPLAYED_SPREAD_PERCENT);
@@ -361,7 +367,7 @@ class OrderBookTable extends React.Component<Props> {
             );
         }
 
-        return <OrderbookCard title="Orderbook">{content}</OrderbookCard>;
+        return <OrderbookCard title="Order History">{content}</OrderbookCard>;
     };
 
     public componentDidMount = () => {

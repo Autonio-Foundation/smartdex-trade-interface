@@ -47,7 +47,9 @@ const CardHeader = styled.div`
     flex-grow: 0;
     flex-shrink: 0;
     justify-content: space-between;
-    padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
+    padding: 11px 16px;
+    border-bottom: 1px solid #2F3641;
+
 `;
 
 const CardTitle = styled.h1`
@@ -119,10 +121,10 @@ class TradeHistory extends React.Component<Props, State> {
                         <Table isResponsive={true}>
                             <THead>
                                 <TR>
-                                    <TH styles={{ textAlign: 'left' }}>Price ({quoteToken.symbol})</TH>
-                                    <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
-                                    <TH>Time</TH>
-                                    <TH>&nbsp;</TH>
+                                    <TH styles={{ textAlign: 'center' }}>Price ({quoteToken.symbol})</TH>
+                                    <TH styles={{ textAlign: 'center' }}>Amount ({baseToken.symbol})</TH>
+                                    <TH styles={{ textAlign: 'center' }}>Time</TH>
+                                    {/* <TH>&nbsp;</TH> */}
                                 </TR>
                             </THead>
                             <tbody>{overallHistory.map((order, index) => allOrderHistoryToRow(order, index, baseToken))}</tbody>
@@ -137,7 +139,7 @@ class TradeHistory extends React.Component<Props, State> {
             <CardWrapper style={{ height: 'calc(100% - 670px)', maxHeight: 'calc(100% - 610px)', minHeight: '310px', position: 'relative' }}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{ color: '#fff' }}>Recent Trades</span>
+                        <span style={{ color: '#fff' }}>Trade History</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>

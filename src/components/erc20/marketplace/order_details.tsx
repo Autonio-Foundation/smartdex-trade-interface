@@ -43,7 +43,7 @@ const LabelContainer = styled.div`
     align-items: flex-end;
     display: flex;
     justify-content: space-between;
-    margin: 5px 0 10px 0;
+    margin: 0px 0 10px 0;
 `;
 
 const Label = styled.label<{ color?: string }>`

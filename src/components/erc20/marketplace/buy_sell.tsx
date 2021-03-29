@@ -78,6 +78,7 @@ interface State {
         btnMsg: string | null;
         cardMsg: string | null;
     };
+    markerPercent: number;
 }
 
 const BuySellWrapper = styled(CardBase)`
@@ -152,7 +153,7 @@ const InnerTabs = styled(CardTabSelector)`
 
 const FieldContainer = styled.div`
     height: ${themeDimensions.fieldHeight};
-    margin-bottom: 25px;
+    margin-bottom: 16px;
     position: relative;
 `;
 
@@ -191,28 +192,32 @@ const TokenText = styled.span`
 const PercentContainer = styled.div`
     display: flex;
     width: 100%;
-    margin-bottom: 10px;
+    margin: 0px -8px;
+    margin-bottom: 30px;
+    width: calc(100% + 16px);
 `;
 
-const PercentBox = styled.button`
-    margin: 6px;
-    background-color: transparent;
-    border-radius: 4px;
-    border: 1px solid #fff;
+const PercentBox = styled.button<{ active: boolean }>`
+    margin: 0px 8px;
+    border-radius: 5px;
     text-align: center;
     color: #fff;
     width: 25%;
     padding: 2px;
+    background: #1A1F28;
+    border: none;
     cursor: pointer;
+    height: 24px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    outline: none;
 
     &:hover {
-        border-color: #666;
+        background-color: #444C59;
     }
 
-    &:active {
-        background-color: #fff;
-        color: #000;
-    }
+    background-color: ${props => props.active ? '#444C59' : '#1A1F28'};
 `;
 
 const TradeButton = styled(Button) <{ type: OrderSide }>`
@@ -244,6 +249,7 @@ class BuySell extends React.Component<Props, State> {
             btnMsg: null,
             cardMsg: null,
         },
+        markerPercent: 0.25,
     };
 
     public componentDidUpdate = async (prevProps: Readonly<Props>) => {
@@ -257,7 +263,7 @@ class BuySell extends React.Component<Props, State> {
 
     public render = () => {
         const { currencyPair, web3State } = this.props;
-        const { makerAmount, price, tab, orderType, error } = this.state;
+        const { makerAmount, price, tab, orderType, error, markerPercent } = this.state;
 
         const buySellInnerTabs = [
             {
@@ -336,10 +342,10 @@ class BuySell extends React.Component<Props, State> {
                             </>
                         )}
                         <PercentContainer>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.25)}>25%</PercentBox>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.5)}>50%</PercentBox>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(0.75)}>75%</PercentBox>
-                            <PercentBox onClick={() => this.updateMakerAmountbyPercent(1)}>100%</PercentBox>
+                            <PercentBox active={markerPercent === 0.25} onClick={() => this.updateMakerAmountbyPercent(0.25)}>25%</PercentBox>
+                            <PercentBox active={markerPercent === 0.5} onClick={() => this.updateMakerAmountbyPercent(0.5)}>50%</PercentBox>
+                            <PercentBox active={markerPercent === 0.75} onClick={() => this.updateMakerAmountbyPercent(0.75)}>75%</PercentBox>
+                            <PercentBox active={markerPercent === 1} onClick={() => this.updateMakerAmountbyPercent(1)}>100%</PercentBox>
                         </PercentContainer>
                         <OrderDetailsContainer
                             orderType={orderType}
@@ -375,6 +381,10 @@ class BuySell extends React.Component<Props, State> {
     public changeTab = (tab: OrderSide) => () => this.setState({ tab });
 
     public updateMakerAmountbyPercent = (percent: number) => {
+        this.setState({
+            ...this.state,
+            markerPercent: percent,
+        });
         const {
             baseToken,
             quoteToken,
