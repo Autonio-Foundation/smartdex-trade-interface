@@ -298,8 +298,6 @@ class OrderBookTable extends React.Component<Props> {
                     </THLast>
                 ) : null;
 
-            console.log('555--->', sellOrders)
-
             const spreadAbsFixed = absoluteSpread.toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH);
             const spreadPercentFixed = percentageSpread.toFixed(UI_DECIMALS_DISPLAYED_SPREAD_PERCENT);
 
