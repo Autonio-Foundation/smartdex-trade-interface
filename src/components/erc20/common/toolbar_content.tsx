@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled, { withTheme } from 'styled-components';
 
-import Logo from '../../../assets/images/logo.svg';
+import Logo from '../../../assets/images/logo.png';
 import { separatorTopbar, ToolbarContainer } from '../../../components/common/toolbar';
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
 import { goToHome, goToWallet } from '../../../store/actions';
@@ -71,10 +71,14 @@ const Title = styled.a`
 `;
 
 const UniIcon = styled.div`
-  transition: transform 0.3s ease;
-  :hover {
-    /* transform: rotate(-5deg); */
-  }
+    transition: transform 0.3s ease;
+    img {
+        height: 30px;
+        width: auto;
+    }
+    :hover {
+        /* transform: rotate(-5deg); */
+    }
 `;
 
 const HeaderLinks = styled(Row)`
