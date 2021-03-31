@@ -59,7 +59,7 @@ const darkThemeColors: ThemeProperties = {
     dropdownBackgroundColor: '#0e151f',
     dropdownBorderColor: '#000',
     dropdownTextColor: '#fff',
-    errorButtonBackground: '#FF6534',
+    errorButtonBackground: '#E81C34',
     errorCardBackground: 'rgba(255, 255, 255, 0.1)',
     errorCardBorder: 'rgba(255, 255, 255, 0.1)',
     errorCardText: 'rgba(255,255,255, 0.65)',

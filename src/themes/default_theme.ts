@@ -58,7 +58,7 @@ const lightThemeColors: ThemeProperties = {
     dropdownBackgroundColor: '#fff',
     dropdownBorderColor: '#dedede',
     dropdownTextColor: '#000',
-    errorButtonBackground: '#FF6534',
+    errorButtonBackground: '#E81C34',
     errorCardBackground: '#FAF4EF',
     errorCardBorder: '#F39E4B',
     errorCardText: '#F68C24',

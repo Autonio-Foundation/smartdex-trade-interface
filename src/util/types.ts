@@ -328,6 +328,7 @@ export enum ButtonVariant {
 
 export enum ButtonIcons {
     Warning = 'warning',
+    Metamask = 'metamask',
 }
 
 export interface Filter {

@@ -2,6 +2,7 @@ import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import { WarningSmallIcon } from '../../components/common/icons/warning_small_icon';
+import { ReactComponent as InstallMetamaskSvg } from '../../assets/icons/install_metamask.svg';
 import { themeDimensions } from '../../themes/commons';
 import { ButtonIcons, ButtonVariant } from '../../util/types';
 
@@ -82,7 +83,9 @@ const ButtonIcon = styled.span`
     align-items: center;
     display: flex;
     line-height: 1;
-    margin-right: 8px;
+    margin-right: 14px;
+    height: 20px;
+    width: 20px;
 `;
 
 const getIcon = (icon: ButtonIcons) => {
@@ -90,6 +93,9 @@ const getIcon = (icon: ButtonIcons) => {
 
     if (icon === ButtonIcons.Warning) {
         buttonIcon = <WarningSmallIcon />;
+    }
+    if (icon === ButtonIcons.Metamask) {
+        buttonIcon = <InstallMetamaskSvg />;
     }
 
     return buttonIcon ? <ButtonIcon>{buttonIcon}</ButtonIcon> : null;

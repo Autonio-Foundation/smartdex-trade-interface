@@ -20,7 +20,7 @@ import {
 import { errorsWallet } from '../../../util/error_messages';
 import { isWeth } from '../../../util/known_tokens';
 import { tokenAmountInUnits, tokenSymbolToDisplayString, unitsInTokenAmount } from '../../../util/tokens';
-import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State, UIOrder, OrderSide } from '../../../util/types';
+import { ButtonVariant, CurrencyPair, StoreState, Token, TokenBalance, Web3State, UIOrder, OrderSide, ButtonIcons } from '../../../util/types';
 import { Button } from '../../common/button';
 import { Card } from '../../common/card';
 import { ErrorCard, ErrorIcons, FontSize } from '../../common/error_card';
@@ -338,7 +338,7 @@ class WalletBalance extends React.Component<Props, State> {
             content = (
                 <>
                     <WalletErrorText>Install Metamask wallet to make trades.</WalletErrorText>
-                    <ButtonStyled variant={ButtonVariant.Tertiary} onClick={openMetamaskExtensionUrl}>
+                    <ButtonStyled variant={ButtonVariant.Tertiary} icon={ButtonIcons.Metamask} onClick={openMetamaskExtensionUrl}>
                         {errorsWallet.mmGetExtension}
                     </ButtonStyled>
                 </>
