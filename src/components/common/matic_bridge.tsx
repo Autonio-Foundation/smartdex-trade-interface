@@ -275,8 +275,8 @@ class MaticBridge extends React.Component<Props, State> {
 
             console.log(maticWrapper);
 
-            let maticBalance: { [k: string]: any } = {};
-            let ethBalance: { [k: string]: any } = {};
+            const maticBalance: { [k: string]: any } = {};
+            const ethBalance: { [k: string]: any } = {};
 
             KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
                 let value = await maticWrapper.balanceOfERC20(
@@ -297,7 +297,7 @@ class MaticBridge extends React.Component<Props, State> {
                     }
                 )
                 ethBalance[token.symbol] = value / Math.pow(10, token.decimals);
-            })
+            });
 
             this.setState({ maticBalance, ethBalance });
         } catch (error) {
@@ -453,11 +453,17 @@ class MaticBridge extends React.Component<Props, State> {
                             <Dropdown
                                 body={
                                     <>
-                                        {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                            <DropdownTextItem key={idx} style={{ width: '100%' }} onClick={() => this.setState({ currentToken: token })} text={TokenSymbolFormat(token.symbol)}
-                                                value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")
-                                                    : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
-                                        )}
+                                        {KNOWN_TOKENS_META_DATA.map((token, idx) => {
+                                            if (token.symbol === 'wmatic') {
+                                                return null;
+                                            }
+                                            return (
+                                                <DropdownTextItem key={idx} style={{ width: '100%' }} onClick={() => this.setState({ currentToken: token })} text={TokenSymbolFormat(token.symbol)}
+                                                    value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : '0.00')
+                                                        : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
+                                            );
+                                        })
+                                        }
                                     </>
                                 }
                                 header={
