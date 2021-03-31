@@ -102,6 +102,7 @@ const StyledNavLink = styled(NavLink).attrs({
     margin: 0 12px;
     font-weight: 500;
     color: #ffffff;
+    word-break: keep-all;
 
     &.${activeClassName} {
         border-radius: 12px;
@@ -131,6 +132,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
     margin: 0 12px;
     color: #ffffff;
     opacity: 0.65;
+    word-break: keep-all;
 
     &.${activeClassName} {
       border-radius: 12px;

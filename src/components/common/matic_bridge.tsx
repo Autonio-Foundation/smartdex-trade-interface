@@ -204,6 +204,7 @@ const BridgeButton = styled(Button)`
     font-size: 18px;
     line-height: 34px;
     background-color: #7C9632;
+    word-break: keep-all;
     &:hover {
         opacity: 0.65;
     }
