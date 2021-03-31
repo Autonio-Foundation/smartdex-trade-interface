@@ -9,6 +9,7 @@ import { StoreState, Web3State } from '../../util/types';
 import { MaticBridgeContainer } from './matic_bridge';
 
 import { ErrorCard, ErrorIcons, FontSize } from './error_card';
+import { MetamaskErrorCard, } from './metamask_error_card';
 import { NetworkSwitchButton } from './network_switch_btn';
 
 interface OwnProps {
@@ -92,7 +93,7 @@ const Toolbar = (props: Props) => {
                 return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLocked} icon={ErrorIcons.Lock} />;
             case Web3State.NotInstalled:
                 return (
-                    <ErrorCard
+                    <MetamaskErrorCard
                         fontSize={FontSize.Large}
                         text={errorsWallet.mmNotInstalled}
                         icon={ErrorIcons.Metamask}
