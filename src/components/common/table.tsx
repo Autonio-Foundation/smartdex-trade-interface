@@ -68,6 +68,7 @@ export const TH = styled.th<TableTDProps>`
         props.styles && props.styles.textAlign && props.styles.textAlign.length ? props.styles.textAlign : 'left'};
     text-transform: uppercase;
     white-space: nowrap;
+    word-break: keep-all;
 
     &:last-child {
         padding-right: 0;
@@ -89,6 +90,7 @@ export const CustomTD = styled.td<TableTDProps>`
     padding: 5px ${themeDimensions.horizontalPadding} 5px 0;
     text-align: ${props =>
         props.styles && props.styles.textAlign && props.styles.textAlign.length ? props.styles.textAlign : 'left'};
+    word-break: keep-all;
 
     &:last-child {
         padding-right: 0;
