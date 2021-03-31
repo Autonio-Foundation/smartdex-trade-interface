@@ -418,6 +418,13 @@ class MaticBridge extends React.Component<Props, State> {
         this.setState({ isOpen: false });
     }
 
+    public onClickWithdraw = () => {
+        window.open(
+            'https://wallet.matic.network/',
+            '_blank',
+        );
+    }
+
     public render = () => {
         const { theme } = this.props;
         const { isOpen, currentToken, amount, maticBalance, ethBalance, chainid, isDeposit } = this.state;
@@ -433,7 +440,7 @@ class MaticBridge extends React.Component<Props, State> {
                     <ModalContent>
                         <div style={{ display: 'flex', width: '100%' }}>
                             <DepositContent onClick={() => this.setState({ isDeposit: true })} active={isDeposit} >Deposit</DepositContent>
-                            <DepositContent onClick={() => this.setState({ isDeposit: false })} active={!isDeposit} >Withdraw</DepositContent>
+                            <DepositContent onClick={this.onClickWithdraw} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
                             <div><span style={{ fontWeight: 'bold', fontSize: 18 }}>Matic Bridge</span> <span style={{ fontSize: 14, marginLeft: 4, color: '#aaa' }}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
