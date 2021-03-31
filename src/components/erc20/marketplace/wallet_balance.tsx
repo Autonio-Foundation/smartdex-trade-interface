@@ -107,12 +107,20 @@ const WalletErrorContainer = styled.div`
     position: relative;
 `;
 
+const WalletLoadingContainer = styled.div`
+    position: relative;
+    height: 140px;
+    text-align: center;
+`;
+
 const WalletErrorText = styled.p`
     font-size: 16px;
     font-weight: normal;
     line-height: 23px;
     margin: 0;
     padding: 20px 0;
+    color: #FFFFFF;
+    opacity: 0.65;
 `;
 
 const SimplifiedTextBox = styled.div<{ top?: string; bottom?: string; left?: string; right?: string }>`
@@ -131,6 +139,7 @@ const SimplifiedTextBox = styled.div<{ top?: string; bottom?: string; left?: str
 const ButtonStyled = styled(Button)`
     width: 100%;
 `;
+
 
 const WalletButton = styled(Button)`
     width: 100%;
@@ -338,9 +347,26 @@ class WalletBalance extends React.Component<Props, State> {
 
         if (web3State === Web3State.Loading) {
             content = (
-                <>
-                    <ButtonStyled variant={ButtonVariant.Tertiary}>{errorsWallet.mmLoading}</ButtonStyled>
-                </>
+                <WalletLoadingContainer>
+                    <ErrorCardStyled
+                        cursor={'default'}
+                        fontSize={FontSize.Large}
+                        text={errorsWallet.mmLoading}
+                        textAlign="center"
+                    />
+                    <SimplifiedTextBox top="0" left="0">
+                        {simplifiedTextBoxBig()}
+                    </SimplifiedTextBox>
+                    <SimplifiedTextBox top="0" right="0">
+                        {simplifiedTextBoxBig()}
+                    </SimplifiedTextBox>
+                    <SimplifiedTextBox bottom="0" left="0">
+                        {simplifiedTextBoxSmall()}
+                    </SimplifiedTextBox>
+                    <SimplifiedTextBox bottom="0" right="0">
+                        {simplifiedTextBoxSmall()}
+                    </SimplifiedTextBox>
+                </WalletLoadingContainer>
             );
         }
 

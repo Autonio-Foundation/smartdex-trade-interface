@@ -65,7 +65,7 @@ const OrderbookCard = styled(Card)`
 
     > div:first-child {
         flex-grow: 0;
-        flex-shrink: 0;
+        flex-shrink: 0;        
         border-bottom: 1px solid #2F3641;
         padding: 10px 11px;
     }

@@ -42,7 +42,7 @@ const lightThemeColors: ThemeProperties = {
     buttonQuaternaryBackgroundColor: '#00AE99',
     buttonSecondaryBackgroundColor: '#474747',
     buttonSellBackgroundColor: '#FF6534',
-    buttonTertiaryBackgroundColor: '#F6851B',
+    buttonTertiaryBackgroundColor: '#1A1F28',
     buttonWalletBackgroundColor: '#191D27',
     buttonBridgeBackgroundColor: '#7C9632',
     buttonTextColor: '#fff',

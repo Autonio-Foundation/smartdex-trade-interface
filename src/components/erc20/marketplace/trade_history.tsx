@@ -48,8 +48,6 @@ const CardHeader = styled.div`
     flex-shrink: 0;
     justify-content: space-between;
     padding: 11px 16px;
-    border-bottom: 1px solid #2F3641;
-
 `;
 
 const CardTitle = styled.h1`
