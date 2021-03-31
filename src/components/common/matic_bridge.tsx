@@ -443,8 +443,15 @@ class MaticBridge extends React.Component<Props, State> {
                             <DepositContent onClick={this.onClickWithdraw} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
-                            <div><span style={{ fontWeight: 'bold', fontSize: 18 }}>Matic Bridge</span> <span style={{ fontSize: 14, marginLeft: 4, color: '#aaa' }}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
-                            <p style={{ color: 'red', marginTop: 20 }}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
+                            <div>
+                                <span style={{ fontWeight: 'bold', fontSize: 18 }}>Matic Bridge</span>
+                                <span style={{ fontSize: 14, marginLeft: 4, color: '#aaa' }}>
+                                    {isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}
+                                </span>
+                            </div>
+                            {/* <p style={{ color: 'red', marginTop: 20 }}>
+                                Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.
+                            </p> */}
                             <div style={{ display: 'flex', marginBottom: 26, marginTop: 10 }}>
                                 <DotDiv style={{ backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ACCA27' : '#E81C34' }} />
                                 <span style={{ fontSize: 14 }}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit")}</span>
