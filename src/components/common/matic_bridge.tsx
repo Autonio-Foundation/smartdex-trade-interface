@@ -200,6 +200,14 @@ const BridgeButton = styled(Button)`
     margin-right: 21px;
     height: 36px;
     border-radius: 12px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 34px;
+    background-color: #7C9632;
+    word-break: keep-all;
+    &:hover {
+        opacity: 0.65;
+    }
 `;
 
 const RoundedButton = styled(Button)`
@@ -268,8 +276,8 @@ class MaticBridge extends React.Component<Props, State> {
 
             console.log(maticWrapper);
 
-            let maticBalance: { [k: string]: any } = {};
-            let ethBalance: { [k: string]: any } = {};
+            const maticBalance: { [k: string]: any } = {};
+            const ethBalance: { [k: string]: any } = {};
 
             KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
                 let value = await maticWrapper.balanceOfERC20(
@@ -290,7 +298,7 @@ class MaticBridge extends React.Component<Props, State> {
                     }
                 )
                 ethBalance[token.symbol] = value / Math.pow(10, token.decimals);
-            })
+            });
 
             this.setState({ maticBalance, ethBalance });
         } catch (error) {
@@ -411,6 +419,13 @@ class MaticBridge extends React.Component<Props, State> {
         this.setState({ isOpen: false });
     }
 
+    public onClickWithdraw = () => {
+        window.open(
+            'https://wallet.matic.network/',
+            '_blank',
+        );
+    }
+
     public render = () => {
         const { theme } = this.props;
         const { isOpen, currentToken, amount, maticBalance, ethBalance, chainid, isDeposit } = this.state;
@@ -419,7 +434,6 @@ class MaticBridge extends React.Component<Props, State> {
             <>
                 <BridgeButton
                     onClick={this.handleOpenModal}
-                    variant={ButtonVariant.Bridge}
                 >
                     Deposit
                 </BridgeButton>
@@ -427,11 +441,18 @@ class MaticBridge extends React.Component<Props, State> {
                     <ModalContent>
                         <div style={{ display: 'flex', width: '100%' }}>
                             <DepositContent onClick={() => this.setState({ isDeposit: true })} active={isDeposit} >Deposit</DepositContent>
-                            <DepositContent onClick={() => this.setState({ isDeposit: false })} active={!isDeposit} >Withdraw</DepositContent>
+                            <DepositContent onClick={this.onClickWithdraw} active={!isDeposit} >Withdraw</DepositContent>
                         </div>
                         <Content>
-                            <div><span style={{ fontWeight: 'bold', fontSize: 18 }}>Matic Bridge</span> <span style={{ fontSize: 14, marginLeft: 4, color: '#aaa' }}>{isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}</span></div>
-                            <p style={{ color: 'red', marginTop: 20 }}>Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.</p>
+                            <div>
+                                <span style={{ fontWeight: 'bold', fontSize: 18 }}>Matic Bridge</span>
+                                <span style={{ fontSize: 14, marginLeft: 4, color: '#aaa' }}>
+                                    {isDeposit ? "Deposit to Matic Mainnet" : "Withdraw to Ethereum Mainnet"}
+                                </span>
+                            </div>
+                            {/* <p style={{ color: 'red', marginTop: 20 }}>
+                                Warning - Do not trade using Ledger as matic network doesn’t support Ledger at the moment.
+                            </p> */}
                             <div style={{ display: 'flex', marginBottom: 26, marginTop: 10 }}>
                                 <DotDiv style={{ backgroundColor: ((isDeposit && chainid === 1) || (!isDeposit && chainid === 137)) ? '#ACCA27' : '#E81C34' }} />
                                 <span style={{ fontSize: 14 }}>{chainid === 1 ? (isDeposit ? "You are on Ethereum Mainnet" : "Switch to Matic Mainnet for withdrawal") : (!isDeposit ? "You are on Matic Mainnet" : "Switch to Ethereum Mainnet for deposit")}</span>
@@ -440,11 +461,17 @@ class MaticBridge extends React.Component<Props, State> {
                             <Dropdown
                                 body={
                                     <>
-                                        {KNOWN_TOKENS_META_DATA.map((token, idx) =>
-                                            <DropdownTextItem key={idx} style={{ width: '100%' }} onClick={() => this.setState({ currentToken: token })} text={TokenSymbolFormat(token.symbol)}
-                                                value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")
-                                                    : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
-                                        )}
+                                        {KNOWN_TOKENS_META_DATA.map((token, idx) => {
+                                            if (token.symbol === 'wmatic') {
+                                                return null;
+                                            }
+                                            return (
+                                                <DropdownTextItem key={idx} style={{ width: '100%' }} onClick={() => this.setState({ currentToken: token })} text={TokenSymbolFormat(token.symbol)}
+                                                    value={isDeposit ? (ethBalance[token.symbol] ? ethBalance[token.symbol].toFixed(token.displayDecimals) : '0.00')
+                                                        : (maticBalance[token.symbol] ? maticBalance[token.symbol].toFixed(token.displayDecimals) : "0.00")} />
+                                            );
+                                        })
+                                        }
                                     </>
                                 }
                                 header={

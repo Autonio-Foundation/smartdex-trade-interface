@@ -17,7 +17,7 @@ import { MagnifierIcon } from '../../common/icons/magnifier_icon';
 import { TokenIcon } from '../../common/icons/token_icon';
 import { CustomTDFirst, CustomTDLast, Table, TBody, THead, THFirst, THLast, TR } from '../../common/table';
 
-interface PropsDivElement extends HTMLAttributes<HTMLDivElement> {}
+interface PropsDivElement extends HTMLAttributes<HTMLDivElement> { }
 
 interface DispatchProps {
     changeMarket: (currencyPair: CurrencyPair) => any;
@@ -62,6 +62,8 @@ const MarketsDropdownHeaderText = styled.span`
     font-weight: 600;
     line-height: 26px;
     margin-right: 10px;
+    display: flex;
+    align-items: center;
 `;
 
 const MarketsDropdownBody = styled(CardBase)`
@@ -168,7 +170,7 @@ const tableHeaderFontWeight = `
     font-weight: 700;
 `;
 
-const TRStyled = styled(TR)<MarketRowProps>`
+const TRStyled = styled(TR) <MarketRowProps>`
     background-color: ${props => (props.active ? props.theme.componentsTheme.rowActive : 'transparent')};
     cursor: ${props => (props.active ? 'default' : 'pointer')};
 

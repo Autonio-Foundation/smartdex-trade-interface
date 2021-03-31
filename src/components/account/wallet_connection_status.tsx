@@ -2,7 +2,7 @@ import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import { Dropdown, DropdownPositions } from '../common/dropdown';
-import { ChevronDownIcon } from '../common/icons/chevron_down_icon';
+import { CopyIcon } from '../common/icons/copy_icon';
 
 import { WalletConnectionStatusDot } from './wallet_connections_status_dot';
 
@@ -47,7 +47,7 @@ export class WalletConnectionStatusContainer extends React.PureComponent<Props> 
             <WalletConnectionStatusWrapper>
                 <WalletConnectionStatusDotStyled status={status} />
                 <WalletConnectionStatusText>{headerText}</WalletConnectionStatusText>
-                <ChevronDownIcon />
+                <CopyIcon />
             </WalletConnectionStatusWrapper>
         );
 

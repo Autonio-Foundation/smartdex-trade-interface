@@ -25,7 +25,7 @@ interface StateProps {
 
 type Props = StateProps;
 
-const SideTD = styled(CustomTD)<{ side: OrderSide }>`
+const SideTD = styled(CustomTD) <{ side: OrderSide }>`
     color: ${props =>
         props.side === OrderSide.Buy ? props.theme.componentsTheme.green : props.theme.componentsTheme.red};
 `;
@@ -47,7 +47,7 @@ const CardHeader = styled.div`
     flex-grow: 0;
     flex-shrink: 0;
     justify-content: space-between;
-    padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
+    padding: 11px 16px;
 `;
 
 const CardTitle = styled.h1`
@@ -63,15 +63,17 @@ const CardTitle = styled.h1`
 
 const CardBody = styled.div`
     margin: 0;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
     position: relative;
+    max-height: calc(100% - 55px);
+    overflow-y: auto;
 `;
 
 const allOrderHistoryToRow = (order: any, index: number, baseToken: Token) => {
     const sideLabel = order.side ? 'Buy' : 'Sell';
 
-    const size = order.amount ? parseFloat(order.amount.toString()).toFixed(baseToken.displayDecimals) : 0; 
+    const size = order.amount ? parseFloat(order.amount.toString()).toFixed(baseToken.displayDecimals) : 0;
 
     const price = order.avg_price ? parseFloat(order.avg_price.toString()).toFixed(UI_DECIMALS_DISPLAYED_PRICE_ETH) : 0;
 
@@ -117,10 +119,10 @@ class TradeHistory extends React.Component<Props, State> {
                         <Table isResponsive={true}>
                             <THead>
                                 <TR>
-                                    <TH styles={{ textAlign: 'left' }}>Price ({quoteToken.symbol})</TH>
-                                    <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
-                                    <TH>Time</TH>
-                                    <TH>&nbsp;</TH>
+                                    <TH styles={{ textAlign: 'center' }}>Price ({quoteToken.symbol})</TH>
+                                    <TH styles={{ textAlign: 'center' }}>Amount ({baseToken.symbol})</TH>
+                                    <TH styles={{ textAlign: 'center' }}>Time</TH>
+                                    {/* <TH>&nbsp;</TH> */}
                                 </TR>
                             </THead>
                             <tbody>{overallHistory.map((order, index) => allOrderHistoryToRow(order, index, baseToken))}</tbody>
@@ -132,10 +134,10 @@ class TradeHistory extends React.Component<Props, State> {
         }
 
         return (
-            <CardWrapper style={{maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)'}}>
+            <CardWrapper style={{ height: 'calc(100% - 670px)', maxHeight: 'calc(100% - 610px)', minHeight: '310px', position: 'relative' }}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{color: '#fff'}}>Recent Trades</span>
+                        <span style={{ color: '#fff' }}>Trade History</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>

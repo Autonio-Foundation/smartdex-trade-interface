@@ -25,7 +25,7 @@ const CardWrapper = styled(CardBase)`
 
 const CardHeader = styled.div`
     align-items: center;
-    border-bottom: 1px solid ${props => props.theme.componentsTheme.cardBorderColor};
+    border-bottom: 1px solid #2F3641;
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;

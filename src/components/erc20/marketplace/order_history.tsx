@@ -73,7 +73,9 @@ const CardBody = styled.div`
     min-height: 200px;
     overflow-x: auto;
     padding: ${themeDimensions.verticalPadding} ${themeDimensions.horizontalPadding};
-    position: relative;
+    position: relative;    
+    max-height: 200px;
+    overflow-y: auto;
 `;
 
 function pad_with_zeroes(number: number, length: number) {
@@ -204,7 +206,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH styles={{ textAlign: 'right' }}>Filled ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Status</TH>
-                                        <TH>&nbsp;</TH>
+                                        {/* <TH>&nbsp;</TH> */}
                                     </TR>
                                 </THead>
                                 <tbody>{ordersToShow.map((order, index) => orderToRow(order, index, baseToken))}</tbody>
@@ -221,7 +223,7 @@ class OrderHistory extends React.Component<Props, State> {
                                         <TH styles={{ textAlign: 'right' }}>Size ({baseToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Price ({quoteToken.symbol})</TH>
                                         <TH styles={{ textAlign: 'right' }}>Status</TH>
-                                        <TH>&nbsp;</TH>
+                                        {/* <TH>&nbsp;</TH> */}
                                     </TR>
                                 </THead>
                                 <tbody>{myhistory.map((order, index) => orderHistoryToRow(order, index, baseToken))}</tbody>
@@ -234,11 +236,11 @@ class OrderHistory extends React.Component<Props, State> {
         }
 
         return (
-            <CardWrapper style={{ maxHeight: 'calc(100% - 570px)', height: 'calc(100% - 570px)' }}>
+            <CardWrapper style={{ height: '280px' }}>
                 <CardHeader>
                     <CardTitle>
-                        <span style={{ color: selectedTabs === 0 ? '#1AD37A' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(0)}>Open Orders</span>
-                        <span style={{ marginLeft: 20, color: selectedTabs === 1 ? '#1AD37A' : '#999', cursor: 'pointer' }} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
+                        <span style={{ color: '#fff', opacity: selectedTabs === 0 ? 1 : 0.65, cursor: 'pointer' }} onClick={() => this.onSelectTab(0)}>Open Orders</span>
+                        <span style={{ marginLeft: 20, color: '#fff', opacity: selectedTabs === 1 ? 1 : 0.65, cursor: 'pointer' }} onClick={() => this.onSelectTab(1)}>Closed Orders</span>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>{content}</CardBody>

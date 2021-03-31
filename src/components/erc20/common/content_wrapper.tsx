@@ -10,6 +10,6 @@ export const Content = styled.div`
 
     @media (min-width: ${themeBreakPoints.xl}) {
         flex-direction: row;
-        height: calc(100% - ${themeDimensions.footerHeight});
+        /* height: calc(100% - ${themeDimensions.footerHeight}); */
     }
 `;

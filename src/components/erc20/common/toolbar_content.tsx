@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled, { withTheme } from 'styled-components';
 
-import Logo from '../../../assets/images/logo.svg';
+import Logo from '../../../assets/images/logo.png';
 import { separatorTopbar, ToolbarContainer } from '../../../components/common/toolbar';
 import { NotificationsDropdownContainer } from '../../../components/notifications/notifications_dropdown';
 import { goToHome, goToWallet } from '../../../store/actions';
@@ -71,10 +71,14 @@ const Title = styled.a`
 `;
 
 const UniIcon = styled.div`
-  transition: transform 0.3s ease;
-  :hover {
-    transform: rotate(-5deg);
-  }
+    transition: transform 0.3s ease;
+    img {
+        height: 30px;
+        width: auto;
+    }
+    :hover {
+        /* transform: rotate(-5deg); */
+    }
 `;
 
 const HeaderLinks = styled(Row)`
@@ -95,11 +99,14 @@ const StyledNavLink = styled(NavLink).attrs({
     outline: none;
     cursor: pointer;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 34px;
     width: fit-content;
     margin: 0 12px;
     font-weight: 500;
-    color: #C3C5CB;
+    color: #ffffff;
+    word-break: keep-all;
 
     &.${activeClassName} {
         border-radius: 12px;
@@ -108,7 +115,8 @@ const StyledNavLink = styled(NavLink).attrs({
     }
     :hover,
     :focus {
-        color: #E6E6E6;
+      border-radius: 12px;
+      font-weight: 600;
     }
   `;
 
@@ -121,11 +129,14 @@ const StyledExternalLink = styled(ExternalLink).attrs({
     outline: none;
     cursor: pointer;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 34px;
     width: fit-content;
     margin: 0 12px;
-    font-weight: 500;
-    color: #C3C5CB;
+    color: #ffffff;
+    opacity: 0.65;
+    word-break: keep-all;
 
     &.${activeClassName} {
       border-radius: 12px;
@@ -133,8 +144,8 @@ const StyledExternalLink = styled(ExternalLink).attrs({
     }
     :hover,
     :focus {
-        color: #E6E6E6;
-        color: #ffffff;
+        opacity: 1;
+        text-decoration: none;
     }
     @media (max-width: ${themeBreakPoints.sm}) {
         display: none;
@@ -152,7 +163,7 @@ const ToolbarContent = (props: Props) => {
             <HeaderRow>
                 <Title href=".">
                     <UniIcon>
-                        <img width={'100px'} src={Logo} alt="logo" onClick={handleLogoClick} />
+                        <img width={'85px'} src={Logo} alt="logo" onClick={handleLogoClick} />
                     </UniIcon>
                 </Title>
                 <HeaderLinks>

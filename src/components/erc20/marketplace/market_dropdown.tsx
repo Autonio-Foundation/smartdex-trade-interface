@@ -15,7 +15,7 @@ const MarketsDropDownWrapper = styled.div`
     border-radius: ${themeDimensions.borderRadius};
     border: 1px solid ${props => props.theme.componentsTheme.cardBorderColor};
     padding: 24px 17px;
-    margin-bottom: 10px; 
+    margin-bottom: 12px;
     align-items: center;
     display: flex;
 `;

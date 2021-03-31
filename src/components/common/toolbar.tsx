@@ -9,6 +9,7 @@ import { StoreState, Web3State } from '../../util/types';
 import { MaticBridgeContainer } from './matic_bridge';
 
 import { ErrorCard, ErrorIcons, FontSize } from './error_card';
+import { MetamaskErrorCard, } from './metamask_error_card';
 import { NetworkSwitchButton } from './network_switch_btn';
 
 interface OwnProps {
@@ -39,14 +40,14 @@ export const separatorTopbar = css`
 
 const ToolbarWrapper = styled.div`
     align-items: center;
-    background: ${props => props.theme.componentsTheme.topbarBackgroundColor};
-    border-bottom: 1px solid ${props => props.theme.componentsTheme.topbarBorderColor};
+    background: transparent;
+    border: 1px solid rgba(255,255,255, 0.1);
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
     height: ${themeDimensions.toolbarHeight};
     justify-content: space-between;
-    padding: 0 ${themeDimensions.horizontalPadding};
+    padding: 18px ${themeDimensions.horizontalPadding};
     position: sticky;
     top: 0;
     z-index: 123;
@@ -92,14 +93,14 @@ const Toolbar = (props: Props) => {
                 return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLocked} icon={ErrorIcons.Lock} />;
             case Web3State.NotInstalled:
                 return (
-                    <ErrorCard
+                    <MetamaskErrorCard
                         fontSize={FontSize.Large}
                         text={errorsWallet.mmNotInstalled}
                         icon={ErrorIcons.Metamask}
                     />
                 );
             case Web3State.Loading:
-                return <ErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLoading} icon={ErrorIcons.Metamask} />;
+                return <MetamaskErrorCard fontSize={FontSize.Large} text={errorsWallet.mmLoading} icon={ErrorIcons.Metamask} />;
             case Web3State.Error:
                 return (
                     <>
