@@ -28,7 +28,7 @@ const SwitchButton = styled.button<ButtonProps>`
     height: 36px;
     display: flex;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 34px;
     padding: 10px 15px;
     ${props => (props.textAlign === 'center' ? 'justify-content: center;' : '')}

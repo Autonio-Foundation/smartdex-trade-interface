@@ -99,7 +99,7 @@ const StyledNavLink = styled(NavLink).attrs({
     outline: none;
     cursor: pointer;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 34px;
     width: fit-content;
@@ -129,7 +129,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
     outline: none;
     cursor: pointer;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 34px;
     width: fit-content;

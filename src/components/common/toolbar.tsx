@@ -41,7 +41,7 @@ export const separatorTopbar = css`
 const ToolbarWrapper = styled.div`
     align-items: center;
     background: transparent;
-    border: 1px solid rgba(255,255,255, 0.1);
+    border-bottom: 1px solid rgba(255,255,255, 0.1);
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;

@@ -201,7 +201,7 @@ const BridgeButton = styled(Button)`
     height: 36px;
     border-radius: 12px;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 34px;
     background-color: #7C9632;
     word-break: keep-all;
