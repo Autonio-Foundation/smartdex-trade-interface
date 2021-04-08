@@ -336,16 +336,25 @@ class MaticBridge extends React.Component<Props, State> {
                     maticDefaultOptions: { from: window.ethereum.selectedAddress }
                 });
                 console.log('Matic Deposit', maticWrapper.network.Main.Contracts.Tokens.MaticToken, window.ethereum.selectedAddress);
-                await maticWrapper.approveERC20TokensForDeposit(
-                    maticWrapper.network.Main.Contracts.Tokens.MaticToken,
-                    amount.toString()
-                )
+
+                // await maticWrapper.approveERC20TokensForDeposit(
+                //     maticWrapper.network.Main.Contracts.Tokens.MaticToken,
+                //     amount.toString()
+                // )
+
+                // approve MAX amount of selected token
+                if (localStorage.getItem(currentToken.addresses[1]) !== 'approved') {
+                    await maticWrapper.approveMaxERC20TokensForDeposit(
+                        maticWrapper.network.Main.Contracts.Tokens.MaticToken,
+                    )
+                    localStorage.setItem(currentToken.addresses[1], 'approved');
+                }
+
                 await maticWrapper.depositERC20ForUser(
                     maticWrapper.network.Main.Contracts.Tokens.MaticToken,
                     window.ethereum.selectedAddress,
                     amount.toString()
                 )
-
             }
             else {
                 const maticPoSClient = new MaticPOSClient({
@@ -356,10 +365,20 @@ class MaticBridge extends React.Component<Props, State> {
                     parentDefaultOptions: { from: window.ethereum.selectedAddress },
                     maticDefaultOptions: { from: window.ethereum.selectedAddress }
                 });
-                await maticPoSClient.approveERC20ForDeposit(
-                    currentToken.addresses[1],
-                    amount.toString()
-                )
+
+                // await maticPoSClient.approveERC20ForDeposit(
+                //     currentToken.addresses[1],
+                //     amount.toString()
+                // )
+
+                // approve MAX amount of selected token
+                if (localStorage.getItem(currentToken.addresses[1]) !== 'approved') {
+                    await maticPoSClient.approveMaxERC20ForDeposit(
+                        currentToken.addresses[1],
+                    )
+                    localStorage.setItem(currentToken.addresses[1], 'approved');
+                }
+
                 await maticPoSClient.depositERC20ForUser(
                     currentToken.addresses[1],
                     window.ethereum.selectedAddress,
