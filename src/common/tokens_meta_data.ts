@@ -10,3 +10,4 @@ export interface TokenMetaData {
     displayDecimals?: number;
 }
 export const KNOWN_TOKENS_META_DATA: TokenMetaData[] = Config.getConfig().tokens;
+export const DEPOSIT_TOKENS_META_DATA: TokenMetaData[] = Config.getConfig().depositTokens;

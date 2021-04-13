@@ -348,6 +348,7 @@ export interface GeneralConfig {
 
 export interface ConfigFile {
     tokens: TokenMetaData[];
+    depositTokens: TokenMetaData[];
     pairs: CurrencyPair[];
     marketFilters?: Filter[];
     theme?: PartialTheme;

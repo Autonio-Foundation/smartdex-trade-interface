@@ -12,7 +12,7 @@ import { DropdownTextItem } from './matic_bridge_text_item';
 import { BigNumberInput } from './big_number_input';
 import { themeDimensions } from '../../themes/commons';
 import { ButtonVariant } from '../../util/types';
-import { KNOWN_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
+import { DEPOSIT_TOKENS_META_DATA, TokenMetaData } from '../../common/tokens_meta_data';
 import { Button } from './button';
 import { tokenAmountInUnits } from '../../util/tokens';
 
@@ -222,7 +222,7 @@ function TokenSymbolFormat(symbol: string) {
 class MaticBridge extends React.Component<Props, State> {
     public state: State = {
         isOpen: false,
-        currentToken: KNOWN_TOKENS_META_DATA[0],
+        currentToken: DEPOSIT_TOKENS_META_DATA[0],
         amount: new BigNumber(0),
         chainid: 0,
         maticBalance: {},
@@ -279,7 +279,7 @@ class MaticBridge extends React.Component<Props, State> {
             const maticBalance: { [k: string]: any } = {};
             const ethBalance: { [k: string]: any } = {};
 
-            KNOWN_TOKENS_META_DATA && KNOWN_TOKENS_META_DATA.map(async (token) => {
+            DEPOSIT_TOKENS_META_DATA && DEPOSIT_TOKENS_META_DATA.map(async (token) => {
                 let value = await maticWrapper.balanceOfERC20(
                     window.ethereum.selectedAddress,
                     token.symbol === 'wmatic' ? maticWrapper.network.Matic.Contracts.Tokens.MaticToken : token.addresses[137],
@@ -486,7 +486,7 @@ class MaticBridge extends React.Component<Props, State> {
                             <Dropdown
                                 body={
                                     <>
-                                        {KNOWN_TOKENS_META_DATA.map((token, idx) => {
+                                        {DEPOSIT_TOKENS_META_DATA.map((token, idx) => {
                                             if (token.symbol === 'wmatic') {
                                                 return null;
                                             }
