@@ -116,7 +116,7 @@
             "displayDecimals": 2
         },
         {
-            "symbol": "GLQ",
+            "symbol": "glq",
             "name": "GRAPH LINK ",
             "primaryColor": "#3333ff",
             "icon": "assets/icons/glq.svg",
@@ -262,7 +262,7 @@
             "displayDecimals": 2
         },
         {
-            "symbol": "GLQ",
+            "symbol": "glq",
             "name": "GRAPH LINK ",
             "primaryColor": "#3333ff",
             "icon": "assets/icons/glq.svg",
@@ -305,6 +305,18 @@
         },
         {
             "base": "usdt",
+            "quote": "usdc"
+        },
+        {
+            "base": "agi",
+            "quote": "usdc"
+        },
+        {
+            "base": "glq",
+            "quote": "usdc"
+        },
+        {
+            "base": "aloha",
             "quote": "usdc"
         }
     ],
