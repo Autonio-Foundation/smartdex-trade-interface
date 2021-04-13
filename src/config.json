@@ -98,6 +98,54 @@
             },
             "decimals": 18,
             "displayDecimals": 2
+        },
+        {
+            "symbol": "aloha",
+            "name": "Aloha",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/aloha.svg",
+            "addresses": {
+                "1": "0x455f7ef6d8bcfc35f9337e85aee1b0600a59fabe",
+                "3": "0x455f7ef6d8bcfc35f9337e85aee1b0600a59fabe",
+                "4": "0x455f7ef6d8bcfc35f9337e85aee1b0600a59fabe",
+                "42": "0x455f7ef6d8bcfc35f9337e85aee1b0600a59fabe",
+                "50": "0x60AC2E84078Ce30CBC68e3d7b18bCF613271ce6B",
+                "137": "0x60AC2E84078Ce30CBC68e3d7b18bCF613271ce6B"
+            },
+            "decimals": 18,
+            "displayDecimals": 2
+        },
+        {
+            "symbol": "GLQ",
+            "name": "GRAPH LINK ",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/glq.svg",
+            "addresses": {
+                "1": "0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24",
+                "3": "0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24",
+                "4": "0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24",
+                "42": "0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24",
+                "50": "0x0CfC9a713A5C17Bc8a5fF0379467f6558bAcD0e0",
+                "137": "0x0CfC9a713A5C17Bc8a5fF0379467f6558bAcD0e0"
+            },
+            "decimals": 18,
+            "displayDecimals": 2
+        },
+        {
+            "symbol": "agi",
+            "name": "SingularityNET",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/agi.svg",
+            "addresses": {
+                "1": "0x8eb24319393716668d768dcec29356ae9cffe285",
+                "3": "0x8eb24319393716668d768dcec29356ae9cffe285",
+                "4": "0x8eb24319393716668d768dcec29356ae9cffe285",
+                "42": "0x8eb24319393716668d768dcec29356ae9cffe285",
+                "50": "0x800eB319e3F0E962d3ca8D625C871B8F1bdf2bC8",
+                "137": "0x800eB319e3F0E962d3ca8D625C871B8F1bdf2bC8"
+            },
+            "decimals": 8,
+            "displayDecimals": 2
         }
     ],
     "depositTokens": [
@@ -201,7 +249,7 @@
             "symbol": "aloha",
             "name": "Aloha",
             "primaryColor": "#3333ff",
-            "icon": "assets/icons/weth.svg",
+            "icon": "assets/icons/aloha.svg",
             "addresses": {
                 "1": "0x455f7ef6d8bcfc35f9337e85aee1b0600a59fabe",
                 "3": "0x455f7ef6d8bcfc35f9337e85aee1b0600a59fabe",
@@ -217,7 +265,7 @@
             "symbol": "GLQ",
             "name": "GRAPH LINK ",
             "primaryColor": "#3333ff",
-            "icon": "assets/icons/weth.svg",
+            "icon": "assets/icons/glq.svg",
             "addresses": {
                 "1": "0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24",
                 "3": "0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24",
@@ -233,7 +281,7 @@
             "symbol": "agi",
             "name": "SingularityNET",
             "primaryColor": "#3333ff",
-            "icon": "assets/icons/weth.svg",
+            "icon": "assets/icons/agi.svg",
             "addresses": {
                 "1": "0x8eb24319393716668d768dcec29356ae9cffe285",
                 "3": "0x8eb24319393716668d768dcec29356ae9cffe285",
@@ -242,7 +290,7 @@
                 "50": "0x800eB319e3F0E962d3ca8D625C871B8F1bdf2bC8",
                 "137": "0x800eB319e3F0E962d3ca8D625C871B8F1bdf2bC8"
             },
-            "decimals": 18,
+            "decimals": 8,
             "displayDecimals": 2
         }
     ],
