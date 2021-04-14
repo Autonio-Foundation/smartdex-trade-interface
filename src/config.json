@@ -308,15 +308,15 @@
             "quote": "usdc"
         },
         {
-            "base": "agi",
-            "quote": "usdc"
+            "base": "aloha",
+            "quote": "niox"
         },
         {
             "base": "glq",
-            "quote": "usdc"
+            "quote": "weth"
         },
         {
-            "base": "aloha",
+            "base": "weth",
             "quote": "usdc"
         }
     ],
