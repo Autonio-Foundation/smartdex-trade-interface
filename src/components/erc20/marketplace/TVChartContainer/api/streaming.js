@@ -61,7 +61,7 @@ socket.on('m', data => {
 		}
 		bar = {
 			time: nextDailyBarTime,
-			open: lastDailyBar.close,
+			open: lastDailyBar? lastDailyBar.close : tradePrice,
 			high: tradePrice,
 			low: tradePrice,
 			close: tradePrice,
