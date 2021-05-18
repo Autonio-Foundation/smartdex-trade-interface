@@ -130,6 +130,22 @@
             },
             "decimals": 8,
             "displayDecimals": 2
+        },
+        {
+            "symbol": "digi",
+            "name": "Digible",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/digi.svg",
+            "addresses": {
+                "1": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "3": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "4": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "42": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "50": "0x4d8181f051E617642e233Be09Cea71Cc3308ffD4",
+                "137": "0x4d8181f051E617642e233Be09Cea71Cc3308ffD4"
+            },
+            "decimals": 18,
+            "displayDecimals": 2
         }
     ],
     "depositTokens": [
@@ -259,6 +275,22 @@
                 "137": "0x800eB319e3F0E962d3ca8D625C871B8F1bdf2bC8"
             },
             "decimals": 8,
+            "displayDecimals": 2
+        },
+        {
+            "symbol": "digi",
+            "name": "Digible",
+            "primaryColor": "#3333ff",
+            "icon": "assets/icons/digi.svg",
+            "addresses": {
+                "1": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "3": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "4": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "42": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
+                "50": "0x4d8181f051E617642e233Be09Cea71Cc3308ffD4",
+                "137": "0x4d8181f051E617642e233Be09Cea71Cc3308ffD4"
+            },
+            "decimals": 18,
             "displayDecimals": 2
         }
     ],
