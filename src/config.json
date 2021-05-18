@@ -134,7 +134,7 @@
         {
             "symbol": "digi",
             "name": "Digible",
-            "primaryColor": "#3333ff",
+            "primaryColor": "#ffffff",
             "icon": "assets/icons/digi.svg",
             "addresses": {
                 "1": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
@@ -280,7 +280,7 @@
         {
             "symbol": "digi",
             "name": "Digible",
-            "primaryColor": "#3333ff",
+            "primaryColor": "#ffffff",
             "icon": "assets/icons/digi.svg",
             "addresses": {
                 "1": "0x3cbf23c081faa5419810ce0f6bc1ecb73006d848",
